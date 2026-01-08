@@ -1,0 +1,267 @@
+// File generated from our OpenAPI spec by Stainless.
+
+package com.avara.api.services.blocking.autoscribe
+
+import com.avara.api.TestServerExtension
+import com.avara.api.client.okhttp.AvaraOkHttpClient
+import com.avara.api.core.JsonValue
+import com.avara.api.models.autoscribe.StudyReportMetadata
+import com.avara.api.models.autoscribe.studies.StudyCancelParams
+import com.avara.api.models.autoscribe.studies.StudyCreateParams
+import com.avara.api.models.autoscribe.studies.StudyRerouteUrlParams
+import com.avara.api.models.autoscribe.studies.StudyUncancelParams
+import com.avara.api.models.autoscribe.studies.StudyUpdateParams
+import com.avara.api.models.autoscribe.studies.StudyViewerOnlyRerouteUrlParams
+import org.junit.jupiter.api.Disabled
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
+
+@ExtendWith(TestServerExtension::class)
+internal class StudyServiceTest {
+
+    @Disabled("Prism tests are disabled")
+    @Test
+    fun create() {
+        val client =
+            AvaraOkHttpClient.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .apiKey("My API Key")
+                .build()
+        val studyService = client.autoScribe().studies()
+
+        val study =
+            studyService.create(
+                StudyCreateParams.builder()
+                    .reportMetadata(
+                        StudyReportMetadata.builder()
+                            .age("38 years")
+                            .dateOfBirth("1985-07-20")
+                            .facilityName("City Medical Center")
+                            .height(
+                                StudyReportMetadata.Height.builder()
+                                    .unit(StudyReportMetadata.Height.Unit.CM)
+                                    .value(165.0)
+                                    .build()
+                            )
+                            .mrn("MRN-2024-001234")
+                            .patientName("Jane Doe")
+                            .referringPhysicianName("Dr. Michael Chen")
+                            .scanDate("2024-03-15")
+                            .scanTime("14:30")
+                            .scanType("MRI Brain with Contrast")
+                            .sex(StudyReportMetadata.Sex.FEMALE)
+                            .weight(
+                                StudyReportMetadata.Weight.builder()
+                                    .unit(StudyReportMetadata.Weight.Unit.KG)
+                                    .value(62.0)
+                                    .build()
+                            )
+                            .build()
+                    )
+                    .severity(StudyCreateParams.Severity.NORMAL)
+                    .studyDescription("Brain MRI with Contrast")
+                    .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
+                    .assignedTo("usr_1234567890abcdef1234567890abcdef")
+                    .metadata(
+                        StudyCreateParams.Metadata.builder()
+                            .putAdditionalProperty("department", JsonValue.from("radiology"))
+                            .putAdditionalProperty("priority", JsonValue.from("routine"))
+                            .build()
+                    )
+                    .orgId("org_1234567890abcdef1234567890abcdef")
+                    .addPriorReportText("x")
+                    .addPriorStudyId("string")
+                    .build()
+            )
+
+        study.validate()
+    }
+
+    @Disabled("Prism tests are disabled")
+    @Test
+    fun retrieve() {
+        val client =
+            AvaraOkHttpClient.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .apiKey("My API Key")
+                .build()
+        val studyService = client.autoScribe().studies()
+
+        val study = studyService.retrieve("stu_1234567890abcdef1234567890abcdef")
+
+        study.validate()
+    }
+
+    @Disabled("Prism tests are disabled")
+    @Test
+    fun update() {
+        val client =
+            AvaraOkHttpClient.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .apiKey("My API Key")
+                .build()
+        val studyService = client.autoScribe().studies()
+
+        val study =
+            studyService.update(
+                StudyUpdateParams.builder()
+                    .studyId("stu_1234567890abcdef1234567890abcdef")
+                    .assignedTo("usr_1234567890abcdef1234567890abcdef")
+                    .metadata(
+                        StudyUpdateParams.Metadata.builder()
+                            .putAdditionalProperty("foo", JsonValue.from("string"))
+                            .build()
+                    )
+                    .orgId("org_1234567890abcdef1234567890abcdef")
+                    .addPriorReportText("x")
+                    .addPriorStudyId("string")
+                    .reportMetadata(
+                        StudyUpdateParams.ReportMetadata.builder()
+                            .age("age")
+                            .dateOfBirth("7321-69-10")
+                            .facilityName("facilityName")
+                            .height(
+                                StudyUpdateParams.ReportMetadata.Height.builder()
+                                    .unit(StudyUpdateParams.ReportMetadata.Height.Unit.CM)
+                                    .value(170.0)
+                                    .build()
+                            )
+                            .mrn("mrn")
+                            .patientName("Jane M. Doe")
+                            .referringPhysicianName("referringPhysicianName")
+                            .scanDate("7321-69-10")
+                            .scanTime("scanTime")
+                            .scanType("scanType")
+                            .sex(StudyUpdateParams.ReportMetadata.Sex.FEMALE)
+                            .weight(
+                                StudyUpdateParams.ReportMetadata.Weight.builder()
+                                    .unit(StudyUpdateParams.ReportMetadata.Weight.Unit.KG)
+                                    .value(68.0)
+                                    .build()
+                            )
+                            .build()
+                    )
+                    .severity(StudyUpdateParams.Severity.HIGH)
+                    .studyDescription("Brain MRI with and without Contrast")
+                    .build()
+            )
+
+        study.validate()
+    }
+
+    @Disabled("Prism tests are disabled")
+    @Test
+    fun list() {
+        val client =
+            AvaraOkHttpClient.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .apiKey("My API Key")
+                .build()
+        val studyService = client.autoScribe().studies()
+
+        val page = studyService.list()
+
+        page.response().validate()
+    }
+
+    @Disabled("Prism tests are disabled")
+    @Test
+    fun cancel() {
+        val client =
+            AvaraOkHttpClient.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .apiKey("My API Key")
+                .build()
+        val studyService = client.autoScribe().studies()
+
+        val response =
+            studyService.cancel(
+                StudyCancelParams.builder()
+                    .studyId("stu_1234567890abcdef1234567890abcdef")
+                    .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
+                    .build()
+            )
+
+        response.validate()
+    }
+
+    @Disabled("Prism tests are disabled")
+    @Test
+    fun rerouteUrl() {
+        val client =
+            AvaraOkHttpClient.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .apiKey("My API Key")
+                .build()
+        val studyService = client.autoScribe().studies()
+
+        val response =
+            studyService.rerouteUrl(
+                StudyRerouteUrlParams.builder()
+                    .assignedToUserId("usr_1234567890abcdef1234567890abcdef")
+                    .studyId("stu_1234567890abcdef1234567890abcdef")
+                    .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
+                    .build()
+            )
+
+        response.validate()
+    }
+
+    @Disabled("Prism tests are disabled")
+    @Test
+    fun retrieveByUid() {
+        val client =
+            AvaraOkHttpClient.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .apiKey("My API Key")
+                .build()
+        val studyService = client.autoScribe().studies()
+
+        val response = studyService.retrieveByUid("1.2.840.10008.5.1.4.1.1.2")
+
+        response.validate()
+    }
+
+    @Disabled("Prism tests are disabled")
+    @Test
+    fun uncancel() {
+        val client =
+            AvaraOkHttpClient.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .apiKey("My API Key")
+                .build()
+        val studyService = client.autoScribe().studies()
+
+        val response =
+            studyService.uncancel(
+                StudyUncancelParams.builder()
+                    .studyId("stu_1234567890abcdef1234567890abcdef")
+                    .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
+                    .build()
+            )
+
+        response.validate()
+    }
+
+    @Disabled("Prism tests are disabled")
+    @Test
+    fun viewerOnlyRerouteUrl() {
+        val client =
+            AvaraOkHttpClient.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .apiKey("My API Key")
+                .build()
+        val studyService = client.autoScribe().studies()
+
+        val response =
+            studyService.viewerOnlyRerouteUrl(
+                StudyViewerOnlyRerouteUrlParams.builder()
+                    .studyId("stu_1234567890abcdef1234567890abcdef")
+                    .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
+                    .userId("usr_1234567890abcdef1234567890abcdef")
+                    .build()
+            )
+
+        response.validate()
+    }
+}
