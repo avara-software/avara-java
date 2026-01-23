@@ -8,7 +8,7 @@ repositories {
 }
 
 allprojects {
-    group = "com.avara.api"
+    group = "com.avara"
     version = "0.0.1"
 }
 

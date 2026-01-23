@@ -1,27 +1,27 @@
 # Avara Java API Library
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.avara.api/avara-java)](https://central.sonatype.com/artifact/com.avara.api/avara-java/0.0.1)
-[![javadoc](https://javadoc.io/badge2/com.avara.api/avara-java/0.0.1/javadoc.svg)](https://javadoc.io/doc/com.avara.api/avara-java/0.0.1)
+[![Maven Central](https://img.shields.io/maven-central/v/com.avara/avara-java)](https://central.sonatype.com/artifact/com.avara/avara-java/0.0.1)
+[![javadoc](https://javadoc.io/badge2/com.avara/avara-java/0.0.1/javadoc.svg)](https://javadoc.io/doc/com.avara/avara-java/0.0.1)
 
 The Avara Java SDK provides convenient access to the [Avara REST API](https://avarasoftware.com/docs/sdk) from applications written in Java.
 
 It is generated with [Stainless](https://www.stainless.com/).
 
-The REST API documentation can be found on [avarasoftware.com](https://avarasoftware.com/docs/sdk). Javadocs are available on [javadoc.io](https://javadoc.io/doc/com.avara.api/avara-java/0.0.1).
+The REST API documentation can be found on [avarasoftware.com](https://avarasoftware.com/docs/sdk). Javadocs are available on [javadoc.io](https://javadoc.io/doc/com.avara/avara-java/0.0.1).
 
 ## Installation
 
 ### Gradle
 
 ```kotlin
-implementation("com.avara.api:avara-java:0.0.1")
+implementation("com.avara:avara-java:0.0.1")
 ```
 
 ### Maven
 
 ```xml
 <dependency>
-  <groupId>com.avara.api</groupId>
+  <groupId>com.avara</groupId>
   <artifactId>avara-java</artifactId>
   <version>0.0.1</version>
 </dependency>
@@ -34,10 +34,10 @@ This library requires Java 8 or later.
 ## Usage
 
 ```java
-import com.avara.api.client.AvaraClient;
-import com.avara.api.client.okhttp.AvaraOkHttpClient;
-import com.avara.api.models.viewer.studies.StudyCreateParams;
-import com.avara.api.models.viewer.studies.StudyCreateResponse;
+import com.avara.client.AvaraClient;
+import com.avara.client.okhttp.AvaraOkHttpClient;
+import com.avara.models.viewer.studies.StudyCreateParams;
+import com.avara.models.viewer.studies.StudyCreateResponse;
 
 // Configures using the `avara.apiKey`, `avara.webhookKey` and `avara.baseUrl` system properties
 // Or configures using the `AVARA_API_KEY`, `AVARA_WEBHOOK_KEY` and `AVARA_BASE_URL` environment variables
@@ -56,8 +56,8 @@ StudyCreateResponse study = client.viewer().studies().create(params);
 Configure the client using system properties or environment variables:
 
 ```java
-import com.avara.api.client.AvaraClient;
-import com.avara.api.client.okhttp.AvaraOkHttpClient;
+import com.avara.client.AvaraClient;
+import com.avara.client.okhttp.AvaraOkHttpClient;
 
 // Configures using the `avara.apiKey`, `avara.webhookKey` and `avara.baseUrl` system properties
 // Or configures using the `AVARA_API_KEY`, `AVARA_WEBHOOK_KEY` and `AVARA_BASE_URL` environment variables
@@ -67,8 +67,8 @@ AvaraClient client = AvaraOkHttpClient.fromEnv();
 Or manually:
 
 ```java
-import com.avara.api.client.AvaraClient;
-import com.avara.api.client.okhttp.AvaraOkHttpClient;
+import com.avara.client.AvaraClient;
+import com.avara.client.okhttp.AvaraOkHttpClient;
 
 AvaraClient client = AvaraOkHttpClient.builder()
     .apiKey("My API Key")
@@ -78,8 +78,8 @@ AvaraClient client = AvaraOkHttpClient.builder()
 Or using a combination of the two approaches:
 
 ```java
-import com.avara.api.client.AvaraClient;
-import com.avara.api.client.okhttp.AvaraOkHttpClient;
+import com.avara.client.AvaraClient;
+import com.avara.client.okhttp.AvaraOkHttpClient;
 
 AvaraClient client = AvaraOkHttpClient.builder()
     // Configures using the `avara.apiKey`, `avara.webhookKey` and `avara.baseUrl` system properties
@@ -108,7 +108,7 @@ System properties take precedence over environment variables.
 To temporarily use a modified client configuration, while reusing the same connection and thread pools, call `withOptions()` on any client or service:
 
 ```java
-import com.avara.api.client.AvaraClient;
+import com.avara.client.AvaraClient;
 
 AvaraClient clientWithOptions = client.withOptions(optionsBuilder -> {
     optionsBuilder.baseUrl("https://example.com");
@@ -137,10 +137,10 @@ Because each class is immutable, builder modification will _never_ affect alread
 The default client is synchronous. To switch to asynchronous execution, call the `async()` method:
 
 ```java
-import com.avara.api.client.AvaraClient;
-import com.avara.api.client.okhttp.AvaraOkHttpClient;
-import com.avara.api.models.viewer.studies.StudyCreateParams;
-import com.avara.api.models.viewer.studies.StudyCreateResponse;
+import com.avara.client.AvaraClient;
+import com.avara.client.okhttp.AvaraOkHttpClient;
+import com.avara.models.viewer.studies.StudyCreateParams;
+import com.avara.models.viewer.studies.StudyCreateResponse;
 import java.util.concurrent.CompletableFuture;
 
 // Configures using the `avara.apiKey`, `avara.webhookKey` and `avara.baseUrl` system properties
@@ -158,10 +158,10 @@ CompletableFuture<StudyCreateResponse> study = client.async().viewer().studies()
 Or create an asynchronous client from the beginning:
 
 ```java
-import com.avara.api.client.AvaraClientAsync;
-import com.avara.api.client.okhttp.AvaraOkHttpClientAsync;
-import com.avara.api.models.viewer.studies.StudyCreateParams;
-import com.avara.api.models.viewer.studies.StudyCreateResponse;
+import com.avara.client.AvaraClientAsync;
+import com.avara.client.okhttp.AvaraOkHttpClientAsync;
+import com.avara.models.viewer.studies.StudyCreateParams;
+import com.avara.models.viewer.studies.StudyCreateResponse;
 import java.util.concurrent.CompletableFuture;
 
 // Configures using the `avara.apiKey`, `avara.webhookKey` and `avara.baseUrl` system properties
@@ -185,10 +185,10 @@ The SDK defines methods that deserialize responses into instances of Java classe
 To access this data, prefix any HTTP method call on a client or service with `withRawResponse()`:
 
 ```java
-import com.avara.api.core.http.Headers;
-import com.avara.api.core.http.HttpResponseFor;
-import com.avara.api.models.viewer.studies.StudyCreateParams;
-import com.avara.api.models.viewer.studies.StudyCreateResponse;
+import com.avara.core.http.Headers;
+import com.avara.core.http.HttpResponseFor;
+import com.avara.models.viewer.studies.StudyCreateParams;
+import com.avara.models.viewer.studies.StudyCreateResponse;
 
 StudyCreateParams params = StudyCreateParams.builder()
     .severity(StudyCreateParams.Severity.NORMAL)
@@ -204,7 +204,7 @@ Headers headers = study.headers();
 You can still deserialize the response into an instance of a Java class if needed:
 
 ```java
-import com.avara.api.models.viewer.studies.StudyCreateResponse;
+import com.avara.models.viewer.studies.StudyCreateResponse;
 
 StudyCreateResponse parsedStudy = study.parse();
 ```
@@ -213,26 +213,26 @@ StudyCreateResponse parsedStudy = study.parse();
 
 The SDK throws custom unchecked exception types:
 
-- [`AvaraServiceException`](avara-java-core/src/main/kotlin/com/avara/api/errors/AvaraServiceException.kt): Base class for HTTP errors. See this table for which exception subclass is thrown for each HTTP status code:
+- [`AvaraServiceException`](avara-java-core/src/main/kotlin/com/avara/errors/AvaraServiceException.kt): Base class for HTTP errors. See this table for which exception subclass is thrown for each HTTP status code:
 
-  | Status | Exception                                                                                                                |
-  | ------ | ------------------------------------------------------------------------------------------------------------------------ |
-  | 400    | [`BadRequestException`](avara-java-core/src/main/kotlin/com/avara/api/errors/BadRequestException.kt)                     |
-  | 401    | [`UnauthorizedException`](avara-java-core/src/main/kotlin/com/avara/api/errors/UnauthorizedException.kt)                 |
-  | 403    | [`PermissionDeniedException`](avara-java-core/src/main/kotlin/com/avara/api/errors/PermissionDeniedException.kt)         |
-  | 404    | [`NotFoundException`](avara-java-core/src/main/kotlin/com/avara/api/errors/NotFoundException.kt)                         |
-  | 422    | [`UnprocessableEntityException`](avara-java-core/src/main/kotlin/com/avara/api/errors/UnprocessableEntityException.kt)   |
-  | 429    | [`RateLimitException`](avara-java-core/src/main/kotlin/com/avara/api/errors/RateLimitException.kt)                       |
-  | 5xx    | [`InternalServerException`](avara-java-core/src/main/kotlin/com/avara/api/errors/InternalServerException.kt)             |
-  | others | [`UnexpectedStatusCodeException`](avara-java-core/src/main/kotlin/com/avara/api/errors/UnexpectedStatusCodeException.kt) |
+  | Status | Exception                                                                                                            |
+  | ------ | -------------------------------------------------------------------------------------------------------------------- |
+  | 400    | [`BadRequestException`](avara-java-core/src/main/kotlin/com/avara/errors/BadRequestException.kt)                     |
+  | 401    | [`UnauthorizedException`](avara-java-core/src/main/kotlin/com/avara/errors/UnauthorizedException.kt)                 |
+  | 403    | [`PermissionDeniedException`](avara-java-core/src/main/kotlin/com/avara/errors/PermissionDeniedException.kt)         |
+  | 404    | [`NotFoundException`](avara-java-core/src/main/kotlin/com/avara/errors/NotFoundException.kt)                         |
+  | 422    | [`UnprocessableEntityException`](avara-java-core/src/main/kotlin/com/avara/errors/UnprocessableEntityException.kt)   |
+  | 429    | [`RateLimitException`](avara-java-core/src/main/kotlin/com/avara/errors/RateLimitException.kt)                       |
+  | 5xx    | [`InternalServerException`](avara-java-core/src/main/kotlin/com/avara/errors/InternalServerException.kt)             |
+  | others | [`UnexpectedStatusCodeException`](avara-java-core/src/main/kotlin/com/avara/errors/UnexpectedStatusCodeException.kt) |
 
-- [`AvaraIoException`](avara-java-core/src/main/kotlin/com/avara/api/errors/AvaraIoException.kt): I/O networking errors.
+- [`AvaraIoException`](avara-java-core/src/main/kotlin/com/avara/errors/AvaraIoException.kt): I/O networking errors.
 
-- [`AvaraRetryableException`](avara-java-core/src/main/kotlin/com/avara/api/errors/AvaraRetryableException.kt): Generic error indicating a failure that could be retried by the client.
+- [`AvaraRetryableException`](avara-java-core/src/main/kotlin/com/avara/errors/AvaraRetryableException.kt): Generic error indicating a failure that could be retried by the client.
 
-- [`AvaraInvalidDataException`](avara-java-core/src/main/kotlin/com/avara/api/errors/AvaraInvalidDataException.kt): Failure to interpret successfully parsed data. For example, when accessing a property that's supposed to be required, but the API unexpectedly omitted it from the response.
+- [`AvaraInvalidDataException`](avara-java-core/src/main/kotlin/com/avara/errors/AvaraInvalidDataException.kt): Failure to interpret successfully parsed data. For example, when accessing a property that's supposed to be required, but the API unexpectedly omitted it from the response.
 
-- [`AvaraException`](avara-java-core/src/main/kotlin/com/avara/api/errors/AvaraException.kt): Base class for all exceptions. Most errors will result in one of the previously mentioned ones, but completely generic errors may be thrown using the base class.
+- [`AvaraException`](avara-java-core/src/main/kotlin/com/avara/errors/AvaraException.kt): Base class for all exceptions. Most errors will result in one of the previously mentioned ones, but completely generic errors may be thrown using the base class.
 
 ## Pagination
 
@@ -245,8 +245,8 @@ To iterate through all results across all pages, use the `autoPager()` method, w
 When using the synchronous client, the method returns an [`Iterable`](https://docs.oracle.com/javase/8/docs/api/java/lang/Iterable.html)
 
 ```java
-import com.avara.api.models.autoscribe.studies.StudyListPage;
-import com.avara.api.models.autoscribe.studies.StudyListResponse;
+import com.avara.models.autoscribe.studies.StudyListPage;
+import com.avara.models.autoscribe.studies.StudyListResponse;
 
 StudyListPage page = client.autoScribe().studies().list();
 
@@ -262,12 +262,12 @@ page.autoPager()
     .forEach(study -> System.out.println(study));
 ```
 
-When using the asynchronous client, the method returns an [`AsyncStreamResponse`](avara-java-core/src/main/kotlin/com/avara/api/core/http/AsyncStreamResponse.kt):
+When using the asynchronous client, the method returns an [`AsyncStreamResponse`](avara-java-core/src/main/kotlin/com/avara/core/http/AsyncStreamResponse.kt):
 
 ```java
-import com.avara.api.core.http.AsyncStreamResponse;
-import com.avara.api.models.autoscribe.studies.StudyListPageAsync;
-import com.avara.api.models.autoscribe.studies.StudyListResponse;
+import com.avara.core.http.AsyncStreamResponse;
+import com.avara.models.autoscribe.studies.StudyListPageAsync;
+import com.avara.models.autoscribe.studies.StudyListResponse;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
@@ -317,8 +317,8 @@ To access individual page items and manually request the next page, use the `ite
 `hasNextPage()`, and `nextPage()` methods:
 
 ```java
-import com.avara.api.models.autoscribe.studies.StudyListPage;
-import com.avara.api.models.autoscribe.studies.StudyListResponse;
+import com.avara.models.autoscribe.studies.StudyListPage;
+import com.avara.models.autoscribe.studies.StudyListResponse;
 
 StudyListPage page = client.autoScribe().studies().list();
 while (true) {
@@ -362,7 +362,7 @@ The SDK depends on [Jackson](https://github.com/FasterXML/jackson) for JSON seri
 
 The SDK throws an exception if it detects an incompatible Jackson version at runtime (e.g. if the default version was overridden in your Maven or Gradle config).
 
-If the SDK threw an exception, but you're _certain_ the version is compatible, then disable the version check using the `checkJacksonVersionCompatibility` on [`AvaraOkHttpClient`](avara-java-client-okhttp/src/main/kotlin/com/avara/api/client/okhttp/AvaraOkHttpClient.kt) or [`AvaraOkHttpClientAsync`](avara-java-client-okhttp/src/main/kotlin/com/avara/api/client/okhttp/AvaraOkHttpClientAsync.kt).
+If the SDK threw an exception, but you're _certain_ the version is compatible, then disable the version check using the `checkJacksonVersionCompatibility` on [`AvaraOkHttpClient`](avara-java-client-okhttp/src/main/kotlin/com/avara/client/okhttp/AvaraOkHttpClient.kt) or [`AvaraOkHttpClientAsync`](avara-java-client-okhttp/src/main/kotlin/com/avara/client/okhttp/AvaraOkHttpClientAsync.kt).
 
 > [!CAUTION]
 > We make no guarantee that the SDK works correctly when the Jackson version check is disabled.
@@ -388,8 +388,8 @@ The API may also explicitly instruct the SDK to retry or not retry a request.
 To set a custom number of retries, configure the client using the `maxRetries` method:
 
 ```java
-import com.avara.api.client.AvaraClient;
-import com.avara.api.client.okhttp.AvaraOkHttpClient;
+import com.avara.client.AvaraClient;
+import com.avara.client.okhttp.AvaraOkHttpClient;
 
 AvaraClient client = AvaraOkHttpClient.builder()
     .fromEnv()
@@ -404,7 +404,7 @@ Requests time out after 1 minute by default.
 To set a custom timeout, configure the method call using the `timeout` method:
 
 ```java
-import com.avara.api.models.viewer.studies.StudyCreateResponse;
+import com.avara.models.viewer.studies.StudyCreateResponse;
 
 StudyCreateResponse study = client.viewer().studies().create(
   params, RequestOptions.builder().timeout(Duration.ofSeconds(30)).build()
@@ -414,8 +414,8 @@ StudyCreateResponse study = client.viewer().studies().create(
 Or configure the default for all method calls at the client level:
 
 ```java
-import com.avara.api.client.AvaraClient;
-import com.avara.api.client.okhttp.AvaraOkHttpClient;
+import com.avara.client.AvaraClient;
+import com.avara.client.okhttp.AvaraOkHttpClient;
 import java.time.Duration;
 
 AvaraClient client = AvaraOkHttpClient.builder()
@@ -429,8 +429,8 @@ AvaraClient client = AvaraOkHttpClient.builder()
 To route requests through a proxy, configure the client using the `proxy` method:
 
 ```java
-import com.avara.api.client.AvaraClient;
-import com.avara.api.client.okhttp.AvaraOkHttpClient;
+import com.avara.client.AvaraClient;
+import com.avara.client.okhttp.AvaraOkHttpClient;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 
@@ -453,8 +453,8 @@ AvaraClient client = AvaraOkHttpClient.builder()
 To configure how HTTPS connections are secured, configure the client using the `sslSocketFactory`, `trustManager`, and `hostnameVerifier` methods:
 
 ```java
-import com.avara.api.client.AvaraClient;
-import com.avara.api.client.okhttp.AvaraOkHttpClient;
+import com.avara.client.AvaraClient;
+import com.avara.client.okhttp.AvaraOkHttpClient;
 
 AvaraClient client = AvaraOkHttpClient.builder()
     .fromEnv()
@@ -472,10 +472,10 @@ The SDK consists of three artifacts:
 - `avara-java-core`
   - Contains core SDK logic
   - Does not depend on [OkHttp](https://square.github.io/okhttp)
-  - Exposes [`AvaraClient`](avara-java-core/src/main/kotlin/com/avara/api/client/AvaraClient.kt), [`AvaraClientAsync`](avara-java-core/src/main/kotlin/com/avara/api/client/AvaraClientAsync.kt), [`AvaraClientImpl`](avara-java-core/src/main/kotlin/com/avara/api/client/AvaraClientImpl.kt), and [`AvaraClientAsyncImpl`](avara-java-core/src/main/kotlin/com/avara/api/client/AvaraClientAsyncImpl.kt), all of which can work with any HTTP client
+  - Exposes [`AvaraClient`](avara-java-core/src/main/kotlin/com/avara/client/AvaraClient.kt), [`AvaraClientAsync`](avara-java-core/src/main/kotlin/com/avara/client/AvaraClientAsync.kt), [`AvaraClientImpl`](avara-java-core/src/main/kotlin/com/avara/client/AvaraClientImpl.kt), and [`AvaraClientAsyncImpl`](avara-java-core/src/main/kotlin/com/avara/client/AvaraClientAsyncImpl.kt), all of which can work with any HTTP client
 - `avara-java-client-okhttp`
   - Depends on [OkHttp](https://square.github.io/okhttp)
-  - Exposes [`AvaraOkHttpClient`](avara-java-client-okhttp/src/main/kotlin/com/avara/api/client/okhttp/AvaraOkHttpClient.kt) and [`AvaraOkHttpClientAsync`](avara-java-client-okhttp/src/main/kotlin/com/avara/api/client/okhttp/AvaraOkHttpClientAsync.kt), which provide a way to construct [`AvaraClientImpl`](avara-java-core/src/main/kotlin/com/avara/api/client/AvaraClientImpl.kt) and [`AvaraClientAsyncImpl`](avara-java-core/src/main/kotlin/com/avara/api/client/AvaraClientAsyncImpl.kt), respectively, using OkHttp
+  - Exposes [`AvaraOkHttpClient`](avara-java-client-okhttp/src/main/kotlin/com/avara/client/okhttp/AvaraOkHttpClient.kt) and [`AvaraOkHttpClientAsync`](avara-java-client-okhttp/src/main/kotlin/com/avara/client/okhttp/AvaraOkHttpClientAsync.kt), which provide a way to construct [`AvaraClientImpl`](avara-java-core/src/main/kotlin/com/avara/client/AvaraClientImpl.kt) and [`AvaraClientAsyncImpl`](avara-java-core/src/main/kotlin/com/avara/client/AvaraClientAsyncImpl.kt), respectively, using OkHttp
 - `avara-java`
   - Depends on and exposes the APIs of both `avara-java-core` and `avara-java-client-okhttp`
   - Does not have its own logic
@@ -490,16 +490,16 @@ This structure allows replacing the SDK's default HTTP client without pulling in
 To use a customized `OkHttpClient`:
 
 1. Replace your [`avara-java` dependency](#installation) with `avara-java-core`
-2. Copy `avara-java-client-okhttp`'s [`OkHttpClient`](avara-java-client-okhttp/src/main/kotlin/com/avara/api/client/okhttp/OkHttpClient.kt) class into your code and customize it
-3. Construct [`AvaraClientImpl`](avara-java-core/src/main/kotlin/com/avara/api/client/AvaraClientImpl.kt) or [`AvaraClientAsyncImpl`](avara-java-core/src/main/kotlin/com/avara/api/client/AvaraClientAsyncImpl.kt), similarly to [`AvaraOkHttpClient`](avara-java-client-okhttp/src/main/kotlin/com/avara/api/client/okhttp/AvaraOkHttpClient.kt) or [`AvaraOkHttpClientAsync`](avara-java-client-okhttp/src/main/kotlin/com/avara/api/client/okhttp/AvaraOkHttpClientAsync.kt), using your customized client
+2. Copy `avara-java-client-okhttp`'s [`OkHttpClient`](avara-java-client-okhttp/src/main/kotlin/com/avara/client/okhttp/OkHttpClient.kt) class into your code and customize it
+3. Construct [`AvaraClientImpl`](avara-java-core/src/main/kotlin/com/avara/client/AvaraClientImpl.kt) or [`AvaraClientAsyncImpl`](avara-java-core/src/main/kotlin/com/avara/client/AvaraClientAsyncImpl.kt), similarly to [`AvaraOkHttpClient`](avara-java-client-okhttp/src/main/kotlin/com/avara/client/okhttp/AvaraOkHttpClient.kt) or [`AvaraOkHttpClientAsync`](avara-java-client-okhttp/src/main/kotlin/com/avara/client/okhttp/AvaraOkHttpClientAsync.kt), using your customized client
 
 ### Completely custom HTTP client
 
 To use a completely custom HTTP client:
 
 1. Replace your [`avara-java` dependency](#installation) with `avara-java-core`
-2. Write a class that implements the [`HttpClient`](avara-java-core/src/main/kotlin/com/avara/api/core/http/HttpClient.kt) interface
-3. Construct [`AvaraClientImpl`](avara-java-core/src/main/kotlin/com/avara/api/client/AvaraClientImpl.kt) or [`AvaraClientAsyncImpl`](avara-java-core/src/main/kotlin/com/avara/api/client/AvaraClientAsyncImpl.kt), similarly to [`AvaraOkHttpClient`](avara-java-client-okhttp/src/main/kotlin/com/avara/api/client/okhttp/AvaraOkHttpClient.kt) or [`AvaraOkHttpClientAsync`](avara-java-client-okhttp/src/main/kotlin/com/avara/api/client/okhttp/AvaraOkHttpClientAsync.kt), using your new client class
+2. Write a class that implements the [`HttpClient`](avara-java-core/src/main/kotlin/com/avara/core/http/HttpClient.kt) interface
+3. Construct [`AvaraClientImpl`](avara-java-core/src/main/kotlin/com/avara/client/AvaraClientImpl.kt) or [`AvaraClientAsyncImpl`](avara-java-core/src/main/kotlin/com/avara/client/AvaraClientAsyncImpl.kt), similarly to [`AvaraOkHttpClient`](avara-java-client-okhttp/src/main/kotlin/com/avara/client/okhttp/AvaraOkHttpClient.kt) or [`AvaraOkHttpClientAsync`](avara-java-client-okhttp/src/main/kotlin/com/avara/client/okhttp/AvaraOkHttpClientAsync.kt), using your new client class
 
 ## Undocumented API functionality
 
@@ -510,8 +510,8 @@ The SDK is typed for convenient usage of the documented API. However, it also su
 To set undocumented parameters, call the `putAdditionalHeader`, `putAdditionalQueryParam`, or `putAdditionalBodyProperty` methods on any `Params` class:
 
 ```java
-import com.avara.api.core.JsonValue;
-import com.avara.api.models.viewer.studies.StudyCreateParams;
+import com.avara.core.JsonValue;
+import com.avara.models.viewer.studies.StudyCreateParams;
 
 StudyCreateParams params = StudyCreateParams.builder()
     .putAdditionalHeader("Secret-Header", "42")
@@ -525,9 +525,9 @@ These can be accessed on the built object later using the `_additionalHeaders()`
 To set undocumented parameters on _nested_ headers, query params, or body classes, call the `putAdditionalProperty` method on the nested class:
 
 ```java
-import com.avara.api.core.JsonValue;
-import com.avara.api.models.autoscribe.StudyReportMetadata;
-import com.avara.api.models.autoscribe.studies.StudyCreateParams;
+import com.avara.core.JsonValue;
+import com.avara.models.autoscribe.StudyReportMetadata;
+import com.avara.models.autoscribe.studies.StudyCreateParams;
 
 StudyCreateParams params = StudyCreateParams.builder()
     .reportMetadata(StudyReportMetadata.builder()
@@ -538,11 +538,11 @@ StudyCreateParams params = StudyCreateParams.builder()
 
 These properties can be accessed on the nested built object later using the `_additionalProperties()` method.
 
-To set a documented parameter or property to an undocumented or not yet supported _value_, pass a [`JsonValue`](avara-java-core/src/main/kotlin/com/avara/api/core/Values.kt) object to its setter:
+To set a documented parameter or property to an undocumented or not yet supported _value_, pass a [`JsonValue`](avara-java-core/src/main/kotlin/com/avara/core/Values.kt) object to its setter:
 
 ```java
-import com.avara.api.core.JsonValue;
-import com.avara.api.models.viewer.studies.StudyCreateParams;
+import com.avara.core.JsonValue;
+import com.avara.models.viewer.studies.StudyCreateParams;
 
 StudyCreateParams params = StudyCreateParams.builder()
     .severity(JsonValue.from(42))
@@ -551,10 +551,10 @@ StudyCreateParams params = StudyCreateParams.builder()
     .build();
 ```
 
-The most straightforward way to create a [`JsonValue`](avara-java-core/src/main/kotlin/com/avara/api/core/Values.kt) is using its `from(...)` method:
+The most straightforward way to create a [`JsonValue`](avara-java-core/src/main/kotlin/com/avara/core/Values.kt) is using its `from(...)` method:
 
 ```java
-import com.avara.api.core.JsonValue;
+import com.avara.core.JsonValue;
 import java.util.List;
 import java.util.Map;
 
@@ -592,11 +592,11 @@ JsonValue complexValue = JsonValue.from(Map.of(
 
 Normally a `Builder` class's `build` method will throw [`IllegalStateException`](https://docs.oracle.com/javase/8/docs/api/java/lang/IllegalStateException.html) if any required parameter or property is unset.
 
-To forcibly omit a required parameter or property, pass [`JsonMissing`](avara-java-core/src/main/kotlin/com/avara/api/core/Values.kt):
+To forcibly omit a required parameter or property, pass [`JsonMissing`](avara-java-core/src/main/kotlin/com/avara/core/Values.kt):
 
 ```java
-import com.avara.api.core.JsonMissing;
-import com.avara.api.models.viewer.studies.StudyCreateParams;
+import com.avara.core.JsonMissing;
+import com.avara.models.viewer.studies.StudyCreateParams;
 
 StudyCreateParams params = StudyCreateParams.builder()
     .studyDescription("CT Chest/Abdomen/Pelvis")
@@ -610,7 +610,7 @@ StudyCreateParams params = StudyCreateParams.builder()
 To access undocumented response properties, call the `_additionalProperties()` method:
 
 ```java
-import com.avara.api.core.JsonValue;
+import com.avara.core.JsonValue;
 import java.util.Map;
 
 Map<String, JsonValue> additionalProperties = client.viewer().studies().create(params)._additionalProperties();
@@ -640,8 +640,8 @@ String result = secretPropertyValue.accept(new JsonValue.Visitor<>() {
 To access a property's raw JSON value, which may be undocumented, call its `_` prefixed method:
 
 ```java
-import com.avara.api.core.JsonField;
-import com.avara.api.models.viewer.studies.StudyCreateParams;
+import com.avara.core.JsonField;
+import com.avara.models.viewer.studies.StudyCreateParams;
 import java.util.Optional;
 
 JsonField<StudyCreateParams.Severity> severity = client.viewer().studies().create(params)._severity();
@@ -664,12 +664,12 @@ if (severity.isMissing()) {
 
 In rare cases, the API may return a response that doesn't match the expected type. For example, the SDK may expect a property to contain a `String`, but the API could return something else.
 
-By default, the SDK will not throw an exception in this case. It will throw [`AvaraInvalidDataException`](avara-java-core/src/main/kotlin/com/avara/api/errors/AvaraInvalidDataException.kt) only if you directly access the property.
+By default, the SDK will not throw an exception in this case. It will throw [`AvaraInvalidDataException`](avara-java-core/src/main/kotlin/com/avara/errors/AvaraInvalidDataException.kt) only if you directly access the property.
 
 If you would prefer to check that the response is completely well-typed upfront, then either call `validate()`:
 
 ```java
-import com.avara.api.models.viewer.studies.StudyCreateResponse;
+import com.avara.models.viewer.studies.StudyCreateResponse;
 
 StudyCreateResponse study = client.viewer().studies().create(params).validate();
 ```
@@ -677,7 +677,7 @@ StudyCreateResponse study = client.viewer().studies().create(params).validate();
 Or configure the method call to validate the response using the `responseValidation` method:
 
 ```java
-import com.avara.api.models.viewer.studies.StudyCreateResponse;
+import com.avara.models.viewer.studies.StudyCreateResponse;
 
 StudyCreateResponse study = client.viewer().studies().create(
   params, RequestOptions.builder().responseValidation(true).build()
@@ -687,8 +687,8 @@ StudyCreateResponse study = client.viewer().studies().create(
 Or configure the default for all method calls at the client level:
 
 ```java
-import com.avara.api.client.AvaraClient;
-import com.avara.api.client.okhttp.AvaraOkHttpClient;
+import com.avara.client.AvaraClient;
+import com.avara.client.okhttp.AvaraOkHttpClient;
 
 AvaraClient client = AvaraOkHttpClient.builder()
     .fromEnv()
