@@ -5,7 +5,6 @@ package com.avara.models.viewer.studies
 import com.avara.core.JsonValue
 import com.avara.core.jsonMapper
 import com.avara.models.ApiKeyReference
-import com.avara.models.OrgReference
 import com.avara.models.UserReference
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import java.time.OffsetDateTime
@@ -56,16 +55,16 @@ internal class StudyListResponseTest {
                         .suffix2("FACR")
                         .build()
                 )
+                .expressCustomer(
+                    StudyListResponse.ExpressCustomer.builder()
+                        .expressCustomerId("cus_1234567890abcdef1234567890abcdef")
+                        .expressCustomerName("City Medical Center")
+                        .build()
+                )
                 .metadata(
                     StudyListResponse.Metadata.builder()
                         .putAdditionalProperty("department", JsonValue.from("radiology"))
                         .putAdditionalProperty("priority", JsonValue.from("urgent"))
-                        .build()
-                )
-                .org(
-                    OrgReference.builder()
-                        .orgId("org_1234567890abcdef1234567890abcdef")
-                        .orgName("City Medical Center")
                         .build()
                 )
                 .build()
@@ -115,18 +114,18 @@ internal class StudyListResponseTest {
                     .suffix2("FACR")
                     .build()
             )
+        assertThat(studyListResponse.expressCustomer())
+            .contains(
+                StudyListResponse.ExpressCustomer.builder()
+                    .expressCustomerId("cus_1234567890abcdef1234567890abcdef")
+                    .expressCustomerName("City Medical Center")
+                    .build()
+            )
         assertThat(studyListResponse.metadata())
             .contains(
                 StudyListResponse.Metadata.builder()
                     .putAdditionalProperty("department", JsonValue.from("radiology"))
                     .putAdditionalProperty("priority", JsonValue.from("urgent"))
-                    .build()
-            )
-        assertThat(studyListResponse.org())
-            .contains(
-                OrgReference.builder()
-                    .orgId("org_1234567890abcdef1234567890abcdef")
-                    .orgName("City Medical Center")
                     .build()
             )
     }
@@ -174,16 +173,16 @@ internal class StudyListResponseTest {
                         .suffix2("FACR")
                         .build()
                 )
+                .expressCustomer(
+                    StudyListResponse.ExpressCustomer.builder()
+                        .expressCustomerId("cus_1234567890abcdef1234567890abcdef")
+                        .expressCustomerName("City Medical Center")
+                        .build()
+                )
                 .metadata(
                     StudyListResponse.Metadata.builder()
                         .putAdditionalProperty("department", JsonValue.from("radiology"))
                         .putAdditionalProperty("priority", JsonValue.from("urgent"))
-                        .build()
-                )
-                .org(
-                    OrgReference.builder()
-                        .orgId("org_1234567890abcdef1234567890abcdef")
-                        .orgName("City Medical Center")
                         .build()
                 )
                 .build()

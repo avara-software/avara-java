@@ -62,13 +62,13 @@ internal class StudyServiceTest {
                     .studyDescription("Brain MRI with Contrast")
                     .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
                     .assignedTo("usr_1234567890abcdef1234567890abcdef")
+                    .expressCustomerId("cus_1234567890abcdef1234567890abcdef")
                     .metadata(
                         StudyCreateParams.Metadata.builder()
                             .putAdditionalProperty("department", JsonValue.from("radiology"))
                             .putAdditionalProperty("priority", JsonValue.from("routine"))
                             .build()
                     )
-                    .orgId("org_1234567890abcdef1234567890abcdef")
                     .addPriorReportText("x")
                     .addPriorStudyId("string")
                     .build()
@@ -107,12 +107,12 @@ internal class StudyServiceTest {
                 StudyUpdateParams.builder()
                     .studyId("stu_1234567890abcdef1234567890abcdef")
                     .assignedTo("usr_1234567890abcdef1234567890abcdef")
+                    .expressCustomerId("cus_1234567890abcdef1234567890abcdef")
                     .metadata(
                         StudyUpdateParams.Metadata.builder()
                             .putAdditionalProperty("foo", JsonValue.from("string"))
                             .build()
                     )
-                    .orgId("org_1234567890abcdef1234567890abcdef")
                     .addPriorReportText("x")
                     .addPriorStudyId("string")
                     .reportMetadata(

@@ -68,6 +68,14 @@ private constructor(
     fun assignedTo(): Optional<String> = body.assignedTo()
 
     /**
+     * Express customer ID for the study. Format: cus_{32-hex-chars}
+     *
+     * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun expressCustomerId(): Optional<String> = body.expressCustomerId()
+
+    /**
      * Custom key-value metadata for the study. Maximum 50 pairs, keys up to 100 chars, values up to
      * 1000 chars
      *
@@ -75,14 +83,6 @@ private constructor(
      *   server responded with an unexpected value).
      */
     fun metadata(): Optional<Metadata> = body.metadata()
-
-    /**
-     * Organization ID for the study. Format: org_{32-hex-chars}
-     *
-     * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
-    fun orgId(): Optional<String> = body.orgId()
 
     /**
      * Returns the raw JSON value of [severity].
@@ -115,18 +115,19 @@ private constructor(
     fun _assignedTo(): JsonField<String> = body._assignedTo()
 
     /**
+     * Returns the raw JSON value of [expressCustomerId].
+     *
+     * Unlike [expressCustomerId], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
+    fun _expressCustomerId(): JsonField<String> = body._expressCustomerId()
+
+    /**
      * Returns the raw JSON value of [metadata].
      *
      * Unlike [metadata], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _metadata(): JsonField<Metadata> = body._metadata()
-
-    /**
-     * Returns the raw JSON value of [orgId].
-     *
-     * Unlike [orgId], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    fun _orgId(): JsonField<String> = body._orgId()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
@@ -176,7 +177,7 @@ private constructor(
          * - [studyDescription]
          * - [studyInstanceUid]
          * - [assignedTo]
-         * - [metadata]
+         * - [expressCustomerId]
          * - etc.
          */
         fun body(body: Body) = apply { this.body = body.toBuilder() }
@@ -243,6 +244,22 @@ private constructor(
          */
         fun assignedTo(assignedTo: JsonField<String>) = apply { body.assignedTo(assignedTo) }
 
+        /** Express customer ID for the study. Format: cus_{32-hex-chars} */
+        fun expressCustomerId(expressCustomerId: String) = apply {
+            body.expressCustomerId(expressCustomerId)
+        }
+
+        /**
+         * Sets [Builder.expressCustomerId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.expressCustomerId] with a well-typed [String] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun expressCustomerId(expressCustomerId: JsonField<String>) = apply {
+            body.expressCustomerId(expressCustomerId)
+        }
+
         /**
          * Custom key-value metadata for the study. Maximum 50 pairs, keys up to 100 chars, values
          * up to 1000 chars
@@ -257,17 +274,6 @@ private constructor(
          * value.
          */
         fun metadata(metadata: JsonField<Metadata>) = apply { body.metadata(metadata) }
-
-        /** Organization ID for the study. Format: org_{32-hex-chars} */
-        fun orgId(orgId: String) = apply { body.orgId(orgId) }
-
-        /**
-         * Sets [Builder.orgId] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.orgId] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun orgId(orgId: JsonField<String>) = apply { body.orgId(orgId) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             body.additionalProperties(additionalBodyProperties)
@@ -422,8 +428,8 @@ private constructor(
         private val studyDescription: JsonField<String>,
         private val studyInstanceUid: JsonField<String>,
         private val assignedTo: JsonField<String>,
+        private val expressCustomerId: JsonField<String>,
         private val metadata: JsonField<Metadata>,
-        private val orgId: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
@@ -441,17 +447,19 @@ private constructor(
             @JsonProperty("assignedTo")
             @ExcludeMissing
             assignedTo: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("expressCustomerId")
+            @ExcludeMissing
+            expressCustomerId: JsonField<String> = JsonMissing.of(),
             @JsonProperty("metadata")
             @ExcludeMissing
             metadata: JsonField<Metadata> = JsonMissing.of(),
-            @JsonProperty("orgId") @ExcludeMissing orgId: JsonField<String> = JsonMissing.of(),
         ) : this(
             severity,
             studyDescription,
             studyInstanceUid,
             assignedTo,
+            expressCustomerId,
             metadata,
-            orgId,
             mutableMapOf(),
         )
 
@@ -490,6 +498,15 @@ private constructor(
         fun assignedTo(): Optional<String> = assignedTo.getOptional("assignedTo")
 
         /**
+         * Express customer ID for the study. Format: cus_{32-hex-chars}
+         *
+         * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun expressCustomerId(): Optional<String> =
+            expressCustomerId.getOptional("expressCustomerId")
+
+        /**
          * Custom key-value metadata for the study. Maximum 50 pairs, keys up to 100 chars, values
          * up to 1000 chars
          *
@@ -497,14 +514,6 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun metadata(): Optional<Metadata> = metadata.getOptional("metadata")
-
-        /**
-         * Organization ID for the study. Format: org_{32-hex-chars}
-         *
-         * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun orgId(): Optional<String> = orgId.getOptional("orgId")
 
         /**
          * Returns the raw JSON value of [severity].
@@ -543,18 +552,21 @@ private constructor(
         fun _assignedTo(): JsonField<String> = assignedTo
 
         /**
+         * Returns the raw JSON value of [expressCustomerId].
+         *
+         * Unlike [expressCustomerId], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("expressCustomerId")
+        @ExcludeMissing
+        fun _expressCustomerId(): JsonField<String> = expressCustomerId
+
+        /**
          * Returns the raw JSON value of [metadata].
          *
          * Unlike [metadata], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("metadata") @ExcludeMissing fun _metadata(): JsonField<Metadata> = metadata
-
-        /**
-         * Returns the raw JSON value of [orgId].
-         *
-         * Unlike [orgId], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("orgId") @ExcludeMissing fun _orgId(): JsonField<String> = orgId
 
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -590,8 +602,8 @@ private constructor(
             private var studyDescription: JsonField<String>? = null
             private var studyInstanceUid: JsonField<String>? = null
             private var assignedTo: JsonField<String> = JsonMissing.of()
+            private var expressCustomerId: JsonField<String> = JsonMissing.of()
             private var metadata: JsonField<Metadata> = JsonMissing.of()
-            private var orgId: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -600,8 +612,8 @@ private constructor(
                 studyDescription = body.studyDescription
                 studyInstanceUid = body.studyInstanceUid
                 assignedTo = body.assignedTo
+                expressCustomerId = body.expressCustomerId
                 metadata = body.metadata
-                orgId = body.orgId
                 additionalProperties = body.additionalProperties.toMutableMap()
             }
 
@@ -665,6 +677,21 @@ private constructor(
              */
             fun assignedTo(assignedTo: JsonField<String>) = apply { this.assignedTo = assignedTo }
 
+            /** Express customer ID for the study. Format: cus_{32-hex-chars} */
+            fun expressCustomerId(expressCustomerId: String) =
+                expressCustomerId(JsonField.of(expressCustomerId))
+
+            /**
+             * Sets [Builder.expressCustomerId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.expressCustomerId] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun expressCustomerId(expressCustomerId: JsonField<String>) = apply {
+                this.expressCustomerId = expressCustomerId
+            }
+
             /**
              * Custom key-value metadata for the study. Maximum 50 pairs, keys up to 100 chars,
              * values up to 1000 chars
@@ -679,18 +706,6 @@ private constructor(
              * supported value.
              */
             fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
-
-            /** Organization ID for the study. Format: org_{32-hex-chars} */
-            fun orgId(orgId: String) = orgId(JsonField.of(orgId))
-
-            /**
-             * Sets [Builder.orgId] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.orgId] with a well-typed [String] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun orgId(orgId: JsonField<String>) = apply { this.orgId = orgId }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -731,8 +746,8 @@ private constructor(
                     checkRequired("studyDescription", studyDescription),
                     checkRequired("studyInstanceUid", studyInstanceUid),
                     assignedTo,
+                    expressCustomerId,
                     metadata,
-                    orgId,
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -748,8 +763,8 @@ private constructor(
             studyDescription()
             studyInstanceUid()
             assignedTo()
+            expressCustomerId()
             metadata().ifPresent { it.validate() }
-            orgId()
             validated = true
         }
 
@@ -773,8 +788,8 @@ private constructor(
                 (if (studyDescription.asKnown().isPresent) 1 else 0) +
                 (if (studyInstanceUid.asKnown().isPresent) 1 else 0) +
                 (if (assignedTo.asKnown().isPresent) 1 else 0) +
-                (metadata.asKnown().getOrNull()?.validity() ?: 0) +
-                (if (orgId.asKnown().isPresent) 1 else 0)
+                (if (expressCustomerId.asKnown().isPresent) 1 else 0) +
+                (metadata.asKnown().getOrNull()?.validity() ?: 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -786,8 +801,8 @@ private constructor(
                 studyDescription == other.studyDescription &&
                 studyInstanceUid == other.studyInstanceUid &&
                 assignedTo == other.assignedTo &&
+                expressCustomerId == other.expressCustomerId &&
                 metadata == other.metadata &&
-                orgId == other.orgId &&
                 additionalProperties == other.additionalProperties
         }
 
@@ -797,8 +812,8 @@ private constructor(
                 studyDescription,
                 studyInstanceUid,
                 assignedTo,
+                expressCustomerId,
                 metadata,
-                orgId,
                 additionalProperties,
             )
         }
@@ -806,7 +821,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{severity=$severity, studyDescription=$studyDescription, studyInstanceUid=$studyInstanceUid, assignedTo=$assignedTo, metadata=$metadata, orgId=$orgId, additionalProperties=$additionalProperties}"
+            "Body{severity=$severity, studyDescription=$studyDescription, studyInstanceUid=$studyInstanceUid, assignedTo=$assignedTo, expressCustomerId=$expressCustomerId, metadata=$metadata, additionalProperties=$additionalProperties}"
     }
 
     /**

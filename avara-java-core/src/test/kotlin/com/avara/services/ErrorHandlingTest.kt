@@ -76,13 +76,13 @@ internal class ErrorHandlingTest {
                         .studyDescription("CT Chest/Abdomen/Pelvis")
                         .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
                         .assignedTo("usr_1234567890abcdef1234567890abcdef")
+                        .expressCustomerId("cus_1234567890abcdef1234567890abcdef")
                         .metadata(
                             StudyCreateParams.Metadata.builder()
                                 .putAdditionalProperty("department", JsonValue.from("radiology"))
                                 .putAdditionalProperty("priority", JsonValue.from("urgent"))
                                 .build()
                         )
-                        .orgId("org_1234567890abcdef1234567890abcdef")
                         .build()
                 )
             }
@@ -110,13 +110,13 @@ internal class ErrorHandlingTest {
                         .studyDescription("CT Chest/Abdomen/Pelvis")
                         .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
                         .assignedTo("usr_1234567890abcdef1234567890abcdef")
+                        .expressCustomerId("cus_1234567890abcdef1234567890abcdef")
                         .metadata(
                             StudyCreateParams.Metadata.builder()
                                 .putAdditionalProperty("department", JsonValue.from("radiology"))
                                 .putAdditionalProperty("priority", JsonValue.from("urgent"))
                                 .build()
                         )
-                        .orgId("org_1234567890abcdef1234567890abcdef")
                         .build()
                 )
             }
@@ -144,13 +144,13 @@ internal class ErrorHandlingTest {
                         .studyDescription("CT Chest/Abdomen/Pelvis")
                         .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
                         .assignedTo("usr_1234567890abcdef1234567890abcdef")
+                        .expressCustomerId("cus_1234567890abcdef1234567890abcdef")
                         .metadata(
                             StudyCreateParams.Metadata.builder()
                                 .putAdditionalProperty("department", JsonValue.from("radiology"))
                                 .putAdditionalProperty("priority", JsonValue.from("urgent"))
                                 .build()
                         )
-                        .orgId("org_1234567890abcdef1234567890abcdef")
                         .build()
                 )
             }
@@ -178,13 +178,13 @@ internal class ErrorHandlingTest {
                         .studyDescription("CT Chest/Abdomen/Pelvis")
                         .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
                         .assignedTo("usr_1234567890abcdef1234567890abcdef")
+                        .expressCustomerId("cus_1234567890abcdef1234567890abcdef")
                         .metadata(
                             StudyCreateParams.Metadata.builder()
                                 .putAdditionalProperty("department", JsonValue.from("radiology"))
                                 .putAdditionalProperty("priority", JsonValue.from("urgent"))
                                 .build()
                         )
-                        .orgId("org_1234567890abcdef1234567890abcdef")
                         .build()
                 )
             }
@@ -212,13 +212,13 @@ internal class ErrorHandlingTest {
                         .studyDescription("CT Chest/Abdomen/Pelvis")
                         .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
                         .assignedTo("usr_1234567890abcdef1234567890abcdef")
+                        .expressCustomerId("cus_1234567890abcdef1234567890abcdef")
                         .metadata(
                             StudyCreateParams.Metadata.builder()
                                 .putAdditionalProperty("department", JsonValue.from("radiology"))
                                 .putAdditionalProperty("priority", JsonValue.from("urgent"))
                                 .build()
                         )
-                        .orgId("org_1234567890abcdef1234567890abcdef")
                         .build()
                 )
             }
@@ -246,13 +246,13 @@ internal class ErrorHandlingTest {
                         .studyDescription("CT Chest/Abdomen/Pelvis")
                         .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
                         .assignedTo("usr_1234567890abcdef1234567890abcdef")
+                        .expressCustomerId("cus_1234567890abcdef1234567890abcdef")
                         .metadata(
                             StudyCreateParams.Metadata.builder()
                                 .putAdditionalProperty("department", JsonValue.from("radiology"))
                                 .putAdditionalProperty("priority", JsonValue.from("urgent"))
                                 .build()
                         )
-                        .orgId("org_1234567890abcdef1234567890abcdef")
                         .build()
                 )
             }
@@ -280,13 +280,13 @@ internal class ErrorHandlingTest {
                         .studyDescription("CT Chest/Abdomen/Pelvis")
                         .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
                         .assignedTo("usr_1234567890abcdef1234567890abcdef")
+                        .expressCustomerId("cus_1234567890abcdef1234567890abcdef")
                         .metadata(
                             StudyCreateParams.Metadata.builder()
                                 .putAdditionalProperty("department", JsonValue.from("radiology"))
                                 .putAdditionalProperty("priority", JsonValue.from("urgent"))
                                 .build()
                         )
-                        .orgId("org_1234567890abcdef1234567890abcdef")
                         .build()
                 )
             }
@@ -314,13 +314,13 @@ internal class ErrorHandlingTest {
                         .studyDescription("CT Chest/Abdomen/Pelvis")
                         .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
                         .assignedTo("usr_1234567890abcdef1234567890abcdef")
+                        .expressCustomerId("cus_1234567890abcdef1234567890abcdef")
                         .metadata(
                             StudyCreateParams.Metadata.builder()
                                 .putAdditionalProperty("department", JsonValue.from("radiology"))
                                 .putAdditionalProperty("priority", JsonValue.from("urgent"))
                                 .build()
                         )
-                        .orgId("org_1234567890abcdef1234567890abcdef")
                         .build()
                 )
             }
@@ -348,13 +348,13 @@ internal class ErrorHandlingTest {
                         .studyDescription("CT Chest/Abdomen/Pelvis")
                         .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
                         .assignedTo("usr_1234567890abcdef1234567890abcdef")
+                        .expressCustomerId("cus_1234567890abcdef1234567890abcdef")
                         .metadata(
                             StudyCreateParams.Metadata.builder()
                                 .putAdditionalProperty("department", JsonValue.from("radiology"))
                                 .putAdditionalProperty("priority", JsonValue.from("urgent"))
                                 .build()
                         )
-                        .orgId("org_1234567890abcdef1234567890abcdef")
                         .build()
                 )
             }
@@ -382,13 +382,13 @@ internal class ErrorHandlingTest {
                         .studyDescription("CT Chest/Abdomen/Pelvis")
                         .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
                         .assignedTo("usr_1234567890abcdef1234567890abcdef")
+                        .expressCustomerId("cus_1234567890abcdef1234567890abcdef")
                         .metadata(
                             StudyCreateParams.Metadata.builder()
                                 .putAdditionalProperty("department", JsonValue.from("radiology"))
                                 .putAdditionalProperty("priority", JsonValue.from("urgent"))
                                 .build()
                         )
-                        .orgId("org_1234567890abcdef1234567890abcdef")
                         .build()
                 )
             }
@@ -416,13 +416,13 @@ internal class ErrorHandlingTest {
                         .studyDescription("CT Chest/Abdomen/Pelvis")
                         .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
                         .assignedTo("usr_1234567890abcdef1234567890abcdef")
+                        .expressCustomerId("cus_1234567890abcdef1234567890abcdef")
                         .metadata(
                             StudyCreateParams.Metadata.builder()
                                 .putAdditionalProperty("department", JsonValue.from("radiology"))
                                 .putAdditionalProperty("priority", JsonValue.from("urgent"))
                                 .build()
                         )
-                        .orgId("org_1234567890abcdef1234567890abcdef")
                         .build()
                 )
             }
@@ -450,13 +450,13 @@ internal class ErrorHandlingTest {
                         .studyDescription("CT Chest/Abdomen/Pelvis")
                         .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
                         .assignedTo("usr_1234567890abcdef1234567890abcdef")
+                        .expressCustomerId("cus_1234567890abcdef1234567890abcdef")
                         .metadata(
                             StudyCreateParams.Metadata.builder()
                                 .putAdditionalProperty("department", JsonValue.from("radiology"))
                                 .putAdditionalProperty("priority", JsonValue.from("urgent"))
                                 .build()
                         )
-                        .orgId("org_1234567890abcdef1234567890abcdef")
                         .build()
                 )
             }
@@ -484,13 +484,13 @@ internal class ErrorHandlingTest {
                         .studyDescription("CT Chest/Abdomen/Pelvis")
                         .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
                         .assignedTo("usr_1234567890abcdef1234567890abcdef")
+                        .expressCustomerId("cus_1234567890abcdef1234567890abcdef")
                         .metadata(
                             StudyCreateParams.Metadata.builder()
                                 .putAdditionalProperty("department", JsonValue.from("radiology"))
                                 .putAdditionalProperty("priority", JsonValue.from("urgent"))
                                 .build()
                         )
-                        .orgId("org_1234567890abcdef1234567890abcdef")
                         .build()
                 )
             }
@@ -518,13 +518,13 @@ internal class ErrorHandlingTest {
                         .studyDescription("CT Chest/Abdomen/Pelvis")
                         .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
                         .assignedTo("usr_1234567890abcdef1234567890abcdef")
+                        .expressCustomerId("cus_1234567890abcdef1234567890abcdef")
                         .metadata(
                             StudyCreateParams.Metadata.builder()
                                 .putAdditionalProperty("department", JsonValue.from("radiology"))
                                 .putAdditionalProperty("priority", JsonValue.from("urgent"))
                                 .build()
                         )
-                        .orgId("org_1234567890abcdef1234567890abcdef")
                         .build()
                 )
             }
@@ -552,13 +552,13 @@ internal class ErrorHandlingTest {
                         .studyDescription("CT Chest/Abdomen/Pelvis")
                         .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
                         .assignedTo("usr_1234567890abcdef1234567890abcdef")
+                        .expressCustomerId("cus_1234567890abcdef1234567890abcdef")
                         .metadata(
                             StudyCreateParams.Metadata.builder()
                                 .putAdditionalProperty("department", JsonValue.from("radiology"))
                                 .putAdditionalProperty("priority", JsonValue.from("urgent"))
                                 .build()
                         )
-                        .orgId("org_1234567890abcdef1234567890abcdef")
                         .build()
                 )
             }
@@ -586,13 +586,13 @@ internal class ErrorHandlingTest {
                         .studyDescription("CT Chest/Abdomen/Pelvis")
                         .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
                         .assignedTo("usr_1234567890abcdef1234567890abcdef")
+                        .expressCustomerId("cus_1234567890abcdef1234567890abcdef")
                         .metadata(
                             StudyCreateParams.Metadata.builder()
                                 .putAdditionalProperty("department", JsonValue.from("radiology"))
                                 .putAdditionalProperty("priority", JsonValue.from("urgent"))
                                 .build()
                         )
-                        .orgId("org_1234567890abcdef1234567890abcdef")
                         .build()
                 )
             }
@@ -618,13 +618,13 @@ internal class ErrorHandlingTest {
                         .studyDescription("CT Chest/Abdomen/Pelvis")
                         .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
                         .assignedTo("usr_1234567890abcdef1234567890abcdef")
+                        .expressCustomerId("cus_1234567890abcdef1234567890abcdef")
                         .metadata(
                             StudyCreateParams.Metadata.builder()
                                 .putAdditionalProperty("department", JsonValue.from("radiology"))
                                 .putAdditionalProperty("priority", JsonValue.from("urgent"))
                                 .build()
                         )
-                        .orgId("org_1234567890abcdef1234567890abcdef")
                         .build()
                 )
             }
