@@ -4,7 +4,7 @@ package com.avara.client
 
 import com.avara.core.ClientOptions
 import com.avara.services.blocking.AutoScribeService
-import com.avara.services.blocking.OrgService
+import com.avara.services.blocking.ExpressService
 import com.avara.services.blocking.ViewerService
 import com.avara.services.blocking.WebhookService
 import java.util.function.Consumer
@@ -49,7 +49,7 @@ interface AvaraClient {
 
     fun viewer(): ViewerService
 
-    fun orgs(): OrgService
+    fun express(): ExpressService
 
     fun webhooks(): WebhookService
 
@@ -80,7 +80,7 @@ interface AvaraClient {
 
         fun viewer(): ViewerService.WithRawResponse
 
-        fun orgs(): OrgService.WithRawResponse
+        fun express(): ExpressService.WithRawResponse
 
         fun webhooks(): WebhookService.WithRawResponse
     }

@@ -3,11 +3,11 @@
 [![Maven Central](https://img.shields.io/maven-central/v/com.avara/avara-java)](https://central.sonatype.com/artifact/com.avara/avara-java/0.0.1)
 [![javadoc](https://javadoc.io/badge2/com.avara/avara-java/0.0.1/javadoc.svg)](https://javadoc.io/doc/com.avara/avara-java/0.0.1)
 
-The Avara Java SDK provides convenient access to the [Avara REST API](https://avarasoftware.com/docs/sdk) from applications written in Java.
+The Avara Java SDK provides convenient access to the [Avara REST API](https://docs.avarasoftware.com) from applications written in Java.
 
 It is generated with [Stainless](https://www.stainless.com/).
 
-The REST API documentation can be found on [avarasoftware.com](https://avarasoftware.com/docs/sdk). Javadocs are available on [javadoc.io](https://javadoc.io/doc/com.avara/avara-java/0.0.1).
+The REST API documentation can be found on [docs.avarasoftware.com](https://docs.avarasoftware.com). Javadocs are available on [javadoc.io](https://javadoc.io/doc/com.avara/avara-java/0.0.1).
 
 ## Installation
 

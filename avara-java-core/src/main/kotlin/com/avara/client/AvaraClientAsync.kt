@@ -4,7 +4,7 @@ package com.avara.client
 
 import com.avara.core.ClientOptions
 import com.avara.services.async.AutoScribeServiceAsync
-import com.avara.services.async.OrgServiceAsync
+import com.avara.services.async.ExpressServiceAsync
 import com.avara.services.async.ViewerServiceAsync
 import com.avara.services.async.WebhookServiceAsync
 import java.util.function.Consumer
@@ -49,7 +49,7 @@ interface AvaraClientAsync {
 
     fun viewer(): ViewerServiceAsync
 
-    fun orgs(): OrgServiceAsync
+    fun express(): ExpressServiceAsync
 
     fun webhooks(): WebhookServiceAsync
 
@@ -80,7 +80,7 @@ interface AvaraClientAsync {
 
         fun viewer(): ViewerServiceAsync.WithRawResponse
 
-        fun orgs(): OrgServiceAsync.WithRawResponse
+        fun express(): ExpressServiceAsync.WithRawResponse
 
         fun webhooks(): WebhookServiceAsync.WithRawResponse
     }
