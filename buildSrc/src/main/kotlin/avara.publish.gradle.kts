@@ -11,7 +11,7 @@ configure<PublishingExtension> {
             pom {
                 name.set("Avara API")
                 description.set("API for Avara products: AutoScribe & Viewer (Clinical Platform and Billing are\nsoon to come).")
-                url.set("https://avarasoftware.com/docs/sdk")
+                url.set("https://docs.avarasoftware.com")
 
                 licenses {
                     license {

@@ -5,6 +5,7 @@ package com.avara.models.viewer.studies
 import com.avara.core.JsonValue
 import com.avara.core.jsonMapper
 import com.avara.models.ApiKeyReference
+import com.avara.models.ExpressCustomerReference
 import com.avara.models.UserReference
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import java.time.OffsetDateTime
@@ -56,7 +57,7 @@ internal class StudyCreateResponseTest {
                         .build()
                 )
                 .expressCustomer(
-                    StudyCreateResponse.ExpressCustomer.builder()
+                    ExpressCustomerReference.builder()
                         .expressCustomerId("cus_1234567890abcdef1234567890abcdef")
                         .expressCustomerName("City Medical Center")
                         .build()
@@ -116,7 +117,7 @@ internal class StudyCreateResponseTest {
             )
         assertThat(studyCreateResponse.expressCustomer())
             .contains(
-                StudyCreateResponse.ExpressCustomer.builder()
+                ExpressCustomerReference.builder()
                     .expressCustomerId("cus_1234567890abcdef1234567890abcdef")
                     .expressCustomerName("City Medical Center")
                     .build()
@@ -174,7 +175,7 @@ internal class StudyCreateResponseTest {
                         .build()
                 )
                 .expressCustomer(
-                    StudyCreateResponse.ExpressCustomer.builder()
+                    ExpressCustomerReference.builder()
                         .expressCustomerId("cus_1234567890abcdef1234567890abcdef")
                         .expressCustomerName("City Medical Center")
                         .build()

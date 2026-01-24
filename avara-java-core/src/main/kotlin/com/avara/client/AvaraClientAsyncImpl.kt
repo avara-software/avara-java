@@ -6,8 +6,8 @@ import com.avara.core.ClientOptions
 import com.avara.core.getPackageVersion
 import com.avara.services.async.AutoScribeServiceAsync
 import com.avara.services.async.AutoScribeServiceAsyncImpl
-import com.avara.services.async.OrgServiceAsync
-import com.avara.services.async.OrgServiceAsyncImpl
+import com.avara.services.async.ExpressServiceAsync
+import com.avara.services.async.ExpressServiceAsyncImpl
 import com.avara.services.async.ViewerServiceAsync
 import com.avara.services.async.ViewerServiceAsyncImpl
 import com.avara.services.async.WebhookServiceAsync
@@ -39,7 +39,9 @@ class AvaraClientAsyncImpl(private val clientOptions: ClientOptions) : AvaraClie
         ViewerServiceAsyncImpl(clientOptionsWithUserAgent)
     }
 
-    private val orgs: OrgServiceAsync by lazy { OrgServiceAsyncImpl(clientOptionsWithUserAgent) }
+    private val express: ExpressServiceAsync by lazy {
+        ExpressServiceAsyncImpl(clientOptionsWithUserAgent)
+    }
 
     private val webhooks: WebhookServiceAsync by lazy {
         WebhookServiceAsyncImpl(clientOptionsWithUserAgent)
@@ -56,7 +58,7 @@ class AvaraClientAsyncImpl(private val clientOptions: ClientOptions) : AvaraClie
 
     override fun viewer(): ViewerServiceAsync = viewer
 
-    override fun orgs(): OrgServiceAsync = orgs
+    override fun express(): ExpressServiceAsync = express
 
     override fun webhooks(): WebhookServiceAsync = webhooks
 
@@ -73,8 +75,8 @@ class AvaraClientAsyncImpl(private val clientOptions: ClientOptions) : AvaraClie
             ViewerServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
 
-        private val orgs: OrgServiceAsync.WithRawResponse by lazy {
-            OrgServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        private val express: ExpressServiceAsync.WithRawResponse by lazy {
+            ExpressServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
 
         private val webhooks: WebhookServiceAsync.WithRawResponse by lazy {
@@ -92,7 +94,7 @@ class AvaraClientAsyncImpl(private val clientOptions: ClientOptions) : AvaraClie
 
         override fun viewer(): ViewerServiceAsync.WithRawResponse = viewer
 
-        override fun orgs(): OrgServiceAsync.WithRawResponse = orgs
+        override fun express(): ExpressServiceAsync.WithRawResponse = express
 
         override fun webhooks(): WebhookServiceAsync.WithRawResponse = webhooks
     }

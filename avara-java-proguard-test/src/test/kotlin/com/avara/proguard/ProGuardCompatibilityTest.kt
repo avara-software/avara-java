@@ -6,6 +6,7 @@ import com.avara.client.okhttp.AvaraOkHttpClient
 import com.avara.core.JsonValue
 import com.avara.core.jsonMapper
 import com.avara.models.ApiKeyReference
+import com.avara.models.ExpressCustomerReference
 import com.avara.models.UserReference
 import com.avara.models.autoscribe.StudyReportMetadata
 import com.avara.models.autoscribe.reports.ReportPdfResponse
@@ -55,7 +56,7 @@ internal class ProGuardCompatibilityTest {
         assertThat(client).isNotNull()
         assertThat(client.autoScribe()).isNotNull()
         assertThat(client.viewer()).isNotNull()
-        assertThat(client.orgs()).isNotNull()
+        assertThat(client.express()).isNotNull()
         assertThat(client.webhooks()).isNotNull()
     }
 
@@ -103,7 +104,7 @@ internal class ProGuardCompatibilityTest {
                         .build()
                 )
                 .expressCustomer(
-                    StudyCreateResponse.ExpressCustomer.builder()
+                    ExpressCustomerReference.builder()
                         .expressCustomerId("cus_1234567890abcdef1234567890abcdef")
                         .expressCustomerName("City Medical Center")
                         .build()

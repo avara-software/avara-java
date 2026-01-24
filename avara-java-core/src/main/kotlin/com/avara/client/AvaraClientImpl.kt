@@ -6,8 +6,8 @@ import com.avara.core.ClientOptions
 import com.avara.core.getPackageVersion
 import com.avara.services.blocking.AutoScribeService
 import com.avara.services.blocking.AutoScribeServiceImpl
-import com.avara.services.blocking.OrgService
-import com.avara.services.blocking.OrgServiceImpl
+import com.avara.services.blocking.ExpressService
+import com.avara.services.blocking.ExpressServiceImpl
 import com.avara.services.blocking.ViewerService
 import com.avara.services.blocking.ViewerServiceImpl
 import com.avara.services.blocking.WebhookService
@@ -37,7 +37,7 @@ class AvaraClientImpl(private val clientOptions: ClientOptions) : AvaraClient {
 
     private val viewer: ViewerService by lazy { ViewerServiceImpl(clientOptionsWithUserAgent) }
 
-    private val orgs: OrgService by lazy { OrgServiceImpl(clientOptionsWithUserAgent) }
+    private val express: ExpressService by lazy { ExpressServiceImpl(clientOptionsWithUserAgent) }
 
     private val webhooks: WebhookService by lazy { WebhookServiceImpl(clientOptionsWithUserAgent) }
 
@@ -52,7 +52,7 @@ class AvaraClientImpl(private val clientOptions: ClientOptions) : AvaraClient {
 
     override fun viewer(): ViewerService = viewer
 
-    override fun orgs(): OrgService = orgs
+    override fun express(): ExpressService = express
 
     override fun webhooks(): WebhookService = webhooks
 
@@ -69,8 +69,8 @@ class AvaraClientImpl(private val clientOptions: ClientOptions) : AvaraClient {
             ViewerServiceImpl.WithRawResponseImpl(clientOptions)
         }
 
-        private val orgs: OrgService.WithRawResponse by lazy {
-            OrgServiceImpl.WithRawResponseImpl(clientOptions)
+        private val express: ExpressService.WithRawResponse by lazy {
+            ExpressServiceImpl.WithRawResponseImpl(clientOptions)
         }
 
         private val webhooks: WebhookService.WithRawResponse by lazy {
@@ -88,7 +88,7 @@ class AvaraClientImpl(private val clientOptions: ClientOptions) : AvaraClient {
 
         override fun viewer(): ViewerService.WithRawResponse = viewer
 
-        override fun orgs(): OrgService.WithRawResponse = orgs
+        override fun express(): ExpressService.WithRawResponse = express
 
         override fun webhooks(): WebhookService.WithRawResponse = webhooks
     }
