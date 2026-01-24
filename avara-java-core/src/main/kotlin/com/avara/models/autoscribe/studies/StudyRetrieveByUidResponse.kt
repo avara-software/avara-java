@@ -39,8 +39,8 @@ private constructor(
     private val assignedTo: JsonField<AssignedTo>,
     private val createdByApiKey: JsonField<CreatedByApiKey>,
     private val createdByUser: JsonField<CreatedByUser>,
+    private val expressCustomer: JsonField<ExpressCustomer>,
     private val metadata: JsonField<Metadata>,
-    private val org: JsonField<Org>,
     private val priorReportTexts: JsonField<List<String>>,
     private val priorStudyIds: JsonField<List<String>>,
     private val reportIds: JsonField<List<ReportIdWithStatus>>,
@@ -84,8 +84,10 @@ private constructor(
         @JsonProperty("createdByUser")
         @ExcludeMissing
         createdByUser: JsonField<CreatedByUser> = JsonMissing.of(),
+        @JsonProperty("expressCustomer")
+        @ExcludeMissing
+        expressCustomer: JsonField<ExpressCustomer> = JsonMissing.of(),
         @JsonProperty("metadata") @ExcludeMissing metadata: JsonField<Metadata> = JsonMissing.of(),
-        @JsonProperty("org") @ExcludeMissing org: JsonField<Org> = JsonMissing.of(),
         @JsonProperty("priorReportTexts")
         @ExcludeMissing
         priorReportTexts: JsonField<List<String>> = JsonMissing.of(),
@@ -109,8 +111,8 @@ private constructor(
         assignedTo,
         createdByApiKey,
         createdByUser,
+        expressCustomer,
         metadata,
-        org,
         priorReportTexts,
         priorStudyIds,
         reportIds,
@@ -227,6 +229,15 @@ private constructor(
     fun createdByUser(): Optional<CreatedByUser> = createdByUser.getOptional("createdByUser")
 
     /**
+     * Reference to the Express customer this study belongs to
+     *
+     * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun expressCustomer(): Optional<ExpressCustomer> =
+        expressCustomer.getOptional("expressCustomer")
+
+    /**
      * Custom key-value metadata for the study. Maximum 50 pairs, keys up to 100 chars, values up to
      * 1000 chars
      *
@@ -234,14 +245,6 @@ private constructor(
      *   server responded with an unexpected value).
      */
     fun metadata(): Optional<Metadata> = metadata.getOptional("metadata")
-
-    /**
-     * Reference to the organization this study belongs to
-     *
-     * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
-    fun org(): Optional<Org> = org.getOptional("org")
 
     /**
      * Array of prior report texts to provide clinical context
@@ -385,18 +388,20 @@ private constructor(
     fun _createdByUser(): JsonField<CreatedByUser> = createdByUser
 
     /**
+     * Returns the raw JSON value of [expressCustomer].
+     *
+     * Unlike [expressCustomer], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("expressCustomer")
+    @ExcludeMissing
+    fun _expressCustomer(): JsonField<ExpressCustomer> = expressCustomer
+
+    /**
      * Returns the raw JSON value of [metadata].
      *
      * Unlike [metadata], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("metadata") @ExcludeMissing fun _metadata(): JsonField<Metadata> = metadata
-
-    /**
-     * Returns the raw JSON value of [org].
-     *
-     * Unlike [org], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("org") @ExcludeMissing fun _org(): JsonField<Org> = org
 
     /**
      * Returns the raw JSON value of [priorReportTexts].
@@ -476,8 +481,8 @@ private constructor(
         private var assignedTo: JsonField<AssignedTo> = JsonMissing.of()
         private var createdByApiKey: JsonField<CreatedByApiKey> = JsonMissing.of()
         private var createdByUser: JsonField<CreatedByUser> = JsonMissing.of()
+        private var expressCustomer: JsonField<ExpressCustomer> = JsonMissing.of()
         private var metadata: JsonField<Metadata> = JsonMissing.of()
-        private var org: JsonField<Org> = JsonMissing.of()
         private var priorReportTexts: JsonField<MutableList<String>>? = null
         private var priorStudyIds: JsonField<MutableList<String>>? = null
         private var reportIds: JsonField<MutableList<ReportIdWithStatus>>? = null
@@ -498,8 +503,8 @@ private constructor(
             assignedTo = studyRetrieveByUidResponse.assignedTo
             createdByApiKey = studyRetrieveByUidResponse.createdByApiKey
             createdByUser = studyRetrieveByUidResponse.createdByUser
+            expressCustomer = studyRetrieveByUidResponse.expressCustomer
             metadata = studyRetrieveByUidResponse.metadata
-            org = studyRetrieveByUidResponse.org
             priorReportTexts =
                 studyRetrieveByUidResponse.priorReportTexts.map { it.toMutableList() }
             priorStudyIds = studyRetrieveByUidResponse.priorStudyIds.map { it.toMutableList() }
@@ -714,6 +719,25 @@ private constructor(
             this.createdByUser = createdByUser
         }
 
+        /** Reference to the Express customer this study belongs to */
+        fun expressCustomer(expressCustomer: ExpressCustomer?) =
+            expressCustomer(JsonField.ofNullable(expressCustomer))
+
+        /** Alias for calling [Builder.expressCustomer] with `expressCustomer.orElse(null)`. */
+        fun expressCustomer(expressCustomer: Optional<ExpressCustomer>) =
+            expressCustomer(expressCustomer.getOrNull())
+
+        /**
+         * Sets [Builder.expressCustomer] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.expressCustomer] with a well-typed [ExpressCustomer]
+         * value instead. This method is primarily for setting the field to an undocumented or not
+         * yet supported value.
+         */
+        fun expressCustomer(expressCustomer: JsonField<ExpressCustomer>) = apply {
+            this.expressCustomer = expressCustomer
+        }
+
         /**
          * Custom key-value metadata for the study. Maximum 50 pairs, keys up to 100 chars, values
          * up to 1000 chars
@@ -728,20 +752,6 @@ private constructor(
          * value.
          */
         fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
-
-        /** Reference to the organization this study belongs to */
-        fun org(org: Org?) = org(JsonField.ofNullable(org))
-
-        /** Alias for calling [Builder.org] with `org.orElse(null)`. */
-        fun org(org: Optional<Org>) = org(org.getOrNull())
-
-        /**
-         * Sets [Builder.org] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.org] with a well-typed [Org] value instead. This method
-         * is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun org(org: JsonField<Org>) = apply { this.org = org }
 
         /** Array of prior report texts to provide clinical context */
         fun priorReportTexts(priorReportTexts: List<String>) =
@@ -877,8 +887,8 @@ private constructor(
                 assignedTo,
                 createdByApiKey,
                 createdByUser,
+                expressCustomer,
                 metadata,
-                org,
                 (priorReportTexts ?: JsonMissing.of()).map { it.toImmutable() },
                 (priorStudyIds ?: JsonMissing.of()).map { it.toImmutable() },
                 (reportIds ?: JsonMissing.of()).map { it.toImmutable() },
@@ -906,8 +916,8 @@ private constructor(
         assignedTo().ifPresent { it.validate() }
         createdByApiKey().ifPresent { it.validate() }
         createdByUser().ifPresent { it.validate() }
+        expressCustomer().ifPresent { it.validate() }
         metadata().ifPresent { it.validate() }
-        org().ifPresent { it.validate() }
         priorReportTexts()
         priorStudyIds()
         reportIds().ifPresent { it.forEach { it.validate() } }
@@ -942,8 +952,8 @@ private constructor(
             (assignedTo.asKnown().getOrNull()?.validity() ?: 0) +
             (createdByApiKey.asKnown().getOrNull()?.validity() ?: 0) +
             (createdByUser.asKnown().getOrNull()?.validity() ?: 0) +
+            (expressCustomer.asKnown().getOrNull()?.validity() ?: 0) +
             (metadata.asKnown().getOrNull()?.validity() ?: 0) +
-            (org.asKnown().getOrNull()?.validity() ?: 0) +
             (priorReportTexts.asKnown().getOrNull()?.size ?: 0) +
             (priorStudyIds.asKnown().getOrNull()?.size ?: 0) +
             (reportIds.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
@@ -2271,6 +2281,223 @@ private constructor(
             "CreatedByUser{email=$email, userId=$userId, firstName=$firstName, lastName=$lastName, middleName=$middleName, suffix1=$suffix1, suffix2=$suffix2, additionalProperties=$additionalProperties}"
     }
 
+    /** Reference to the Express customer this study belongs to */
+    class ExpressCustomer
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+    private constructor(
+        private val expressCustomerId: JsonField<String>,
+        private val expressCustomerName: JsonField<String>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
+    ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("expressCustomerId")
+            @ExcludeMissing
+            expressCustomerId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("expressCustomerName")
+            @ExcludeMissing
+            expressCustomerName: JsonField<String> = JsonMissing.of(),
+        ) : this(expressCustomerId, expressCustomerName, mutableMapOf())
+
+        /**
+         * Unique Express customer identifier. Format: cus_{32-hex-chars}
+         *
+         * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun expressCustomerId(): String = expressCustomerId.getRequired("expressCustomerId")
+
+        /**
+         * Name of the Express customer
+         *
+         * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun expressCustomerName(): String = expressCustomerName.getRequired("expressCustomerName")
+
+        /**
+         * Returns the raw JSON value of [expressCustomerId].
+         *
+         * Unlike [expressCustomerId], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("expressCustomerId")
+        @ExcludeMissing
+        fun _expressCustomerId(): JsonField<String> = expressCustomerId
+
+        /**
+         * Returns the raw JSON value of [expressCustomerName].
+         *
+         * Unlike [expressCustomerName], this method doesn't throw if the JSON field has an
+         * unexpected type.
+         */
+        @JsonProperty("expressCustomerName")
+        @ExcludeMissing
+        fun _expressCustomerName(): JsonField<String> = expressCustomerName
+
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
+
+        fun toBuilder() = Builder().from(this)
+
+        companion object {
+
+            /**
+             * Returns a mutable builder for constructing an instance of [ExpressCustomer].
+             *
+             * The following fields are required:
+             * ```java
+             * .expressCustomerId()
+             * .expressCustomerName()
+             * ```
+             */
+            @JvmStatic fun builder() = Builder()
+        }
+
+        /** A builder for [ExpressCustomer]. */
+        class Builder internal constructor() {
+
+            private var expressCustomerId: JsonField<String>? = null
+            private var expressCustomerName: JsonField<String>? = null
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            @JvmSynthetic
+            internal fun from(expressCustomer: ExpressCustomer) = apply {
+                expressCustomerId = expressCustomer.expressCustomerId
+                expressCustomerName = expressCustomer.expressCustomerName
+                additionalProperties = expressCustomer.additionalProperties.toMutableMap()
+            }
+
+            /** Unique Express customer identifier. Format: cus_{32-hex-chars} */
+            fun expressCustomerId(expressCustomerId: String) =
+                expressCustomerId(JsonField.of(expressCustomerId))
+
+            /**
+             * Sets [Builder.expressCustomerId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.expressCustomerId] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun expressCustomerId(expressCustomerId: JsonField<String>) = apply {
+                this.expressCustomerId = expressCustomerId
+            }
+
+            /** Name of the Express customer */
+            fun expressCustomerName(expressCustomerName: String) =
+                expressCustomerName(JsonField.of(expressCustomerName))
+
+            /**
+             * Sets [Builder.expressCustomerName] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.expressCustomerName] with a well-typed [String]
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
+            fun expressCustomerName(expressCustomerName: JsonField<String>) = apply {
+                this.expressCustomerName = expressCustomerName
+            }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
+
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
+            /**
+             * Returns an immutable instance of [ExpressCustomer].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```java
+             * .expressCustomerId()
+             * .expressCustomerName()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
+             */
+            fun build(): ExpressCustomer =
+                ExpressCustomer(
+                    checkRequired("expressCustomerId", expressCustomerId),
+                    checkRequired("expressCustomerName", expressCustomerName),
+                    additionalProperties.toMutableMap(),
+                )
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): ExpressCustomer = apply {
+            if (validated) {
+                return@apply
+            }
+
+            expressCustomerId()
+            expressCustomerName()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: AvaraInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (if (expressCustomerId.asKnown().isPresent) 1 else 0) +
+                (if (expressCustomerName.asKnown().isPresent) 1 else 0)
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is ExpressCustomer &&
+                expressCustomerId == other.expressCustomerId &&
+                expressCustomerName == other.expressCustomerName &&
+                additionalProperties == other.additionalProperties
+        }
+
+        private val hashCode: Int by lazy {
+            Objects.hash(expressCustomerId, expressCustomerName, additionalProperties)
+        }
+
+        override fun hashCode(): Int = hashCode
+
+        override fun toString() =
+            "ExpressCustomer{expressCustomerId=$expressCustomerId, expressCustomerName=$expressCustomerName, additionalProperties=$additionalProperties}"
+    }
+
     /**
      * Custom key-value metadata for the study. Maximum 50 pairs, keys up to 100 chars, values up to
      * 1000 chars
@@ -2374,204 +2601,6 @@ private constructor(
         override fun toString() = "Metadata{additionalProperties=$additionalProperties}"
     }
 
-    /** Reference to the organization this study belongs to */
-    class Org
-    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
-    private constructor(
-        private val orgId: JsonField<String>,
-        private val orgName: JsonField<String>,
-        private val additionalProperties: MutableMap<String, JsonValue>,
-    ) {
-
-        @JsonCreator
-        private constructor(
-            @JsonProperty("orgId") @ExcludeMissing orgId: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("orgName") @ExcludeMissing orgName: JsonField<String> = JsonMissing.of(),
-        ) : this(orgId, orgName, mutableMapOf())
-
-        /**
-         * Unique organization identifier. Format: org_{32-hex-chars}
-         *
-         * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun orgId(): String = orgId.getRequired("orgId")
-
-        /**
-         * Name of the organization
-         *
-         * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun orgName(): String = orgName.getRequired("orgName")
-
-        /**
-         * Returns the raw JSON value of [orgId].
-         *
-         * Unlike [orgId], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("orgId") @ExcludeMissing fun _orgId(): JsonField<String> = orgId
-
-        /**
-         * Returns the raw JSON value of [orgName].
-         *
-         * Unlike [orgName], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("orgName") @ExcludeMissing fun _orgName(): JsonField<String> = orgName
-
-        @JsonAnySetter
-        private fun putAdditionalProperty(key: String, value: JsonValue) {
-            additionalProperties.put(key, value)
-        }
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> =
-            Collections.unmodifiableMap(additionalProperties)
-
-        fun toBuilder() = Builder().from(this)
-
-        companion object {
-
-            /**
-             * Returns a mutable builder for constructing an instance of [Org].
-             *
-             * The following fields are required:
-             * ```java
-             * .orgId()
-             * .orgName()
-             * ```
-             */
-            @JvmStatic fun builder() = Builder()
-        }
-
-        /** A builder for [Org]. */
-        class Builder internal constructor() {
-
-            private var orgId: JsonField<String>? = null
-            private var orgName: JsonField<String>? = null
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(org: Org) = apply {
-                orgId = org.orgId
-                orgName = org.orgName
-                additionalProperties = org.additionalProperties.toMutableMap()
-            }
-
-            /** Unique organization identifier. Format: org_{32-hex-chars} */
-            fun orgId(orgId: String) = orgId(JsonField.of(orgId))
-
-            /**
-             * Sets [Builder.orgId] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.orgId] with a well-typed [String] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun orgId(orgId: JsonField<String>) = apply { this.orgId = orgId }
-
-            /** Name of the organization */
-            fun orgName(orgName: String) = orgName(JsonField.of(orgName))
-
-            /**
-             * Sets [Builder.orgName] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.orgName] with a well-typed [String] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun orgName(orgName: JsonField<String>) = apply { this.orgName = orgName }
-
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
-
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
-
-            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
-
-            /**
-             * Returns an immutable instance of [Org].
-             *
-             * Further updates to this [Builder] will not mutate the returned instance.
-             *
-             * The following fields are required:
-             * ```java
-             * .orgId()
-             * .orgName()
-             * ```
-             *
-             * @throws IllegalStateException if any required field is unset.
-             */
-            fun build(): Org =
-                Org(
-                    checkRequired("orgId", orgId),
-                    checkRequired("orgName", orgName),
-                    additionalProperties.toMutableMap(),
-                )
-        }
-
-        private var validated: Boolean = false
-
-        fun validate(): Org = apply {
-            if (validated) {
-                return@apply
-            }
-
-            orgId()
-            orgName()
-            validated = true
-        }
-
-        fun isValid(): Boolean =
-            try {
-                validate()
-                true
-            } catch (e: AvaraInvalidDataException) {
-                false
-            }
-
-        /**
-         * Returns a score indicating how many valid values are contained in this object
-         * recursively.
-         *
-         * Used for best match union deserialization.
-         */
-        @JvmSynthetic
-        internal fun validity(): Int =
-            (if (orgId.asKnown().isPresent) 1 else 0) + (if (orgName.asKnown().isPresent) 1 else 0)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Org &&
-                orgId == other.orgId &&
-                orgName == other.orgName &&
-                additionalProperties == other.additionalProperties
-        }
-
-        private val hashCode: Int by lazy { Objects.hash(orgId, orgName, additionalProperties) }
-
-        override fun hashCode(): Int = hashCode
-
-        override fun toString() =
-            "Org{orgId=$orgId, orgName=$orgName, additionalProperties=$additionalProperties}"
-    }
-
     override fun equals(other: Any?): Boolean {
         if (this === other) {
             return true
@@ -2591,8 +2620,8 @@ private constructor(
             assignedTo == other.assignedTo &&
             createdByApiKey == other.createdByApiKey &&
             createdByUser == other.createdByUser &&
+            expressCustomer == other.expressCustomer &&
             metadata == other.metadata &&
-            org == other.org &&
             priorReportTexts == other.priorReportTexts &&
             priorStudyIds == other.priorStudyIds &&
             reportIds == other.reportIds &&
@@ -2614,8 +2643,8 @@ private constructor(
             assignedTo,
             createdByApiKey,
             createdByUser,
+            expressCustomer,
             metadata,
-            org,
             priorReportTexts,
             priorStudyIds,
             reportIds,
@@ -2626,5 +2655,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "StudyRetrieveByUidResponse{cancelledAt=$cancelledAt, createdAt=$createdAt, isCancelled=$isCancelled, reportMetadata=$reportMetadata, severity=$severity, studyDescription=$studyDescription, studyId=$studyId, studyInstanceUid=$studyInstanceUid, studyReportStatus=$studyReportStatus, updatedAt=$updatedAt, assignedTo=$assignedTo, createdByApiKey=$createdByApiKey, createdByUser=$createdByUser, metadata=$metadata, org=$org, priorReportTexts=$priorReportTexts, priorStudyIds=$priorStudyIds, reportIds=$reportIds, additionalProperties=$additionalProperties}"
+        "StudyRetrieveByUidResponse{cancelledAt=$cancelledAt, createdAt=$createdAt, isCancelled=$isCancelled, reportMetadata=$reportMetadata, severity=$severity, studyDescription=$studyDescription, studyId=$studyId, studyInstanceUid=$studyInstanceUid, studyReportStatus=$studyReportStatus, updatedAt=$updatedAt, assignedTo=$assignedTo, createdByApiKey=$createdByApiKey, createdByUser=$createdByUser, expressCustomer=$expressCustomer, metadata=$metadata, priorReportTexts=$priorReportTexts, priorStudyIds=$priorStudyIds, reportIds=$reportIds, additionalProperties=$additionalProperties}"
 }

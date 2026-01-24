@@ -14,12 +14,12 @@ internal class StudyUpdateParamsTest {
         StudyUpdateParams.builder()
             .studyId("stu_1234567890abcdef1234567890abcdef")
             .assignedTo("usr_1234567890abcdef1234567890abcdef")
+            .expressCustomerId("cus_1234567890abcdef1234567890abcdef")
             .metadata(
                 StudyUpdateParams.Metadata.builder()
                     .putAdditionalProperty("foo", JsonValue.from("string"))
                     .build()
             )
-            .orgId("org_1234567890abcdef1234567890abcdef")
             .addPriorReportText("x")
             .addPriorStudyId("string")
             .reportMetadata(
@@ -69,12 +69,12 @@ internal class StudyUpdateParamsTest {
             StudyUpdateParams.builder()
                 .studyId("stu_1234567890abcdef1234567890abcdef")
                 .assignedTo("usr_1234567890abcdef1234567890abcdef")
+                .expressCustomerId("cus_1234567890abcdef1234567890abcdef")
                 .metadata(
                     StudyUpdateParams.Metadata.builder()
                         .putAdditionalProperty("foo", JsonValue.from("string"))
                         .build()
                 )
-                .orgId("org_1234567890abcdef1234567890abcdef")
                 .addPriorReportText("x")
                 .addPriorStudyId("string")
                 .reportMetadata(
@@ -110,13 +110,13 @@ internal class StudyUpdateParamsTest {
         val body = params._body()
 
         assertThat(body.assignedTo()).contains("usr_1234567890abcdef1234567890abcdef")
+        assertThat(body.expressCustomerId()).contains("cus_1234567890abcdef1234567890abcdef")
         assertThat(body.metadata())
             .contains(
                 StudyUpdateParams.Metadata.builder()
                     .putAdditionalProperty("foo", JsonValue.from("string"))
                     .build()
             )
-        assertThat(body.orgId()).contains("org_1234567890abcdef1234567890abcdef")
         assertThat(body.priorReportTexts().getOrNull()).containsExactly("x")
         assertThat(body.priorStudyIds().getOrNull()).containsExactly("string")
         assertThat(body.reportMetadata())
