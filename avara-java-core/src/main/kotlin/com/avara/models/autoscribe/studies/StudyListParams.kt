@@ -22,6 +22,7 @@ class StudyListParams
 private constructor(
     private val assignedTo: String?,
     private val cursor: String?,
+    private val expressCustomerId: String?,
     private val isCancelled: Boolean?,
     private val limit: Double?,
     private val severity: Severity?,
@@ -36,6 +37,11 @@ private constructor(
 
     /** Base64 encoded cursor from previous response */
     fun cursor(): Optional<String> = Optional.ofNullable(cursor)
+
+    /**
+     * Filter by Express customer ID (null = studies with no customer). Format: cus_{32-hex-chars}
+     */
+    fun expressCustomerId(): Optional<String> = Optional.ofNullable(expressCustomerId)
 
     /** Filter by cancellation status */
     fun isCancelled(): Optional<Boolean> = Optional.ofNullable(isCancelled)
@@ -74,6 +80,7 @@ private constructor(
 
         private var assignedTo: String? = null
         private var cursor: String? = null
+        private var expressCustomerId: String? = null
         private var isCancelled: Boolean? = null
         private var limit: Double? = null
         private var severity: Severity? = null
@@ -86,6 +93,7 @@ private constructor(
         internal fun from(studyListParams: StudyListParams) = apply {
             assignedTo = studyListParams.assignedTo
             cursor = studyListParams.cursor
+            expressCustomerId = studyListParams.expressCustomerId
             isCancelled = studyListParams.isCancelled
             limit = studyListParams.limit
             severity = studyListParams.severity
@@ -106,6 +114,18 @@ private constructor(
 
         /** Alias for calling [Builder.cursor] with `cursor.orElse(null)`. */
         fun cursor(cursor: Optional<String>) = cursor(cursor.getOrNull())
+
+        /**
+         * Filter by Express customer ID (null = studies with no customer). Format:
+         * cus_{32-hex-chars}
+         */
+        fun expressCustomerId(expressCustomerId: String?) = apply {
+            this.expressCustomerId = expressCustomerId
+        }
+
+        /** Alias for calling [Builder.expressCustomerId] with `expressCustomerId.orElse(null)`. */
+        fun expressCustomerId(expressCustomerId: Optional<String>) =
+            expressCustomerId(expressCustomerId.getOrNull())
 
         /** Filter by cancellation status */
         fun isCancelled(isCancelled: Boolean?) = apply { this.isCancelled = isCancelled }
@@ -274,6 +294,7 @@ private constructor(
             StudyListParams(
                 assignedTo,
                 cursor,
+                expressCustomerId,
                 isCancelled,
                 limit,
                 severity,
@@ -291,6 +312,7 @@ private constructor(
             .apply {
                 assignedTo?.let { put("assignedTo", it) }
                 cursor?.let { put("cursor", it) }
+                expressCustomerId?.let { put("expressCustomerId", it) }
                 isCancelled?.let { put("isCancelled", it.toString()) }
                 limit?.let { put("limit", it.toString()) }
                 severity?.let { put("severity", it.toString()) }
@@ -587,6 +609,7 @@ private constructor(
         return other is StudyListParams &&
             assignedTo == other.assignedTo &&
             cursor == other.cursor &&
+            expressCustomerId == other.expressCustomerId &&
             isCancelled == other.isCancelled &&
             limit == other.limit &&
             severity == other.severity &&
@@ -600,6 +623,7 @@ private constructor(
         Objects.hash(
             assignedTo,
             cursor,
+            expressCustomerId,
             isCancelled,
             limit,
             severity,
@@ -610,5 +634,5 @@ private constructor(
         )
 
     override fun toString() =
-        "StudyListParams{assignedTo=$assignedTo, cursor=$cursor, isCancelled=$isCancelled, limit=$limit, severity=$severity, studyDescription=$studyDescription, studyReportStatus=$studyReportStatus, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "StudyListParams{assignedTo=$assignedTo, cursor=$cursor, expressCustomerId=$expressCustomerId, isCancelled=$isCancelled, limit=$limit, severity=$severity, studyDescription=$studyDescription, studyReportStatus=$studyReportStatus, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }
