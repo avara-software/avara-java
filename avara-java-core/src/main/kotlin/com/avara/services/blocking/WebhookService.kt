@@ -3,7 +3,9 @@
 package com.avara.services.blocking
 
 import com.avara.core.ClientOptions
+import com.avara.core.UnwrapWebhookParams
 import com.avara.errors.AvaraInvalidDataException
+import com.avara.errors.AvaraWebhookException
 import com.avara.models.webhooks.UnwrapWebhookEvent
 import java.util.function.Consumer
 
@@ -27,6 +29,14 @@ interface WebhookService {
      * @throws AvaraInvalidDataException if the body could not be parsed.
      */
     fun unwrap(body: String): UnwrapWebhookEvent
+
+    /**
+     * Unwraps a webhook event from its JSON representation.
+     *
+     * @throws AvaraInvalidDataException if the body could not be parsed.
+     * @throws AvaraWebhookException if the webhook signature could not be verified
+     */
+    fun unwrap(unwrapParams: UnwrapWebhookParams): UnwrapWebhookEvent
 
     /** A view of [WebhookService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
