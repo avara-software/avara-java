@@ -455,7 +455,6 @@ private constructor(
         override fun toString() = value.toString()
     }
 
-    /** Report workflow status */
     class StudyReportStatus @JsonCreator private constructor(private val value: JsonField<String>) :
         Enum {
 

@@ -84,8 +84,6 @@ private constructor(
     fun lastName(): String = body.lastName()
 
     /**
-     * User access level for invite/update (owner cannot be set via API)
-     *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is unexpectedly
      *   missing or null (e.g. if the server responded with an unexpected value).
      */
@@ -372,7 +370,6 @@ private constructor(
          */
         fun lastName(lastName: JsonField<String>) = apply { body.lastName(lastName) }
 
-        /** User access level for invite/update (owner cannot be set via API) */
         fun level(level: Level) = apply { body.level(level) }
 
         /**
@@ -707,8 +704,6 @@ private constructor(
         fun lastName(): String = lastName.getRequired("lastName")
 
         /**
-         * User access level for invite/update (owner cannot be set via API)
-         *
          * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
@@ -1018,7 +1013,6 @@ private constructor(
              */
             fun lastName(lastName: JsonField<String>) = apply { this.lastName = lastName }
 
-            /** User access level for invite/update (owner cannot be set via API) */
             fun level(level: Level) = level(JsonField.of(level))
 
             /**
@@ -1489,7 +1483,6 @@ private constructor(
         override fun toString() = value.toString()
     }
 
-    /** User access level for invite/update (owner cannot be set via API) */
     class Level @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**

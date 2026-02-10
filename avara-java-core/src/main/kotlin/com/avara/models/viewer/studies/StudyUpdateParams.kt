@@ -68,8 +68,6 @@ private constructor(
     fun studyDescription(): Optional<String> = body.studyDescription()
 
     /**
-     * Study viewer completion status
-     *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
@@ -223,7 +221,6 @@ private constructor(
             body.studyDescription(studyDescription)
         }
 
-        /** Study viewer completion status */
         fun studyViewerStatus(studyViewerStatus: StudyViewerStatus) = apply {
             body.studyViewerStatus(studyViewerStatus)
         }
@@ -452,8 +449,6 @@ private constructor(
         fun studyDescription(): Optional<String> = studyDescription.getOptional("studyDescription")
 
         /**
-         * Study viewer completion status
-         *
          * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
@@ -597,7 +592,6 @@ private constructor(
                 this.studyDescription = studyDescription
             }
 
-            /** Study viewer completion status */
             fun studyViewerStatus(studyViewerStatus: StudyViewerStatus) =
                 studyViewerStatus(JsonField.of(studyViewerStatus))
 
@@ -948,7 +942,6 @@ private constructor(
         override fun toString() = value.toString()
     }
 
-    /** Study viewer completion status */
     class StudyViewerStatus @JsonCreator private constructor(private val value: JsonField<String>) :
         Enum {
 
