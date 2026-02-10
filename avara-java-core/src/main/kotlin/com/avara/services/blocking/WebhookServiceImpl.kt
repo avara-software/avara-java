@@ -7,6 +7,7 @@ import com.avara.core.UnwrapWebhookParams
 import com.avara.core.checkRequired
 import com.avara.errors.AvaraInvalidDataException
 import com.avara.errors.AvaraWebhookException
+import com.avara.models.webhooks.UnsafeUnwrapWebhookEvent
 import com.avara.models.webhooks.UnwrapWebhookEvent
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import com.standardwebhooks.Webhook
@@ -25,6 +26,13 @@ class WebhookServiceImpl internal constructor(private val clientOptions: ClientO
 
     override fun withOptions(modifier: Consumer<ClientOptions.Builder>): WebhookService =
         WebhookServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
+
+    override fun unsafeUnwrap(body: String): UnsafeUnwrapWebhookEvent =
+        try {
+            clientOptions.jsonMapper.readValue(body, jacksonTypeRef<UnsafeUnwrapWebhookEvent>())
+        } catch (e: Exception) {
+            throw AvaraInvalidDataException("Error parsing body", e)
+        }
 
     override fun unwrap(body: String): UnwrapWebhookEvent =
         try {
