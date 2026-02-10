@@ -6,6 +6,7 @@ import com.avara.core.ClientOptions
 import com.avara.core.UnwrapWebhookParams
 import com.avara.errors.AvaraInvalidDataException
 import com.avara.errors.AvaraWebhookException
+import com.avara.models.webhooks.UnsafeUnwrapWebhookEvent
 import com.avara.models.webhooks.UnwrapWebhookEvent
 import java.util.function.Consumer
 
@@ -22,6 +23,13 @@ interface WebhookService {
      * The original service is not modified.
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): WebhookService
+
+    /**
+     * Unwraps a webhook event from its JSON representation.
+     *
+     * @throws AvaraInvalidDataException if the body could not be parsed.
+     */
+    fun unsafeUnwrap(body: String): UnsafeUnwrapWebhookEvent
 
     /**
      * Unwraps a webhook event from its JSON representation.

@@ -17,6 +17,23 @@ import org.junit.jupiter.api.extension.ExtendWith
 internal class WebhookServiceTest {
 
     @Test
+    fun unsafeUnwrap() {
+        val client =
+            AvaraOkHttpClient.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .apiKey("My API Key")
+                .build()
+        val webhookService = client.webhooks()
+
+        val payload =
+            "{\"id\":\"whe_1234567890abcdef1234567890abcdef\",\"data\":{\"studyId\":\"stu_1234567890abcdef1234567890abcdef\",\"studyInstanceUid\":\"1.2.840.113619.2.55.3.1234567890\"},\"type\":\"study.access_requested\"}"
+        val webhookSecret = "whsec_c2VjcmV0Cg=="
+        val headers = Headers.builder().build()
+
+        webhookService.unsafeUnwrap(payload).validate()
+    }
+
+    @Test
     fun unwrap() {
         val client =
             AvaraOkHttpClient.builder()
