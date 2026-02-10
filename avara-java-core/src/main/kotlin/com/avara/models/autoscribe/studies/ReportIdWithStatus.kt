@@ -41,7 +41,7 @@ private constructor(
     fun reportId(): String = reportId.getRequired("reportId")
 
     /**
-     * Report status
+     * Current status of the report
      *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is unexpectedly
      *   missing or null (e.g. if the server responded with an unexpected value).
@@ -113,7 +113,7 @@ private constructor(
          */
         fun reportId(reportId: JsonField<String>) = apply { this.reportId = reportId }
 
-        /** Report status */
+        /** Current status of the report */
         fun status(status: Status) = status(JsonField.of(status))
 
         /**
@@ -194,7 +194,7 @@ private constructor(
         (if (reportId.asKnown().isPresent) 1 else 0) +
             (status.asKnown().getOrNull()?.validity() ?: 0)
 
-    /** Report status */
+    /** Current status of the report */
     class Status @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**

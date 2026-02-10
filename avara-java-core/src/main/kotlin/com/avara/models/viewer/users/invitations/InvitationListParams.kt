@@ -416,7 +416,6 @@ private constructor(
         override fun toString() = value.toString()
     }
 
-    /** Invitation status */
     class Status @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**

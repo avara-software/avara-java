@@ -186,7 +186,9 @@ private constructor(
     fun studyInstanceUid(): String = studyInstanceUid.getRequired("studyInstanceUid")
 
     /**
-     * Report workflow status
+     * Report workflow status. 'unassigned' = no radiologist assigned, 'assigned' = assigned but not
+     * started, 'in_progress' = actively being dictated, 'completed' = report signed,
+     * 'addendum_active' = addendum in progress
      *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is unexpectedly
      *   missing or null (e.g. if the server responded with an unexpected value).
@@ -630,7 +632,11 @@ private constructor(
             this.studyInstanceUid = studyInstanceUid
         }
 
-        /** Report workflow status */
+        /**
+         * Report workflow status. 'unassigned' = no radiologist assigned, 'assigned' = assigned but
+         * not started, 'in_progress' = actively being dictated, 'completed' = report signed,
+         * 'addendum_active' = addendum in progress
+         */
         fun studyReportStatus(studyReportStatus: StudyReportStatus) =
             studyReportStatus(JsonField.of(studyReportStatus))
 
@@ -1086,7 +1092,11 @@ private constructor(
         override fun toString() = value.toString()
     }
 
-    /** Report workflow status */
+    /**
+     * Report workflow status. 'unassigned' = no radiologist assigned, 'assigned' = assigned but not
+     * started, 'in_progress' = actively being dictated, 'completed' = report signed,
+     * 'addendum_active' = addendum in progress
+     */
     class StudyReportStatus @JsonCreator private constructor(private val value: JsonField<String>) :
         Enum {
 
