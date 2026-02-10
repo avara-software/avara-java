@@ -157,7 +157,7 @@ private constructor(
     fun scanType(): Optional<String> = scanType.getOptional("scanType")
 
     /**
-     * Patient's biological sex. Options: 'male', 'female', 'other'
+     * Patient's biological sex
      *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
@@ -435,7 +435,7 @@ private constructor(
          */
         fun scanType(scanType: JsonField<String>) = apply { this.scanType = scanType }
 
-        /** Patient's biological sex. Options: 'male', 'female', 'other' */
+        /** Patient's biological sex */
         fun sex(sex: Sex) = sex(JsonField.of(sex))
 
         /**
@@ -569,6 +569,8 @@ private constructor(
         ) : this(unit, value, mutableMapOf())
 
         /**
+         * Height unit
+         *
          * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
@@ -634,6 +636,7 @@ private constructor(
                 additionalProperties = height.additionalProperties.toMutableMap()
             }
 
+            /** Height unit */
             fun unit(unit: Unit) = unit(JsonField.of(unit))
 
             /**
@@ -727,6 +730,7 @@ private constructor(
             (unit.asKnown().getOrNull()?.validity() ?: 0) +
                 (if (value.asKnown().isPresent) 1 else 0)
 
+        /** Height unit */
         class Unit @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
             /**
@@ -873,7 +877,7 @@ private constructor(
             "Height{unit=$unit, value=$value, additionalProperties=$additionalProperties}"
     }
 
-    /** Patient's biological sex. Options: 'male', 'female', 'other' */
+    /** Patient's biological sex */
     class Sex @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**
@@ -1020,6 +1024,8 @@ private constructor(
         ) : this(unit, value, mutableMapOf())
 
         /**
+         * Weight unit
+         *
          * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
@@ -1085,6 +1091,7 @@ private constructor(
                 additionalProperties = weight.additionalProperties.toMutableMap()
             }
 
+            /** Weight unit */
             fun unit(unit: Unit) = unit(JsonField.of(unit))
 
             /**
@@ -1178,6 +1185,7 @@ private constructor(
             (unit.asKnown().getOrNull()?.validity() ?: 0) +
                 (if (value.asKnown().isPresent) 1 else 0)
 
+        /** Weight unit */
         class Unit @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
             /**

@@ -363,7 +363,7 @@ private constructor(
             snapshotMetadata.getRequired("snapshotMetadata")
 
         /**
-         * Report status: 'in_progress' or 'completed'
+         * Report status
          *
          * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
@@ -620,7 +620,7 @@ private constructor(
                 this.snapshotMetadata = snapshotMetadata
             }
 
-            /** Report status: 'in_progress' or 'completed' */
+            /** Report status */
             fun status(status: Status) = status(JsonField.of(status))
 
             /**
@@ -792,7 +792,7 @@ private constructor(
                 (if (userId.asKnown().isPresent) 1 else 0) +
                 (if (reportPlainText.asKnown().isPresent) 1 else 0)
 
-        /** Report status: 'in_progress' or 'completed' */
+        /** Report status */
         class Status @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
             /**

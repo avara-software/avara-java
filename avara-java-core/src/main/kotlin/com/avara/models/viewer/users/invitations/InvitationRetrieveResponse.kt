@@ -134,7 +134,7 @@ private constructor(
     fun clinicId(): String = clinicId.getRequired("clinicId")
 
     /**
-     * Clinical or organizational role for the invited user
+     * User's clinical or organizational role
      *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is unexpectedly
      *   missing or null (e.g. if the server responded with an unexpected value).
@@ -190,7 +190,7 @@ private constructor(
     fun invitationId(): String = invitationId.getRequired("invitationId")
 
     /**
-     * How the invitation was created - 'dashboard' or 'api'
+     * How the user was invited - via dashboard UI or API
      *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is unexpectedly
      *   missing or null (e.g. if the server responded with an unexpected value).
@@ -215,7 +215,7 @@ private constructor(
     fun lastName(): String = lastName.getRequired("lastName")
 
     /**
-     * Access level for the invited user. 'admin' or 'member' when created via API
+     * User access level
      *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is unexpectedly
      *   missing or null (e.g. if the server responded with an unexpected value).
@@ -223,7 +223,7 @@ private constructor(
     fun level(): Level = level.getRequired("level")
 
     /**
-     * Invitation status: 'sent', 'accepted', 'rejected', or 'revoked'
+     * Invitation status
      *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is unexpectedly
      *   missing or null (e.g. if the server responded with an unexpected value).
@@ -571,7 +571,7 @@ private constructor(
          */
         fun clinicId(clinicId: JsonField<String>) = apply { this.clinicId = clinicId }
 
-        /** Clinical or organizational role for the invited user */
+        /** User's clinical or organizational role */
         fun clinicRole(clinicRole: ClinicRole) = clinicRole(JsonField.of(clinicRole))
 
         /**
@@ -665,7 +665,7 @@ private constructor(
             this.invitationId = invitationId
         }
 
-        /** How the invitation was created - 'dashboard' or 'api' */
+        /** How the user was invited - via dashboard UI or API */
         fun invitedSource(invitedSource: InvitedSource) = invitedSource(JsonField.of(invitedSource))
 
         /**
@@ -705,7 +705,7 @@ private constructor(
          */
         fun lastName(lastName: JsonField<String>) = apply { this.lastName = lastName }
 
-        /** Access level for the invited user. 'admin' or 'member' when created via API */
+        /** User access level */
         fun level(level: Level) = level(JsonField.of(level))
 
         /**
@@ -716,7 +716,7 @@ private constructor(
          */
         fun level(level: JsonField<Level>) = apply { this.level = level }
 
-        /** Invitation status: 'sent', 'accepted', 'rejected', or 'revoked' */
+        /** Invitation status */
         fun status(status: Status) = status(JsonField.of(status))
 
         /**
@@ -970,7 +970,7 @@ private constructor(
             (if (suffix1.asKnown().isPresent) 1 else 0) +
             (if (suffix2.asKnown().isPresent) 1 else 0)
 
-    /** Clinical or organizational role for the invited user */
+    /** User's clinical or organizational role */
     class ClinicRole @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**
@@ -1211,7 +1211,7 @@ private constructor(
         override fun toString() = value.toString()
     }
 
-    /** How the invitation was created - 'dashboard' or 'api' */
+    /** How the user was invited - via dashboard UI or API */
     class InvitedSource @JsonCreator private constructor(private val value: JsonField<String>) :
         Enum {
 
@@ -1340,7 +1340,7 @@ private constructor(
         override fun toString() = value.toString()
     }
 
-    /** Access level for the invited user. 'admin' or 'member' when created via API */
+    /** User access level */
     class Level @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**
@@ -1471,7 +1471,7 @@ private constructor(
         override fun toString() = value.toString()
     }
 
-    /** Invitation status: 'sent', 'accepted', 'rejected', or 'revoked' */
+    /** Invitation status */
     class Status @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**

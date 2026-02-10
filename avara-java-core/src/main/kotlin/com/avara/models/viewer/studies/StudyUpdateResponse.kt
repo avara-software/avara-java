@@ -159,6 +159,8 @@ private constructor(
     fun studyInstanceUid(): String = studyInstanceUid.getRequired("studyInstanceUid")
 
     /**
+     * Study viewer completion status
+     *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is unexpectedly
      *   missing or null (e.g. if the server responded with an unexpected value).
      */
@@ -514,6 +516,7 @@ private constructor(
             this.studyInstanceUid = studyInstanceUid
         }
 
+        /** Study viewer completion status */
         fun studyViewerStatus(studyViewerStatus: StudyViewerStatus) =
             studyViewerStatus(JsonField.of(studyViewerStatus))
 
@@ -879,6 +882,7 @@ private constructor(
         override fun toString() = value.toString()
     }
 
+    /** Study viewer completion status */
     class StudyViewerStatus @JsonCreator private constructor(private val value: JsonField<String>) :
         Enum {
 
