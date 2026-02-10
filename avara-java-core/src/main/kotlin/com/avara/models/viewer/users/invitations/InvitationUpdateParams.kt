@@ -42,6 +42,8 @@ private constructor(
     fun canManageStudies(): Optional<Boolean> = body.canManageStudies()
 
     /**
+     * User's clinical or organizational role
+     *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
@@ -72,6 +74,8 @@ private constructor(
     fun lastName(): Optional<String> = body.lastName()
 
     /**
+     * User access level for invite/update (owner cannot be set via API)
+     *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
@@ -242,6 +246,7 @@ private constructor(
             body.canManageStudies(canManageStudies)
         }
 
+        /** User's clinical or organizational role */
         fun clinicRole(clinicRole: ClinicRole?) = apply { body.clinicRole(clinicRole) }
 
         /** Alias for calling [Builder.clinicRole] with `clinicRole.orElse(null)`. */
@@ -295,6 +300,7 @@ private constructor(
          */
         fun lastName(lastName: JsonField<String>) = apply { body.lastName(lastName) }
 
+        /** User access level for invite/update (owner cannot be set via API) */
         fun level(level: Level) = apply { body.level(level) }
 
         /**
@@ -566,6 +572,8 @@ private constructor(
         fun canManageStudies(): Optional<Boolean> = canManageStudies.getOptional("canManageStudies")
 
         /**
+         * User's clinical or organizational role
+         *
          * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
@@ -597,6 +605,8 @@ private constructor(
         fun lastName(): Optional<String> = lastName.getOptional("lastName")
 
         /**
+         * User access level for invite/update (owner cannot be set via API)
+         *
          * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
@@ -770,6 +780,7 @@ private constructor(
                 this.canManageStudies = canManageStudies
             }
 
+            /** User's clinical or organizational role */
             fun clinicRole(clinicRole: ClinicRole?) = clinicRole(JsonField.ofNullable(clinicRole))
 
             /** Alias for calling [Builder.clinicRole] with `clinicRole.orElse(null)`. */
@@ -825,6 +836,7 @@ private constructor(
              */
             fun lastName(lastName: JsonField<String>) = apply { this.lastName = lastName }
 
+            /** User access level for invite/update (owner cannot be set via API) */
             fun level(level: Level) = level(JsonField.of(level))
 
             /**
@@ -1022,6 +1034,7 @@ private constructor(
             "Body{canManageStudies=$canManageStudies, clinicRole=$clinicRole, firstName=$firstName, hasDashboardAccess=$hasDashboardAccess, lastName=$lastName, level=$level, middleName=$middleName, phoneNumber=$phoneNumber, suffix1=$suffix1, suffix2=$suffix2, additionalProperties=$additionalProperties}"
     }
 
+    /** User's clinical or organizational role */
     class ClinicRole @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**
@@ -1262,6 +1275,7 @@ private constructor(
         override fun toString() = value.toString()
     }
 
+    /** User access level for invite/update (owner cannot be set via API) */
     class Level @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**

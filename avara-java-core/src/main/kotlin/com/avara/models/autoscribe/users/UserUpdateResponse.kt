@@ -182,8 +182,7 @@ private constructor(
     fun lastName(): String = lastName.getRequired("lastName")
 
     /**
-     * User access level. 'owner' has full control, 'admin' can manage users/settings, 'member' has
-     * standard access
+     * User access level
      *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is unexpectedly
      *   missing or null (e.g. if the server responded with an unexpected value).
@@ -593,10 +592,7 @@ private constructor(
          */
         fun lastName(lastName: JsonField<String>) = apply { this.lastName = lastName }
 
-        /**
-         * User access level. 'owner' has full control, 'admin' can manage users/settings, 'member'
-         * has standard access
-         */
+        /** User access level */
         fun level(level: Level) = level(JsonField.of(level))
 
         /**
@@ -1174,10 +1170,7 @@ private constructor(
         override fun toString() = value.toString()
     }
 
-    /**
-     * User access level. 'owner' has full control, 'admin' can manage users/settings, 'member' has
-     * standard access
-     */
+    /** User access level */
     class Level @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**
