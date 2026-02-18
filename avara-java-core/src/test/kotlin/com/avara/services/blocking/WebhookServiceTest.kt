@@ -18,11 +18,7 @@ internal class WebhookServiceTest {
 
     @Test
     fun unsafeUnwrap() {
-        val client =
-            AvaraOkHttpClient.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .apiKey("My API Key")
-                .build()
+        val client = AvaraOkHttpClient.builder().apiKey("My API Key").build()
         val webhookService = client.webhooks()
 
         val payload =
@@ -35,11 +31,7 @@ internal class WebhookServiceTest {
 
     @Test
     fun unwrap() {
-        val client =
-            AvaraOkHttpClient.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .apiKey("My API Key")
-                .build()
+        val client = AvaraOkHttpClient.builder().apiKey("My API Key").build()
         val webhookService = client.webhooks()
 
         val payload =
