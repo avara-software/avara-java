@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test
 
 internal class ExpressServiceTest {
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun create() {
         val client = AvaraOkHttpClient.builder().apiKey("My API Key").build()
@@ -33,7 +33,7 @@ internal class ExpressServiceTest {
         express.validate()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun retrieve() {
         val client = AvaraOkHttpClient.builder().apiKey("My API Key").build()
@@ -44,7 +44,7 @@ internal class ExpressServiceTest {
         express.validate()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun update() {
         val client = AvaraOkHttpClient.builder().apiKey("My API Key").build()
@@ -68,7 +68,7 @@ internal class ExpressServiceTest {
         express.validate()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun list() {
         val client = AvaraOkHttpClient.builder().apiKey("My API Key").build()
@@ -79,7 +79,7 @@ internal class ExpressServiceTest {
         page.response().validate()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun deactivate() {
         val client = AvaraOkHttpClient.builder().apiKey("My API Key").build()
@@ -90,7 +90,7 @@ internal class ExpressServiceTest {
         response.validate()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun reactivate() {
         val client = AvaraOkHttpClient.builder().apiKey("My API Key").build()

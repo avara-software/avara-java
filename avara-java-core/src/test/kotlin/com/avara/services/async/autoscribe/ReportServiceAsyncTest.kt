@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test
 
 internal class ReportServiceAsyncTest {
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun list() {
         val client = AvaraOkHttpClientAsync.builder().apiKey("My API Key").build()
@@ -29,7 +29,7 @@ internal class ReportServiceAsyncTest {
         reports.validate()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun addendum() {
         val client = AvaraOkHttpClientAsync.builder().apiKey("My API Key").build()
@@ -41,7 +41,7 @@ internal class ReportServiceAsyncTest {
         response.validate()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun cancelAddendum() {
         val client = AvaraOkHttpClientAsync.builder().apiKey("My API Key").build()
@@ -54,7 +54,7 @@ internal class ReportServiceAsyncTest {
         response.validate()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun pdf() {
         val client = AvaraOkHttpClientAsync.builder().apiKey("My API Key").build()
@@ -73,7 +73,7 @@ internal class ReportServiceAsyncTest {
         response.validate()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun text() {
         val client = AvaraOkHttpClientAsync.builder().apiKey("My API Key").build()
