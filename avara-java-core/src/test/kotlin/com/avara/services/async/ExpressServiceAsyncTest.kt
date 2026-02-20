@@ -2,26 +2,19 @@
 
 package com.avara.services.async
 
-import com.avara.TestServerExtension
 import com.avara.client.okhttp.AvaraOkHttpClientAsync
 import com.avara.core.JsonValue
 import com.avara.models.express.ExpressCreateParams
 import com.avara.models.express.ExpressUpdateParams
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
 
-@ExtendWith(TestServerExtension::class)
 internal class ExpressServiceAsyncTest {
 
     @Disabled("Prism tests are disabled")
     @Test
     fun create() {
-        val client =
-            AvaraOkHttpClientAsync.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .apiKey("My API Key")
-                .build()
+        val client = AvaraOkHttpClientAsync.builder().apiKey("My API Key").build()
         val expressServiceAsync = client.express()
 
         val expressFuture =
@@ -44,11 +37,7 @@ internal class ExpressServiceAsyncTest {
     @Disabled("Prism tests are disabled")
     @Test
     fun retrieve() {
-        val client =
-            AvaraOkHttpClientAsync.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .apiKey("My API Key")
-                .build()
+        val client = AvaraOkHttpClientAsync.builder().apiKey("My API Key").build()
         val expressServiceAsync = client.express()
 
         val expressFuture = expressServiceAsync.retrieve("cus_1234567890abcdef1234567890abcdef")
@@ -60,11 +49,7 @@ internal class ExpressServiceAsyncTest {
     @Disabled("Prism tests are disabled")
     @Test
     fun update() {
-        val client =
-            AvaraOkHttpClientAsync.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .apiKey("My API Key")
-                .build()
+        val client = AvaraOkHttpClientAsync.builder().apiKey("My API Key").build()
         val expressServiceAsync = client.express()
 
         val expressFuture =
@@ -89,11 +74,7 @@ internal class ExpressServiceAsyncTest {
     @Disabled("Prism tests are disabled")
     @Test
     fun list() {
-        val client =
-            AvaraOkHttpClientAsync.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .apiKey("My API Key")
-                .build()
+        val client = AvaraOkHttpClientAsync.builder().apiKey("My API Key").build()
         val expressServiceAsync = client.express()
 
         val pageFuture = expressServiceAsync.list()
@@ -105,11 +86,7 @@ internal class ExpressServiceAsyncTest {
     @Disabled("Prism tests are disabled")
     @Test
     fun deactivate() {
-        val client =
-            AvaraOkHttpClientAsync.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .apiKey("My API Key")
-                .build()
+        val client = AvaraOkHttpClientAsync.builder().apiKey("My API Key").build()
         val expressServiceAsync = client.express()
 
         val responseFuture = expressServiceAsync.deactivate("cus_1234567890abcdef1234567890abcdef")
@@ -121,11 +98,7 @@ internal class ExpressServiceAsyncTest {
     @Disabled("Prism tests are disabled")
     @Test
     fun reactivate() {
-        val client =
-            AvaraOkHttpClientAsync.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .apiKey("My API Key")
-                .build()
+        val client = AvaraOkHttpClientAsync.builder().apiKey("My API Key").build()
         val expressServiceAsync = client.express()
 
         val responseFuture = expressServiceAsync.reactivate("cus_1234567890abcdef1234567890abcdef")

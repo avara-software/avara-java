@@ -2,7 +2,6 @@
 
 package com.avara.services.async
 
-import com.avara.TestServerExtension
 import com.avara.client.okhttp.AvaraOkHttpClientAsync
 import com.avara.core.UnwrapWebhookParams
 import com.avara.core.http.Headers
@@ -11,9 +10,7 @@ import com.standardwebhooks.Webhook
 import java.time.Instant
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.junit.jupiter.api.extension.ExtendWith
 
-@ExtendWith(TestServerExtension::class)
 internal class WebhookServiceAsyncTest {
 
     @Test
