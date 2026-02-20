@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test
 
 internal class UserServiceAsyncTest {
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun retrieve() {
         val client = AvaraOkHttpClientAsync.builder().apiKey("My API Key").build()
@@ -24,7 +24,7 @@ internal class UserServiceAsyncTest {
         user.validate()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun update() {
         val client = AvaraOkHttpClientAsync.builder().apiKey("My API Key").build()
@@ -51,7 +51,7 @@ internal class UserServiceAsyncTest {
         user.validate()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun list() {
         val client = AvaraOkHttpClientAsync.builder().apiKey("My API Key").build()
@@ -63,7 +63,7 @@ internal class UserServiceAsyncTest {
         page.response().validate()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun invite() {
         val client = AvaraOkHttpClientAsync.builder().apiKey("My API Key").build()
@@ -90,7 +90,7 @@ internal class UserServiceAsyncTest {
         response.validate()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun reactivate() {
         val client = AvaraOkHttpClientAsync.builder().apiKey("My API Key").build()
@@ -107,7 +107,7 @@ internal class UserServiceAsyncTest {
         response.validate()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun revokeAccess() {
         val client = AvaraOkHttpClientAsync.builder().apiKey("My API Key").build()

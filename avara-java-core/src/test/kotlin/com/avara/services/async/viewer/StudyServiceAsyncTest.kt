@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test
 
 internal class StudyServiceAsyncTest {
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun create() {
         val client = AvaraOkHttpClientAsync.builder().apiKey("My API Key").build()
@@ -41,7 +41,7 @@ internal class StudyServiceAsyncTest {
         study.validate()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun retrieve() {
         val client = AvaraOkHttpClientAsync.builder().apiKey("My API Key").build()
@@ -53,7 +53,7 @@ internal class StudyServiceAsyncTest {
         study.validate()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun update() {
         val client = AvaraOkHttpClientAsync.builder().apiKey("My API Key").build()
@@ -79,7 +79,7 @@ internal class StudyServiceAsyncTest {
         study.validate()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun list() {
         val client = AvaraOkHttpClientAsync.builder().apiKey("My API Key").build()
@@ -91,7 +91,7 @@ internal class StudyServiceAsyncTest {
         page.response().validate()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun cancel() {
         val client = AvaraOkHttpClientAsync.builder().apiKey("My API Key").build()
@@ -109,7 +109,7 @@ internal class StudyServiceAsyncTest {
         response.validate()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun rerouteUrl() {
         val client = AvaraOkHttpClientAsync.builder().apiKey("My API Key").build()
@@ -127,7 +127,7 @@ internal class StudyServiceAsyncTest {
         response.validate()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun retrieveByUid() {
         val client = AvaraOkHttpClientAsync.builder().apiKey("My API Key").build()
@@ -139,7 +139,7 @@ internal class StudyServiceAsyncTest {
         response.validate()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun uncancel() {
         val client = AvaraOkHttpClientAsync.builder().apiKey("My API Key").build()

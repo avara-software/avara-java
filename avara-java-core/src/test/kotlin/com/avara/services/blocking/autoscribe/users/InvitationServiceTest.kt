@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test
 
 internal class InvitationServiceTest {
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun retrieve() {
         val client = AvaraOkHttpClient.builder().apiKey("My API Key").build()
@@ -21,7 +21,7 @@ internal class InvitationServiceTest {
         invitation.validate()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun update() {
         val client = AvaraOkHttpClient.builder().apiKey("My API Key").build()
@@ -49,7 +49,7 @@ internal class InvitationServiceTest {
         invitation.validate()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun list() {
         val client = AvaraOkHttpClient.builder().apiKey("My API Key").build()
@@ -60,7 +60,7 @@ internal class InvitationServiceTest {
         page.response().validate()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun revoke() {
         val client = AvaraOkHttpClient.builder().apiKey("My API Key").build()
