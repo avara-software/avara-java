@@ -2,25 +2,18 @@
 
 package com.avara.services.blocking.express
 
-import com.avara.TestServerExtension
 import com.avara.client.okhttp.AvaraOkHttpClient
 import com.avara.models.express.users.UserAddParams
 import com.avara.models.express.users.UserRemoveParams
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
 
-@ExtendWith(TestServerExtension::class)
 internal class UserServiceTest {
 
     @Disabled("Prism tests are disabled")
     @Test
     fun add() {
-        val client =
-            AvaraOkHttpClient.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .apiKey("My API Key")
-                .build()
+        val client = AvaraOkHttpClient.builder().apiKey("My API Key").build()
         val userService = client.express().users()
 
         val response =
@@ -37,11 +30,7 @@ internal class UserServiceTest {
     @Disabled("Prism tests are disabled")
     @Test
     fun remove() {
-        val client =
-            AvaraOkHttpClient.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .apiKey("My API Key")
-                .build()
+        val client = AvaraOkHttpClient.builder().apiKey("My API Key").build()
         val userService = client.express().users()
 
         val user =

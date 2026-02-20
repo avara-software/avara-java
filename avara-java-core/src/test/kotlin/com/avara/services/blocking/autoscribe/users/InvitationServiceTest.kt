@@ -2,25 +2,18 @@
 
 package com.avara.services.blocking.autoscribe.users
 
-import com.avara.TestServerExtension
 import com.avara.client.okhttp.AvaraOkHttpClient
 import com.avara.models.autoscribe.users.invitations.InvitationRevokeParams
 import com.avara.models.autoscribe.users.invitations.InvitationUpdateParams
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
 
-@ExtendWith(TestServerExtension::class)
 internal class InvitationServiceTest {
 
     @Disabled("Prism tests are disabled")
     @Test
     fun retrieve() {
-        val client =
-            AvaraOkHttpClient.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .apiKey("My API Key")
-                .build()
+        val client = AvaraOkHttpClient.builder().apiKey("My API Key").build()
         val invitationService = client.autoScribe().users().invitations()
 
         val invitation = invitationService.retrieve("inv_1234567890abcdef1234567890abcdef")
@@ -31,11 +24,7 @@ internal class InvitationServiceTest {
     @Disabled("Prism tests are disabled")
     @Test
     fun update() {
-        val client =
-            AvaraOkHttpClient.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .apiKey("My API Key")
-                .build()
+        val client = AvaraOkHttpClient.builder().apiKey("My API Key").build()
         val invitationService = client.autoScribe().users().invitations()
 
         val invitation =
@@ -63,11 +52,7 @@ internal class InvitationServiceTest {
     @Disabled("Prism tests are disabled")
     @Test
     fun list() {
-        val client =
-            AvaraOkHttpClient.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .apiKey("My API Key")
-                .build()
+        val client = AvaraOkHttpClient.builder().apiKey("My API Key").build()
         val invitationService = client.autoScribe().users().invitations()
 
         val page = invitationService.list()
@@ -78,11 +63,7 @@ internal class InvitationServiceTest {
     @Disabled("Prism tests are disabled")
     @Test
     fun revoke() {
-        val client =
-            AvaraOkHttpClient.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .apiKey("My API Key")
-                .build()
+        val client = AvaraOkHttpClient.builder().apiKey("My API Key").build()
         val invitationService = client.autoScribe().users().invitations()
 
         val response =

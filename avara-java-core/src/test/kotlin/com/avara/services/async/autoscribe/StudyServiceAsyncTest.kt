@@ -2,7 +2,6 @@
 
 package com.avara.services.async.autoscribe
 
-import com.avara.TestServerExtension
 import com.avara.client.okhttp.AvaraOkHttpClientAsync
 import com.avara.core.JsonValue
 import com.avara.models.autoscribe.StudyReportMetadata
@@ -14,19 +13,13 @@ import com.avara.models.autoscribe.studies.StudyUpdateParams
 import com.avara.models.autoscribe.studies.StudyViewerOnlyRerouteUrlParams
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
 
-@ExtendWith(TestServerExtension::class)
 internal class StudyServiceAsyncTest {
 
     @Disabled("Prism tests are disabled")
     @Test
     fun create() {
-        val client =
-            AvaraOkHttpClientAsync.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .apiKey("My API Key")
-                .build()
+        val client = AvaraOkHttpClientAsync.builder().apiKey("My API Key").build()
         val studyServiceAsync = client.autoScribe().studies()
 
         val studyFuture =
@@ -81,11 +74,7 @@ internal class StudyServiceAsyncTest {
     @Disabled("Prism tests are disabled")
     @Test
     fun retrieve() {
-        val client =
-            AvaraOkHttpClientAsync.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .apiKey("My API Key")
-                .build()
+        val client = AvaraOkHttpClientAsync.builder().apiKey("My API Key").build()
         val studyServiceAsync = client.autoScribe().studies()
 
         val studyFuture = studyServiceAsync.retrieve("stu_1234567890abcdef1234567890abcdef")
@@ -97,11 +86,7 @@ internal class StudyServiceAsyncTest {
     @Disabled("Prism tests are disabled")
     @Test
     fun update() {
-        val client =
-            AvaraOkHttpClientAsync.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .apiKey("My API Key")
-                .build()
+        val client = AvaraOkHttpClientAsync.builder().apiKey("My API Key").build()
         val studyServiceAsync = client.autoScribe().studies()
 
         val studyFuture =
@@ -155,11 +140,7 @@ internal class StudyServiceAsyncTest {
     @Disabled("Prism tests are disabled")
     @Test
     fun list() {
-        val client =
-            AvaraOkHttpClientAsync.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .apiKey("My API Key")
-                .build()
+        val client = AvaraOkHttpClientAsync.builder().apiKey("My API Key").build()
         val studyServiceAsync = client.autoScribe().studies()
 
         val pageFuture = studyServiceAsync.list()
@@ -171,11 +152,7 @@ internal class StudyServiceAsyncTest {
     @Disabled("Prism tests are disabled")
     @Test
     fun cancel() {
-        val client =
-            AvaraOkHttpClientAsync.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .apiKey("My API Key")
-                .build()
+        val client = AvaraOkHttpClientAsync.builder().apiKey("My API Key").build()
         val studyServiceAsync = client.autoScribe().studies()
 
         val responseFuture =
@@ -193,11 +170,7 @@ internal class StudyServiceAsyncTest {
     @Disabled("Prism tests are disabled")
     @Test
     fun rerouteUrl() {
-        val client =
-            AvaraOkHttpClientAsync.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .apiKey("My API Key")
-                .build()
+        val client = AvaraOkHttpClientAsync.builder().apiKey("My API Key").build()
         val studyServiceAsync = client.autoScribe().studies()
 
         val responseFuture =
@@ -216,11 +189,7 @@ internal class StudyServiceAsyncTest {
     @Disabled("Prism tests are disabled")
     @Test
     fun retrieveByUid() {
-        val client =
-            AvaraOkHttpClientAsync.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .apiKey("My API Key")
-                .build()
+        val client = AvaraOkHttpClientAsync.builder().apiKey("My API Key").build()
         val studyServiceAsync = client.autoScribe().studies()
 
         val responseFuture = studyServiceAsync.retrieveByUid("1.2.840.10008.5.1.4.1.1.2")
@@ -232,11 +201,7 @@ internal class StudyServiceAsyncTest {
     @Disabled("Prism tests are disabled")
     @Test
     fun uncancel() {
-        val client =
-            AvaraOkHttpClientAsync.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .apiKey("My API Key")
-                .build()
+        val client = AvaraOkHttpClientAsync.builder().apiKey("My API Key").build()
         val studyServiceAsync = client.autoScribe().studies()
 
         val responseFuture =
@@ -254,11 +219,7 @@ internal class StudyServiceAsyncTest {
     @Disabled("Prism tests are disabled")
     @Test
     fun viewerOnlyRerouteUrl() {
-        val client =
-            AvaraOkHttpClientAsync.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .apiKey("My API Key")
-                .build()
+        val client = AvaraOkHttpClientAsync.builder().apiKey("My API Key").build()
         val studyServiceAsync = client.autoScribe().studies()
 
         val responseFuture =

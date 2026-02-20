@@ -2,7 +2,6 @@
 
 package com.avara.services.blocking.viewer
 
-import com.avara.TestServerExtension
 import com.avara.client.okhttp.AvaraOkHttpClient
 import com.avara.models.viewer.users.UserInviteParams
 import com.avara.models.viewer.users.UserReactivateParams
@@ -10,19 +9,13 @@ import com.avara.models.viewer.users.UserRevokeAccessParams
 import com.avara.models.viewer.users.UserUpdateParams
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
 
-@ExtendWith(TestServerExtension::class)
 internal class UserServiceTest {
 
     @Disabled("Prism tests are disabled")
     @Test
     fun retrieve() {
-        val client =
-            AvaraOkHttpClient.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .apiKey("My API Key")
-                .build()
+        val client = AvaraOkHttpClient.builder().apiKey("My API Key").build()
         val userService = client.viewer().users()
 
         val user = userService.retrieve("usr_1234567890abcdef1234567890abcdef")
@@ -33,11 +26,7 @@ internal class UserServiceTest {
     @Disabled("Prism tests are disabled")
     @Test
     fun update() {
-        val client =
-            AvaraOkHttpClient.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .apiKey("My API Key")
-                .build()
+        val client = AvaraOkHttpClient.builder().apiKey("My API Key").build()
         val userService = client.viewer().users()
 
         val user =
@@ -63,11 +52,7 @@ internal class UserServiceTest {
     @Disabled("Prism tests are disabled")
     @Test
     fun list() {
-        val client =
-            AvaraOkHttpClient.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .apiKey("My API Key")
-                .build()
+        val client = AvaraOkHttpClient.builder().apiKey("My API Key").build()
         val userService = client.viewer().users()
 
         val page = userService.list()
@@ -78,11 +63,7 @@ internal class UserServiceTest {
     @Disabled("Prism tests are disabled")
     @Test
     fun invite() {
-        val client =
-            AvaraOkHttpClient.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .apiKey("My API Key")
-                .build()
+        val client = AvaraOkHttpClient.builder().apiKey("My API Key").build()
         val userService = client.viewer().users()
 
         val response =
@@ -108,11 +89,7 @@ internal class UserServiceTest {
     @Disabled("Prism tests are disabled")
     @Test
     fun reactivate() {
-        val client =
-            AvaraOkHttpClient.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .apiKey("My API Key")
-                .build()
+        val client = AvaraOkHttpClient.builder().apiKey("My API Key").build()
         val userService = client.viewer().users()
 
         val response =
@@ -128,11 +105,7 @@ internal class UserServiceTest {
     @Disabled("Prism tests are disabled")
     @Test
     fun revokeAccess() {
-        val client =
-            AvaraOkHttpClient.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .apiKey("My API Key")
-                .build()
+        val client = AvaraOkHttpClient.builder().apiKey("My API Key").build()
         val userService = client.viewer().users()
 
         val response =

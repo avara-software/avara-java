@@ -2,26 +2,19 @@
 
 package com.avara.services.async.autoscribe
 
-import com.avara.TestServerExtension
 import com.avara.client.okhttp.AvaraOkHttpClientAsync
 import com.avara.models.autoscribe.reports.ReportListParams
 import com.avara.models.autoscribe.reports.ReportPdfParams
 import com.avara.models.autoscribe.reports.ReportTextParams
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
 
-@ExtendWith(TestServerExtension::class)
 internal class ReportServiceAsyncTest {
 
     @Disabled("Prism tests are disabled")
     @Test
     fun list() {
-        val client =
-            AvaraOkHttpClientAsync.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .apiKey("My API Key")
-                .build()
+        val client = AvaraOkHttpClientAsync.builder().apiKey("My API Key").build()
         val reportServiceAsync = client.autoScribe().reports()
 
         val reportsFuture =
@@ -39,11 +32,7 @@ internal class ReportServiceAsyncTest {
     @Disabled("Prism tests are disabled")
     @Test
     fun addendum() {
-        val client =
-            AvaraOkHttpClientAsync.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .apiKey("My API Key")
-                .build()
+        val client = AvaraOkHttpClientAsync.builder().apiKey("My API Key").build()
         val reportServiceAsync = client.autoScribe().reports()
 
         val responseFuture = reportServiceAsync.addendum("rep_1234567890abcdef1234567890abcdef")
@@ -55,11 +44,7 @@ internal class ReportServiceAsyncTest {
     @Disabled("Prism tests are disabled")
     @Test
     fun cancelAddendum() {
-        val client =
-            AvaraOkHttpClientAsync.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .apiKey("My API Key")
-                .build()
+        val client = AvaraOkHttpClientAsync.builder().apiKey("My API Key").build()
         val reportServiceAsync = client.autoScribe().reports()
 
         val responseFuture =
@@ -72,11 +57,7 @@ internal class ReportServiceAsyncTest {
     @Disabled("Prism tests are disabled")
     @Test
     fun pdf() {
-        val client =
-            AvaraOkHttpClientAsync.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .apiKey("My API Key")
-                .build()
+        val client = AvaraOkHttpClientAsync.builder().apiKey("My API Key").build()
         val reportServiceAsync = client.autoScribe().reports()
 
         val responseFuture =
@@ -95,11 +76,7 @@ internal class ReportServiceAsyncTest {
     @Disabled("Prism tests are disabled")
     @Test
     fun text() {
-        val client =
-            AvaraOkHttpClientAsync.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .apiKey("My API Key")
-                .build()
+        val client = AvaraOkHttpClientAsync.builder().apiKey("My API Key").build()
         val reportServiceAsync = client.autoScribe().reports()
 
         val responseFuture =

@@ -2,26 +2,19 @@
 
 package com.avara.services.blocking.autoscribe
 
-import com.avara.TestServerExtension
 import com.avara.client.okhttp.AvaraOkHttpClient
 import com.avara.models.autoscribe.reports.ReportListParams
 import com.avara.models.autoscribe.reports.ReportPdfParams
 import com.avara.models.autoscribe.reports.ReportTextParams
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
 
-@ExtendWith(TestServerExtension::class)
 internal class ReportServiceTest {
 
     @Disabled("Prism tests are disabled")
     @Test
     fun list() {
-        val client =
-            AvaraOkHttpClient.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .apiKey("My API Key")
-                .build()
+        val client = AvaraOkHttpClient.builder().apiKey("My API Key").build()
         val reportService = client.autoScribe().reports()
 
         val reports =
@@ -38,11 +31,7 @@ internal class ReportServiceTest {
     @Disabled("Prism tests are disabled")
     @Test
     fun addendum() {
-        val client =
-            AvaraOkHttpClient.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .apiKey("My API Key")
-                .build()
+        val client = AvaraOkHttpClient.builder().apiKey("My API Key").build()
         val reportService = client.autoScribe().reports()
 
         val response = reportService.addendum("rep_1234567890abcdef1234567890abcdef")
@@ -53,11 +42,7 @@ internal class ReportServiceTest {
     @Disabled("Prism tests are disabled")
     @Test
     fun cancelAddendum() {
-        val client =
-            AvaraOkHttpClient.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .apiKey("My API Key")
-                .build()
+        val client = AvaraOkHttpClient.builder().apiKey("My API Key").build()
         val reportService = client.autoScribe().reports()
 
         val response = reportService.cancelAddendum("rep_1234567890abcdef1234567890abcdef")
@@ -68,11 +53,7 @@ internal class ReportServiceTest {
     @Disabled("Prism tests are disabled")
     @Test
     fun pdf() {
-        val client =
-            AvaraOkHttpClient.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .apiKey("My API Key")
-                .build()
+        val client = AvaraOkHttpClient.builder().apiKey("My API Key").build()
         val reportService = client.autoScribe().reports()
 
         val response =
@@ -90,11 +71,7 @@ internal class ReportServiceTest {
     @Disabled("Prism tests are disabled")
     @Test
     fun text() {
-        val client =
-            AvaraOkHttpClient.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .apiKey("My API Key")
-                .build()
+        val client = AvaraOkHttpClient.builder().apiKey("My API Key").build()
         val reportService = client.autoScribe().reports()
 
         val response =
