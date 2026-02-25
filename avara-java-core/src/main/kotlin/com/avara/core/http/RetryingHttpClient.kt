@@ -1,3 +1,5 @@
+// File generated from our OpenAPI spec by Stainless.
+
 package com.avara.core.http
 
 import com.avara.core.DefaultSleeper
