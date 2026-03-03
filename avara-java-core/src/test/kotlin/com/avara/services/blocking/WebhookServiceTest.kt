@@ -49,7 +49,29 @@ internal class WebhookServiceTest {
                 )
                 .build()
 
-        webhookService.unwrap(payload).validate()
+        // Correct key should not throw
+        webhookService.unwrap(
+            UnwrapWebhookParams.builder()
+                .body(payload)
+                .headers(headers)
+                .secret(webhookSecret)
+                .build()
+        )
+        webhookService
+            .withOptions { it.webhookKey(webhookSecret) }
+            .unwrap(UnwrapWebhookParams.builder().body(payload).headers(headers).build())
+
+        // Secret in method takes precedence to secret on client
+        val wrongKey = "whsec_aaaaaaaaaa"
+        webhookService
+            .withOptions { it.webhookKey(wrongKey) }
+            .unwrap(
+                UnwrapWebhookParams.builder()
+                    .body(payload)
+                    .headers(headers)
+                    .secret(webhookSecret)
+                    .build()
+            )
 
         // Wrong key should throw
         assertThrows<AvaraWebhookException> {
@@ -61,6 +83,29 @@ internal class WebhookServiceTest {
                     .secret(wrongKey)
                     .build()
             )
+        }
+        assertThrows<AvaraWebhookException> {
+            val wrongKey = "whsec_aaaaaaaaaa"
+            webhookService
+                .withOptions { it.webhookKey(wrongKey) }
+                .unwrap(UnwrapWebhookParams.builder().body(payload).headers(headers).build())
+        }
+
+        assertThrows<AvaraWebhookException> {
+            val wrongKey = "whsec_aaaaaaaaaa"
+            webhookService.unwrap(
+                UnwrapWebhookParams.builder()
+                    .body(payload)
+                    .headers(headers)
+                    .secret(wrongKey)
+                    .build()
+            )
+        }
+        assertThrows<AvaraWebhookException> {
+            val wrongKey = "whsec_aaaaaaaaaa"
+            webhookService
+                .withOptions { it.webhookKey(wrongKey) }
+                .unwrap(UnwrapWebhookParams.builder().body(payload).headers(headers).build())
         }
 
         // Bad signature should throw
@@ -76,6 +121,14 @@ internal class WebhookServiceTest {
                     .build()
             )
         }
+        assertThrows<AvaraWebhookException> {
+            val badSig = webhook.sign(messageId, timestampSeconds, "some other payload")
+            val badHeaders =
+                headers.toBuilder().replace("webhook-signature", listOf(badSig)).build()
+            webhookService
+                .withOptions { it.webhookKey(webhookSecret) }
+                .unwrap(UnwrapWebhookParams.builder().body(payload).headers(badHeaders).build())
+        }
 
         // Old timestamp should throw
         assertThrows<AvaraWebhookException> {
@@ -88,6 +141,12 @@ internal class WebhookServiceTest {
                     .build()
             )
         }
+        assertThrows<AvaraWebhookException> {
+            val oldHeaders = headers.toBuilder().replace("webhook-timestamp", listOf("5")).build()
+            webhookService
+                .withOptions { it.webhookKey(webhookSecret) }
+                .unwrap(UnwrapWebhookParams.builder().body(payload).headers(oldHeaders).build())
+        }
 
         // Wrong message ID should throw
         assertThrows<AvaraWebhookException> {
@@ -99,6 +158,12 @@ internal class WebhookServiceTest {
                     .secret(webhookSecret)
                     .build()
             )
+        }
+        assertThrows<AvaraWebhookException> {
+            val wrongIdHeaders = headers.toBuilder().replace("webhook-id", listOf("wrong")).build()
+            webhookService
+                .withOptions { it.webhookKey(webhookSecret) }
+                .unwrap(UnwrapWebhookParams.builder().body(payload).headers(wrongIdHeaders).build())
         }
     }
 }
