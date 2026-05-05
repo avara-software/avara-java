@@ -5,12 +5,16 @@ package com.avara.errors
 import com.avara.core.JsonValue
 import com.avara.core.checkRequired
 import com.avara.core.http.Headers
+import com.avara.core.jsonMapper
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class UnauthorizedException
 private constructor(private val headers: Headers, private val body: JsonValue, cause: Throwable?) :
-    AvaraServiceException("401: $body", cause) {
+    AvaraServiceException(
+        "401: ${if (body.isMissing()) "Unknown" else jsonMapper().writeValueAsString(body)}",
+        cause,
+    ) {
 
     override fun statusCode(): Int = 401
 

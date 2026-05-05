@@ -5,12 +5,16 @@ package com.avara.errors
 import com.avara.core.JsonValue
 import com.avara.core.checkRequired
 import com.avara.core.http.Headers
+import com.avara.core.jsonMapper
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class NotFoundException
 private constructor(private val headers: Headers, private val body: JsonValue, cause: Throwable?) :
-    AvaraServiceException("404: $body", cause) {
+    AvaraServiceException(
+        "404: ${if (body.isMissing()) "Unknown" else jsonMapper().writeValueAsString(body)}",
+        cause,
+    ) {
 
     override fun statusCode(): Int = 404
 
