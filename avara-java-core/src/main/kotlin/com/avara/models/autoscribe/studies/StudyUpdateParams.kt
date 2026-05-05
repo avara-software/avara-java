@@ -910,6 +910,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws AvaraInvalidDataException if any value type in this object doesn't match its
+         *   expected type.
+         */
         fun validate(): Body = apply {
             if (validated) {
                 return@apply
@@ -1046,6 +1055,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws AvaraInvalidDataException if any value type in this object doesn't match its
+         *   expected type.
+         */
         fun validate(): Metadata = apply {
             if (validated) {
                 return@apply
@@ -1595,6 +1613,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws AvaraInvalidDataException if any value type in this object doesn't match its
+         *   expected type.
+         */
         fun validate(): ReportMetadata = apply {
             if (validated) {
                 return@apply
@@ -1793,6 +1820,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws AvaraInvalidDataException if any value type in this object doesn't match its
+             *   expected type.
+             */
             fun validate(): Height = apply {
                 if (validated) {
                     return@apply
@@ -1914,6 +1951,16 @@ private constructor(
 
                 private var validated: Boolean = false
 
+                /**
+                 * Validates that the types of all values in this object match their expected types
+                 * recursively.
+                 *
+                 * This method is _not_ forwards compatible with new types from the API for existing
+                 * fields.
+                 *
+                 * @throws AvaraInvalidDataException if any value type in this object doesn't match
+                 *   its expected type.
+                 */
                 fun validate(): Unit = apply {
                     if (validated) {
                         return@apply
@@ -2066,6 +2113,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws AvaraInvalidDataException if any value type in this object doesn't match its
+             *   expected type.
+             */
             fun validate(): Sex = apply {
                 if (validated) {
                     return@apply
@@ -2253,6 +2310,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws AvaraInvalidDataException if any value type in this object doesn't match its
+             *   expected type.
+             */
             fun validate(): Weight = apply {
                 if (validated) {
                     return@apply
@@ -2374,6 +2441,16 @@ private constructor(
 
                 private var validated: Boolean = false
 
+                /**
+                 * Validates that the types of all values in this object match their expected types
+                 * recursively.
+                 *
+                 * This method is _not_ forwards compatible with new types from the API for existing
+                 * fields.
+                 *
+                 * @throws AvaraInvalidDataException if any value type in this object doesn't match
+                 *   its expected type.
+                 */
                 fun validate(): Unit = apply {
                     if (validated) {
                         return@apply
@@ -2572,6 +2649,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws AvaraInvalidDataException if any value type in this object doesn't match its
+         *   expected type.
+         */
         fun validate(): Severity = apply {
             if (validated) {
                 return@apply
