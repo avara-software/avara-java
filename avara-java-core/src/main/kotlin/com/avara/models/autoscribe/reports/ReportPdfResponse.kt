@@ -59,6 +59,35 @@ private constructor(
 
     fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
 
+    /**
+     * Maps this instance's current variant to a value of type [T] using the given [visitor].
+     *
+     * Note that this method is _not_ forwards compatible with new variants from the API, unless
+     * [visitor] overrides [Visitor.unknown]. To handle variants not known to this version of the
+     * SDK gracefully, consider overriding [Visitor.unknown]:
+     * ```java
+     * import com.avara.core.JsonValue;
+     * import java.util.Optional;
+     *
+     * Optional<String> result = reportPdfResponse.accept(new ReportPdfResponse.Visitor<Optional<String>>() {
+     *     @Override
+     *     public Optional<String> visitSingle(SingleReportPdfResponse single) {
+     *         return Optional.of(single.toString());
+     *     }
+     *
+     *     // ...
+     *
+     *     @Override
+     *     public Optional<String> unknown(JsonValue json) {
+     *         // Or inspect the `json`.
+     *         return Optional.empty();
+     *     }
+     * });
+     * ```
+     *
+     * @throws AvaraInvalidDataException if [Visitor.unknown] is not overridden in [visitor] and the
+     *   current variant is unknown.
+     */
     fun <T> accept(visitor: Visitor<T>): T =
         when {
             single != null -> visitor.visitSingle(single)
@@ -68,6 +97,14 @@ private constructor(
 
     private var validated: Boolean = false
 
+    /**
+     * Validates that the types of all values in this object match their expected types recursively.
+     *
+     * This method is _not_ forwards compatible with new types from the API for existing fields.
+     *
+     * @throws AvaraInvalidDataException if any value type in this object doesn't match its expected
+     *   type.
+     */
     fun validate(): ReportPdfResponse = apply {
         if (validated) {
             return@apply
@@ -507,6 +544,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws AvaraInvalidDataException if any value type in this object doesn't match its
+         *   expected type.
+         */
         fun validate(): SingleReportPdfResponse = apply {
             if (validated) {
                 return@apply
@@ -786,6 +832,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws AvaraInvalidDataException if any value type in this object doesn't match its
+         *   expected type.
+         */
         fun validate(): ListReportsPdfResponse = apply {
             if (validated) {
                 return@apply
@@ -1118,6 +1173,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws AvaraInvalidDataException if any value type in this object doesn't match its
+             *   expected type.
+             */
             fun validate(): Report = apply {
                 if (validated) {
                     return@apply
