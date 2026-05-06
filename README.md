@@ -444,6 +444,21 @@ AvaraClient client = AvaraOkHttpClient.builder()
     .build();
 ```
 
+If the proxy responds with `407 Proxy Authentication Required`, supply credentials by also configuring `proxyAuthenticator`:
+
+```java
+import com.avara.client.AvaraClient;
+import com.avara.client.okhttp.AvaraOkHttpClient;
+import com.avara.core.http.ProxyAuthenticator;
+
+AvaraClient client = AvaraOkHttpClient.builder()
+    .fromEnv()
+    .proxy(...)
+    // Or a custom implementation of `ProxyAuthenticator`.
+    .proxyAuthenticator(ProxyAuthenticator.basic("username", "password"))
+    .build();
+```
+
 ### Connection pooling
 
 To customize the underlying OkHttp connection pool, configure the client using the `maxIdleConnections` and `keepAliveDuration` methods:
