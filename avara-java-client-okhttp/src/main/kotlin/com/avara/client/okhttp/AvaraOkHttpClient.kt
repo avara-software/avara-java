@@ -5,6 +5,7 @@ package com.avara.client.okhttp
 import com.avara.client.AvaraClient
 import com.avara.client.AvaraClientImpl
 import com.avara.core.ClientOptions
+import com.avara.core.LogLevel
 import com.avara.core.Sleeper
 import com.avara.core.Timeout
 import com.avara.core.http.AsyncStreamResponse
@@ -289,6 +290,15 @@ class AvaraOkHttpClient private constructor() {
          * Defaults to 2.
          */
         fun maxRetries(maxRetries: Int) = apply { clientOptions.maxRetries(maxRetries) }
+
+        /**
+         * The level at which to log request and response information.
+         *
+         * [fromEnv] will set the level from environment variables. See [LogLevel.fromEnv].
+         *
+         * Defaults to [LogLevel.fromEnv].
+         */
+        fun logLevel(logLevel: LogLevel) = apply { clientOptions.logLevel(logLevel) }
 
         /**
          * API key authentication. Format: sk_live_{32-hex-chars}. Example:
