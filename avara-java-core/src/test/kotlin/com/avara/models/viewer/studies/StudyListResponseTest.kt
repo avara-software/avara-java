@@ -6,7 +6,9 @@ import com.avara.core.JsonValue
 import com.avara.core.jsonMapper
 import com.avara.models.ApiKeyReference
 import com.avara.models.ExpressCustomerReference
+import com.avara.models.Severity
 import com.avara.models.UserReference
+import com.avara.models.viewer.StudyViewerStatus
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import java.time.OffsetDateTime
 import org.assertj.core.api.Assertions.assertThat
@@ -21,11 +23,11 @@ internal class StudyListResponseTest {
                 .cancelledAt(null)
                 .createdAt(OffsetDateTime.parse("2024-03-15T10:30:00Z"))
                 .isCancelled(false)
-                .severity(StudyListResponse.Severity.HIGH)
+                .severity(Severity.HIGH)
                 .studyDescription("CT Chest/Abdomen/Pelvis")
                 .studyId("stu_1234567890abcdef1234567890abcdef")
                 .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
-                .studyViewerStatus(StudyListResponse.StudyViewerStatus.INCOMPLETE)
+                .studyViewerStatus(StudyViewerStatus.INCOMPLETE)
                 .updatedAt(OffsetDateTime.parse("2024-03-15T14:20:00Z"))
                 .assignedTo(
                     UserReference.builder()
@@ -74,13 +76,12 @@ internal class StudyListResponseTest {
         assertThat(studyListResponse.createdAt())
             .contains(OffsetDateTime.parse("2024-03-15T10:30:00Z"))
         assertThat(studyListResponse.isCancelled()).isEqualTo(false)
-        assertThat(studyListResponse.severity()).isEqualTo(StudyListResponse.Severity.HIGH)
+        assertThat(studyListResponse.severity()).isEqualTo(Severity.HIGH)
         assertThat(studyListResponse.studyDescription()).isEqualTo("CT Chest/Abdomen/Pelvis")
         assertThat(studyListResponse.studyId()).isEqualTo("stu_1234567890abcdef1234567890abcdef")
         assertThat(studyListResponse.studyInstanceUid())
             .isEqualTo("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
-        assertThat(studyListResponse.studyViewerStatus())
-            .isEqualTo(StudyListResponse.StudyViewerStatus.INCOMPLETE)
+        assertThat(studyListResponse.studyViewerStatus()).isEqualTo(StudyViewerStatus.INCOMPLETE)
         assertThat(studyListResponse.updatedAt())
             .contains(OffsetDateTime.parse("2024-03-15T14:20:00Z"))
         assertThat(studyListResponse.assignedTo())
@@ -139,11 +140,11 @@ internal class StudyListResponseTest {
                 .cancelledAt(null)
                 .createdAt(OffsetDateTime.parse("2024-03-15T10:30:00Z"))
                 .isCancelled(false)
-                .severity(StudyListResponse.Severity.HIGH)
+                .severity(Severity.HIGH)
                 .studyDescription("CT Chest/Abdomen/Pelvis")
                 .studyId("stu_1234567890abcdef1234567890abcdef")
                 .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
-                .studyViewerStatus(StudyListResponse.StudyViewerStatus.INCOMPLETE)
+                .studyViewerStatus(StudyViewerStatus.INCOMPLETE)
                 .updatedAt(OffsetDateTime.parse("2024-03-15T14:20:00Z"))
                 .assignedTo(
                     UserReference.builder()

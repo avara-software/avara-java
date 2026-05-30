@@ -3,6 +3,8 @@
 package com.avara.services.async.autoscribe
 
 import com.avara.client.okhttp.AvaraOkHttpClientAsync
+import com.avara.models.AssignableUserLevel
+import com.avara.models.ClinicRole
 import com.avara.models.autoscribe.users.UserInviteParams
 import com.avara.models.autoscribe.users.UserReactivateParams
 import com.avara.models.autoscribe.users.UserRevokeAccessParams
@@ -36,11 +38,11 @@ internal class UserServiceAsyncTest {
                     .userId("usr_1234567890abcdef1234567890abcdef")
                     .canCreateReports(true)
                     .canManageStudies(true)
-                    .clinicRole(UserUpdateParams.ClinicRole.RADIOLOGIST)
+                    .clinicRole(ClinicRole.RADIOLOGIST)
                     .firstName("Sarah")
                     .hasDashboardAccess(true)
                     .lastName("Johnson-Smith")
-                    .level(UserUpdateParams.Level.ADMIN)
+                    .level(AssignableUserLevel.ADMIN)
                     .middleName("x")
                     .npiNumber("1234567893")
                     .phoneNumber("5551234567")
@@ -76,12 +78,12 @@ internal class UserServiceAsyncTest {
                 UserInviteParams.builder()
                     .canCreateReports(true)
                     .canManageStudies(true)
-                    .clinicRole(UserInviteParams.ClinicRole.RADIOLOGIST)
+                    .clinicRole(ClinicRole.RADIOLOGIST)
                     .email("dr.johnson@hospital.org")
                     .firstName("Sarah")
                     .hasDashboardAccess(true)
                     .lastName("Johnson")
-                    .level(UserInviteParams.Level.MEMBER)
+                    .level(AssignableUserLevel.MEMBER)
                     .middleName("Marie")
                     .npiNumber("1234567893")
                     .phoneNumber("5551234567")

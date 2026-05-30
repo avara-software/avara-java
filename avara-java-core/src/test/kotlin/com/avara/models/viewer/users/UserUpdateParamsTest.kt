@@ -2,6 +2,8 @@
 
 package com.avara.models.viewer.users
 
+import com.avara.models.AssignableUserLevel
+import com.avara.models.ClinicRole
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -12,11 +14,11 @@ internal class UserUpdateParamsTest {
         UserUpdateParams.builder()
             .userId("usr_1234567890abcdef1234567890abcdef")
             .canManageStudies(true)
-            .clinicRole(UserUpdateParams.ClinicRole.RADIOLOGIST)
+            .clinicRole(ClinicRole.RADIOLOGIST)
             .firstName("Sarah")
             .hasDashboardAccess(true)
             .lastName("Johnson-Smith")
-            .level(UserUpdateParams.Level.ADMIN)
+            .level(AssignableUserLevel.ADMIN)
             .middleName("x")
             .phoneNumber("5551234567")
             .suffix1("x")
@@ -40,11 +42,11 @@ internal class UserUpdateParamsTest {
             UserUpdateParams.builder()
                 .userId("usr_1234567890abcdef1234567890abcdef")
                 .canManageStudies(true)
-                .clinicRole(UserUpdateParams.ClinicRole.RADIOLOGIST)
+                .clinicRole(ClinicRole.RADIOLOGIST)
                 .firstName("Sarah")
                 .hasDashboardAccess(true)
                 .lastName("Johnson-Smith")
-                .level(UserUpdateParams.Level.ADMIN)
+                .level(AssignableUserLevel.ADMIN)
                 .middleName("x")
                 .phoneNumber("5551234567")
                 .suffix1("x")
@@ -54,11 +56,11 @@ internal class UserUpdateParamsTest {
         val body = params._body()
 
         assertThat(body.canManageStudies()).contains(true)
-        assertThat(body.clinicRole()).contains(UserUpdateParams.ClinicRole.RADIOLOGIST)
+        assertThat(body.clinicRole()).contains(ClinicRole.RADIOLOGIST)
         assertThat(body.firstName()).contains("Sarah")
         assertThat(body.hasDashboardAccess()).contains(true)
         assertThat(body.lastName()).contains("Johnson-Smith")
-        assertThat(body.level()).contains(UserUpdateParams.Level.ADMIN)
+        assertThat(body.level()).contains(AssignableUserLevel.ADMIN)
         assertThat(body.middleName()).contains("x")
         assertThat(body.phoneNumber()).contains("5551234567")
         assertThat(body.suffix1()).contains("x")

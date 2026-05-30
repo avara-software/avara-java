@@ -3,6 +3,10 @@
 package com.avara.models.autoscribe.studies
 
 import com.avara.core.JsonValue
+import com.avara.models.Severity
+import com.avara.models.autoscribe.HeightUnit
+import com.avara.models.autoscribe.Sex
+import com.avara.models.autoscribe.WeightUnit
 import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -25,7 +29,7 @@ internal class StudyUpdateParamsTest {
             )
             .modality("MRI")
             .addPriorReport(
-                StudyUpdateParams.PriorReport.builder()
+                PriorReport.builder()
                     .reportText("IMPRESSION: No acute cardiopulmonary process.")
                     .externalStudyId("EXT-2024-001")
                     .modality("CT")
@@ -40,7 +44,7 @@ internal class StudyUpdateParamsTest {
                     .facilityName("facilityName")
                     .height(
                         StudyUpdateParams.ReportMetadata.Height.builder()
-                            .unit(StudyUpdateParams.ReportMetadata.Height.Unit.CM)
+                            .unit(HeightUnit.CM)
                             .value(170.0)
                             .build()
                     )
@@ -48,18 +52,18 @@ internal class StudyUpdateParamsTest {
                     .patientName("Jane M. Doe")
                     .procedure("procedure")
                     .referringPhysicianName("referringPhysicianName")
-                    .sex(StudyUpdateParams.ReportMetadata.Sex.FEMALE)
+                    .sex(Sex.FEMALE)
                     .studyDate("7321-69-10")
                     .studyTime("studyTime")
                     .weight(
                         StudyUpdateParams.ReportMetadata.Weight.builder()
-                            .unit(StudyUpdateParams.ReportMetadata.Weight.Unit.KG)
+                            .unit(WeightUnit.KG)
                             .value(68.0)
                             .build()
                     )
                     .build()
             )
-            .severity(StudyUpdateParams.Severity.HIGH)
+            .severity(Severity.HIGH)
             .studyDescription("Brain MRI with and without Contrast")
             .addTechnologistNote("x")
             .technologistTechnique("technologistTechnique")
@@ -93,7 +97,7 @@ internal class StudyUpdateParamsTest {
                 )
                 .modality("MRI")
                 .addPriorReport(
-                    StudyUpdateParams.PriorReport.builder()
+                    PriorReport.builder()
                         .reportText("IMPRESSION: No acute cardiopulmonary process.")
                         .externalStudyId("EXT-2024-001")
                         .modality("CT")
@@ -108,7 +112,7 @@ internal class StudyUpdateParamsTest {
                         .facilityName("facilityName")
                         .height(
                             StudyUpdateParams.ReportMetadata.Height.builder()
-                                .unit(StudyUpdateParams.ReportMetadata.Height.Unit.CM)
+                                .unit(HeightUnit.CM)
                                 .value(170.0)
                                 .build()
                         )
@@ -116,18 +120,18 @@ internal class StudyUpdateParamsTest {
                         .patientName("Jane M. Doe")
                         .procedure("procedure")
                         .referringPhysicianName("referringPhysicianName")
-                        .sex(StudyUpdateParams.ReportMetadata.Sex.FEMALE)
+                        .sex(Sex.FEMALE)
                         .studyDate("7321-69-10")
                         .studyTime("studyTime")
                         .weight(
                             StudyUpdateParams.ReportMetadata.Weight.builder()
-                                .unit(StudyUpdateParams.ReportMetadata.Weight.Unit.KG)
+                                .unit(WeightUnit.KG)
                                 .value(68.0)
                                 .build()
                         )
                         .build()
                 )
-                .severity(StudyUpdateParams.Severity.HIGH)
+                .severity(Severity.HIGH)
                 .studyDescription("Brain MRI with and without Contrast")
                 .addTechnologistNote("x")
                 .technologistTechnique("technologistTechnique")
@@ -149,7 +153,7 @@ internal class StudyUpdateParamsTest {
         assertThat(body.modality()).contains("MRI")
         assertThat(body.priorReports().getOrNull())
             .containsExactly(
-                StudyUpdateParams.PriorReport.builder()
+                PriorReport.builder()
                     .reportText("IMPRESSION: No acute cardiopulmonary process.")
                     .externalStudyId("EXT-2024-001")
                     .modality("CT")
@@ -165,7 +169,7 @@ internal class StudyUpdateParamsTest {
                     .facilityName("facilityName")
                     .height(
                         StudyUpdateParams.ReportMetadata.Height.builder()
-                            .unit(StudyUpdateParams.ReportMetadata.Height.Unit.CM)
+                            .unit(HeightUnit.CM)
                             .value(170.0)
                             .build()
                     )
@@ -173,18 +177,18 @@ internal class StudyUpdateParamsTest {
                     .patientName("Jane M. Doe")
                     .procedure("procedure")
                     .referringPhysicianName("referringPhysicianName")
-                    .sex(StudyUpdateParams.ReportMetadata.Sex.FEMALE)
+                    .sex(Sex.FEMALE)
                     .studyDate("7321-69-10")
                     .studyTime("studyTime")
                     .weight(
                         StudyUpdateParams.ReportMetadata.Weight.builder()
-                            .unit(StudyUpdateParams.ReportMetadata.Weight.Unit.KG)
+                            .unit(WeightUnit.KG)
                             .value(68.0)
                             .build()
                     )
                     .build()
             )
-        assertThat(body.severity()).contains(StudyUpdateParams.Severity.HIGH)
+        assertThat(body.severity()).contains(Severity.HIGH)
         assertThat(body.studyDescription()).contains("Brain MRI with and without Contrast")
         assertThat(body.technologistNotes().getOrNull()).containsExactly("x")
         assertThat(body.technologistTechnique()).contains("technologistTechnique")

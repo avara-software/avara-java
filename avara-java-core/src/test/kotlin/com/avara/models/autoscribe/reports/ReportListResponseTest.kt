@@ -3,7 +3,11 @@
 package com.avara.models.autoscribe.reports
 
 import com.avara.core.jsonMapper
+import com.avara.models.autoscribe.HeightUnit
+import com.avara.models.autoscribe.ReportStatus
+import com.avara.models.autoscribe.Sex
 import com.avara.models.autoscribe.StudyReportMetadata
+import com.avara.models.autoscribe.WeightUnit
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import java.time.OffsetDateTime
 import org.assertj.core.api.Assertions.assertThat
@@ -28,7 +32,7 @@ internal class ReportListResponseTest {
                                 .facilityName("City Medical Center")
                                 .height(
                                     StudyReportMetadata.Height.builder()
-                                        .unit(StudyReportMetadata.Height.Unit.CM)
+                                        .unit(HeightUnit.CM)
                                         .value(165.0)
                                         .build()
                                 )
@@ -36,18 +40,18 @@ internal class ReportListResponseTest {
                                 .patientName("Jane Doe")
                                 .procedure("MRI Brain with Contrast")
                                 .referringPhysicianName("Dr. Michael Chen")
-                                .sex(StudyReportMetadata.Sex.FEMALE)
+                                .sex(Sex.FEMALE)
                                 .studyDate("2024-03-15")
                                 .studyTime("14:30")
                                 .weight(
                                     StudyReportMetadata.Weight.builder()
-                                        .unit(StudyReportMetadata.Weight.Unit.KG)
+                                        .unit(WeightUnit.KG)
                                         .value(62.0)
                                         .build()
                                 )
                                 .build()
                         )
-                        .status(ReportListResponse.Report.Status.COMPLETED)
+                        .status(ReportStatus.COMPLETED)
                         .studyId("stu_1234567890abcdef1234567890abcdef")
                         .updatedAt(OffsetDateTime.parse("2024-03-15T16:00:00Z"))
                         .userId("usr_1234567890abcdef1234567890abcdef")
@@ -74,7 +78,7 @@ internal class ReportListResponseTest {
                             .facilityName("City Medical Center")
                             .height(
                                 StudyReportMetadata.Height.builder()
-                                    .unit(StudyReportMetadata.Height.Unit.CM)
+                                    .unit(HeightUnit.CM)
                                     .value(165.0)
                                     .build()
                             )
@@ -82,18 +86,18 @@ internal class ReportListResponseTest {
                             .patientName("Jane Doe")
                             .procedure("MRI Brain with Contrast")
                             .referringPhysicianName("Dr. Michael Chen")
-                            .sex(StudyReportMetadata.Sex.FEMALE)
+                            .sex(Sex.FEMALE)
                             .studyDate("2024-03-15")
                             .studyTime("14:30")
                             .weight(
                                 StudyReportMetadata.Weight.builder()
-                                    .unit(StudyReportMetadata.Weight.Unit.KG)
+                                    .unit(WeightUnit.KG)
                                     .value(62.0)
                                     .build()
                             )
                             .build()
                     )
-                    .status(ReportListResponse.Report.Status.COMPLETED)
+                    .status(ReportStatus.COMPLETED)
                     .studyId("stu_1234567890abcdef1234567890abcdef")
                     .updatedAt(OffsetDateTime.parse("2024-03-15T16:00:00Z"))
                     .userId("usr_1234567890abcdef1234567890abcdef")
@@ -125,7 +129,7 @@ internal class ReportListResponseTest {
                                 .facilityName("City Medical Center")
                                 .height(
                                     StudyReportMetadata.Height.builder()
-                                        .unit(StudyReportMetadata.Height.Unit.CM)
+                                        .unit(HeightUnit.CM)
                                         .value(165.0)
                                         .build()
                                 )
@@ -133,18 +137,18 @@ internal class ReportListResponseTest {
                                 .patientName("Jane Doe")
                                 .procedure("MRI Brain with Contrast")
                                 .referringPhysicianName("Dr. Michael Chen")
-                                .sex(StudyReportMetadata.Sex.FEMALE)
+                                .sex(Sex.FEMALE)
                                 .studyDate("2024-03-15")
                                 .studyTime("14:30")
                                 .weight(
                                     StudyReportMetadata.Weight.builder()
-                                        .unit(StudyReportMetadata.Weight.Unit.KG)
+                                        .unit(WeightUnit.KG)
                                         .value(62.0)
                                         .build()
                                 )
                                 .build()
                         )
-                        .status(ReportListResponse.Report.Status.COMPLETED)
+                        .status(ReportStatus.COMPLETED)
                         .studyId("stu_1234567890abcdef1234567890abcdef")
                         .updatedAt(OffsetDateTime.parse("2024-03-15T16:00:00Z"))
                         .userId("usr_1234567890abcdef1234567890abcdef")

@@ -3,6 +3,9 @@
 package com.avara.models.viewer.users
 
 import com.avara.core.jsonMapper
+import com.avara.models.ClinicRole
+import com.avara.models.InvitedSource
+import com.avara.models.UserLevel
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import java.time.OffsetDateTime
 import org.assertj.core.api.Assertions.assertThat
@@ -18,15 +21,15 @@ internal class UserListPageResponseTest {
                 .addUser(
                     UserListResponse.builder()
                         .canManageStudies(true)
-                        .clinicRole(UserListResponse.ClinicRole.RADIOLOGIST)
+                        .clinicRole(ClinicRole.RADIOLOGIST)
                         .createdAt(OffsetDateTime.parse("2024-01-15T10:00:00Z"))
                         .email("dr.johnson@hospital.org")
                         .firstName("Sarah")
                         .hasDashboardAccess(true)
-                        .invitedSource(UserListResponse.InvitedSource.API)
+                        .invitedSource(InvitedSource.API)
                         .lastLoginAt(OffsetDateTime.parse("2024-03-15T09:00:00Z"))
                         .lastName("Johnson")
-                        .level(UserListResponse.Level.MEMBER)
+                        .level(UserLevel.MEMBER)
                         .userId("usr_1234567890abcdef1234567890abcdef")
                         .middleName("Marie")
                         .phoneNumber("5551234567")
@@ -42,15 +45,15 @@ internal class UserListPageResponseTest {
             .containsExactly(
                 UserListResponse.builder()
                     .canManageStudies(true)
-                    .clinicRole(UserListResponse.ClinicRole.RADIOLOGIST)
+                    .clinicRole(ClinicRole.RADIOLOGIST)
                     .createdAt(OffsetDateTime.parse("2024-01-15T10:00:00Z"))
                     .email("dr.johnson@hospital.org")
                     .firstName("Sarah")
                     .hasDashboardAccess(true)
-                    .invitedSource(UserListResponse.InvitedSource.API)
+                    .invitedSource(InvitedSource.API)
                     .lastLoginAt(OffsetDateTime.parse("2024-03-15T09:00:00Z"))
                     .lastName("Johnson")
-                    .level(UserListResponse.Level.MEMBER)
+                    .level(UserLevel.MEMBER)
                     .userId("usr_1234567890abcdef1234567890abcdef")
                     .middleName("Marie")
                     .phoneNumber("5551234567")
@@ -70,15 +73,15 @@ internal class UserListPageResponseTest {
                 .addUser(
                     UserListResponse.builder()
                         .canManageStudies(true)
-                        .clinicRole(UserListResponse.ClinicRole.RADIOLOGIST)
+                        .clinicRole(ClinicRole.RADIOLOGIST)
                         .createdAt(OffsetDateTime.parse("2024-01-15T10:00:00Z"))
                         .email("dr.johnson@hospital.org")
                         .firstName("Sarah")
                         .hasDashboardAccess(true)
-                        .invitedSource(UserListResponse.InvitedSource.API)
+                        .invitedSource(InvitedSource.API)
                         .lastLoginAt(OffsetDateTime.parse("2024-03-15T09:00:00Z"))
                         .lastName("Johnson")
-                        .level(UserListResponse.Level.MEMBER)
+                        .level(UserLevel.MEMBER)
                         .userId("usr_1234567890abcdef1234567890abcdef")
                         .middleName("Marie")
                         .phoneNumber("5551234567")

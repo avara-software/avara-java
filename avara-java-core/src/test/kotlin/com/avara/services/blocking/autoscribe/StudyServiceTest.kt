@@ -4,7 +4,12 @@ package com.avara.services.blocking.autoscribe
 
 import com.avara.client.okhttp.AvaraOkHttpClient
 import com.avara.core.JsonValue
+import com.avara.models.Severity
+import com.avara.models.autoscribe.HeightUnit
+import com.avara.models.autoscribe.Sex
 import com.avara.models.autoscribe.StudyReportMetadata
+import com.avara.models.autoscribe.WeightUnit
+import com.avara.models.autoscribe.studies.PriorReport
 import com.avara.models.autoscribe.studies.StudyCancelParams
 import com.avara.models.autoscribe.studies.StudyCreateParams
 import com.avara.models.autoscribe.studies.StudyRerouteUrlParams
@@ -32,7 +37,7 @@ internal class StudyServiceTest {
                             .facilityName("City Medical Center")
                             .height(
                                 StudyReportMetadata.Height.builder()
-                                    .unit(StudyReportMetadata.Height.Unit.CM)
+                                    .unit(HeightUnit.CM)
                                     .value(165.0)
                                     .build()
                             )
@@ -40,18 +45,18 @@ internal class StudyServiceTest {
                             .patientName("Jane Doe")
                             .procedure("MRI Brain with Contrast")
                             .referringPhysicianName("Dr. Michael Chen")
-                            .sex(StudyReportMetadata.Sex.FEMALE)
+                            .sex(Sex.FEMALE)
                             .studyDate("2024-03-15")
                             .studyTime("14:30")
                             .weight(
                                 StudyReportMetadata.Weight.builder()
-                                    .unit(StudyReportMetadata.Weight.Unit.KG)
+                                    .unit(WeightUnit.KG)
                                     .value(62.0)
                                     .build()
                             )
                             .build()
                     )
-                    .severity(StudyCreateParams.Severity.NORMAL)
+                    .severity(Severity.NORMAL)
                     .studyDescription("Brain MRI with Contrast")
                     .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
                     .assignedTo("usr_1234567890abcdef1234567890abcdef")
@@ -67,7 +72,7 @@ internal class StudyServiceTest {
                     )
                     .modality("MRI")
                     .addPriorReport(
-                        StudyCreateParams.PriorReport.builder()
+                        PriorReport.builder()
                             .reportText("IMPRESSION: No acute intracranial abnormality.")
                             .externalStudyId("EXT-2024-001")
                             .modality("CT")
@@ -119,7 +124,7 @@ internal class StudyServiceTest {
                     )
                     .modality("MRI")
                     .addPriorReport(
-                        StudyUpdateParams.PriorReport.builder()
+                        PriorReport.builder()
                             .reportText("IMPRESSION: No acute cardiopulmonary process.")
                             .externalStudyId("EXT-2024-001")
                             .modality("CT")
@@ -134,7 +139,7 @@ internal class StudyServiceTest {
                             .facilityName("facilityName")
                             .height(
                                 StudyUpdateParams.ReportMetadata.Height.builder()
-                                    .unit(StudyUpdateParams.ReportMetadata.Height.Unit.CM)
+                                    .unit(HeightUnit.CM)
                                     .value(170.0)
                                     .build()
                             )
@@ -142,18 +147,18 @@ internal class StudyServiceTest {
                             .patientName("Jane M. Doe")
                             .procedure("procedure")
                             .referringPhysicianName("referringPhysicianName")
-                            .sex(StudyUpdateParams.ReportMetadata.Sex.FEMALE)
+                            .sex(Sex.FEMALE)
                             .studyDate("7321-69-10")
                             .studyTime("studyTime")
                             .weight(
                                 StudyUpdateParams.ReportMetadata.Weight.builder()
-                                    .unit(StudyUpdateParams.ReportMetadata.Weight.Unit.KG)
+                                    .unit(WeightUnit.KG)
                                     .value(68.0)
                                     .build()
                             )
                             .build()
                     )
-                    .severity(StudyUpdateParams.Severity.HIGH)
+                    .severity(Severity.HIGH)
                     .studyDescription("Brain MRI with and without Contrast")
                     .addTechnologistNote("x")
                     .technologistTechnique("technologistTechnique")

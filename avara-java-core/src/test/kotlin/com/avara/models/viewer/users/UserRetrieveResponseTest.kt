@@ -3,6 +3,9 @@
 package com.avara.models.viewer.users
 
 import com.avara.core.jsonMapper
+import com.avara.models.ClinicRole
+import com.avara.models.InvitedSource
+import com.avara.models.UserLevel
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import java.time.OffsetDateTime
 import org.assertj.core.api.Assertions.assertThat
@@ -15,15 +18,15 @@ internal class UserRetrieveResponseTest {
         val userRetrieveResponse =
             UserRetrieveResponse.builder()
                 .canManageStudies(true)
-                .clinicRole(UserRetrieveResponse.ClinicRole.RADIOLOGIST)
+                .clinicRole(ClinicRole.RADIOLOGIST)
                 .createdAt(OffsetDateTime.parse("2024-01-15T10:00:00Z"))
                 .email("dr.johnson@hospital.org")
                 .firstName("Sarah")
                 .hasDashboardAccess(true)
-                .invitedSource(UserRetrieveResponse.InvitedSource.API)
+                .invitedSource(InvitedSource.API)
                 .lastLoginAt(OffsetDateTime.parse("2024-03-15T09:00:00Z"))
                 .lastName("Johnson")
-                .level(UserRetrieveResponse.Level.MEMBER)
+                .level(UserLevel.MEMBER)
                 .userId("usr_1234567890abcdef1234567890abcdef")
                 .middleName("Marie")
                 .phoneNumber("5551234567")
@@ -32,19 +35,17 @@ internal class UserRetrieveResponseTest {
                 .build()
 
         assertThat(userRetrieveResponse.canManageStudies()).isEqualTo(true)
-        assertThat(userRetrieveResponse.clinicRole())
-            .isEqualTo(UserRetrieveResponse.ClinicRole.RADIOLOGIST)
+        assertThat(userRetrieveResponse.clinicRole()).isEqualTo(ClinicRole.RADIOLOGIST)
         assertThat(userRetrieveResponse.createdAt())
             .contains(OffsetDateTime.parse("2024-01-15T10:00:00Z"))
         assertThat(userRetrieveResponse.email()).isEqualTo("dr.johnson@hospital.org")
         assertThat(userRetrieveResponse.firstName()).isEqualTo("Sarah")
         assertThat(userRetrieveResponse.hasDashboardAccess()).isEqualTo(true)
-        assertThat(userRetrieveResponse.invitedSource())
-            .isEqualTo(UserRetrieveResponse.InvitedSource.API)
+        assertThat(userRetrieveResponse.invitedSource()).isEqualTo(InvitedSource.API)
         assertThat(userRetrieveResponse.lastLoginAt())
             .contains(OffsetDateTime.parse("2024-03-15T09:00:00Z"))
         assertThat(userRetrieveResponse.lastName()).isEqualTo("Johnson")
-        assertThat(userRetrieveResponse.level()).isEqualTo(UserRetrieveResponse.Level.MEMBER)
+        assertThat(userRetrieveResponse.level()).isEqualTo(UserLevel.MEMBER)
         assertThat(userRetrieveResponse.userId()).isEqualTo("usr_1234567890abcdef1234567890abcdef")
         assertThat(userRetrieveResponse.middleName()).contains("Marie")
         assertThat(userRetrieveResponse.phoneNumber()).contains("5551234567")
@@ -58,15 +59,15 @@ internal class UserRetrieveResponseTest {
         val userRetrieveResponse =
             UserRetrieveResponse.builder()
                 .canManageStudies(true)
-                .clinicRole(UserRetrieveResponse.ClinicRole.RADIOLOGIST)
+                .clinicRole(ClinicRole.RADIOLOGIST)
                 .createdAt(OffsetDateTime.parse("2024-01-15T10:00:00Z"))
                 .email("dr.johnson@hospital.org")
                 .firstName("Sarah")
                 .hasDashboardAccess(true)
-                .invitedSource(UserRetrieveResponse.InvitedSource.API)
+                .invitedSource(InvitedSource.API)
                 .lastLoginAt(OffsetDateTime.parse("2024-03-15T09:00:00Z"))
                 .lastName("Johnson")
-                .level(UserRetrieveResponse.Level.MEMBER)
+                .level(UserLevel.MEMBER)
                 .userId("usr_1234567890abcdef1234567890abcdef")
                 .middleName("Marie")
                 .phoneNumber("5551234567")

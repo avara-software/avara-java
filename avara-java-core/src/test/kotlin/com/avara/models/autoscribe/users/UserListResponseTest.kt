@@ -3,6 +3,9 @@
 package com.avara.models.autoscribe.users
 
 import com.avara.core.jsonMapper
+import com.avara.models.ClinicRole
+import com.avara.models.InvitedSource
+import com.avara.models.UserLevel
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import java.time.OffsetDateTime
 import org.assertj.core.api.Assertions.assertThat
@@ -16,15 +19,15 @@ internal class UserListResponseTest {
             UserListResponse.builder()
                 .canCreateReports(true)
                 .canManageStudies(true)
-                .clinicRole(UserListResponse.ClinicRole.RADIOLOGIST)
+                .clinicRole(ClinicRole.RADIOLOGIST)
                 .createdAt(OffsetDateTime.parse("2024-01-15T10:00:00Z"))
                 .email("dr.johnson@hospital.org")
                 .firstName("Sarah")
                 .hasDashboardAccess(true)
-                .invitedSource(UserListResponse.InvitedSource.API)
+                .invitedSource(InvitedSource.API)
                 .lastLoginAt(OffsetDateTime.parse("2024-03-15T09:00:00Z"))
                 .lastName("Johnson")
-                .level(UserListResponse.Level.MEMBER)
+                .level(UserLevel.MEMBER)
                 .userId("usr_1234567890abcdef1234567890abcdef")
                 .middleName("Marie")
                 .npiNumber("1234567893")
@@ -35,17 +38,17 @@ internal class UserListResponseTest {
 
         assertThat(userListResponse.canCreateReports()).isEqualTo(true)
         assertThat(userListResponse.canManageStudies()).isEqualTo(true)
-        assertThat(userListResponse.clinicRole()).isEqualTo(UserListResponse.ClinicRole.RADIOLOGIST)
+        assertThat(userListResponse.clinicRole()).isEqualTo(ClinicRole.RADIOLOGIST)
         assertThat(userListResponse.createdAt())
             .contains(OffsetDateTime.parse("2024-01-15T10:00:00Z"))
         assertThat(userListResponse.email()).isEqualTo("dr.johnson@hospital.org")
         assertThat(userListResponse.firstName()).isEqualTo("Sarah")
         assertThat(userListResponse.hasDashboardAccess()).isEqualTo(true)
-        assertThat(userListResponse.invitedSource()).isEqualTo(UserListResponse.InvitedSource.API)
+        assertThat(userListResponse.invitedSource()).isEqualTo(InvitedSource.API)
         assertThat(userListResponse.lastLoginAt())
             .contains(OffsetDateTime.parse("2024-03-15T09:00:00Z"))
         assertThat(userListResponse.lastName()).isEqualTo("Johnson")
-        assertThat(userListResponse.level()).isEqualTo(UserListResponse.Level.MEMBER)
+        assertThat(userListResponse.level()).isEqualTo(UserLevel.MEMBER)
         assertThat(userListResponse.userId()).isEqualTo("usr_1234567890abcdef1234567890abcdef")
         assertThat(userListResponse.middleName()).contains("Marie")
         assertThat(userListResponse.npiNumber()).contains("1234567893")
@@ -61,15 +64,15 @@ internal class UserListResponseTest {
             UserListResponse.builder()
                 .canCreateReports(true)
                 .canManageStudies(true)
-                .clinicRole(UserListResponse.ClinicRole.RADIOLOGIST)
+                .clinicRole(ClinicRole.RADIOLOGIST)
                 .createdAt(OffsetDateTime.parse("2024-01-15T10:00:00Z"))
                 .email("dr.johnson@hospital.org")
                 .firstName("Sarah")
                 .hasDashboardAccess(true)
-                .invitedSource(UserListResponse.InvitedSource.API)
+                .invitedSource(InvitedSource.API)
                 .lastLoginAt(OffsetDateTime.parse("2024-03-15T09:00:00Z"))
                 .lastName("Johnson")
-                .level(UserListResponse.Level.MEMBER)
+                .level(UserLevel.MEMBER)
                 .userId("usr_1234567890abcdef1234567890abcdef")
                 .middleName("Marie")
                 .npiNumber("1234567893")

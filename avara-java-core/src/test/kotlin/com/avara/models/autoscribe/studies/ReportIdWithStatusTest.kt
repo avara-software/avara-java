@@ -3,6 +3,7 @@
 package com.avara.models.autoscribe.studies
 
 import com.avara.core.jsonMapper
+import com.avara.models.autoscribe.ReportStatus
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -14,11 +15,11 @@ internal class ReportIdWithStatusTest {
         val reportIdWithStatus =
             ReportIdWithStatus.builder()
                 .reportId("rep_1234567890abcdef1234567890abcdef")
-                .status(ReportIdWithStatus.Status.COMPLETED)
+                .status(ReportStatus.COMPLETED)
                 .build()
 
         assertThat(reportIdWithStatus.reportId()).isEqualTo("rep_1234567890abcdef1234567890abcdef")
-        assertThat(reportIdWithStatus.status()).isEqualTo(ReportIdWithStatus.Status.COMPLETED)
+        assertThat(reportIdWithStatus.status()).isEqualTo(ReportStatus.COMPLETED)
     }
 
     @Test
@@ -27,7 +28,7 @@ internal class ReportIdWithStatusTest {
         val reportIdWithStatus =
             ReportIdWithStatus.builder()
                 .reportId("rep_1234567890abcdef1234567890abcdef")
-                .status(ReportIdWithStatus.Status.COMPLETED)
+                .status(ReportStatus.COMPLETED)
                 .build()
 
         val roundtrippedReportIdWithStatus =
