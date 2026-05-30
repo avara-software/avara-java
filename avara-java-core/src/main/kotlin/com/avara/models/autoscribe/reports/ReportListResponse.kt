@@ -2,7 +2,6 @@
 
 package com.avara.models.autoscribe.reports
 
-import com.avara.core.Enum
 import com.avara.core.ExcludeMissing
 import com.avara.core.JsonField
 import com.avara.core.JsonMissing
@@ -11,6 +10,7 @@ import com.avara.core.checkKnown
 import com.avara.core.checkRequired
 import com.avara.core.toImmutable
 import com.avara.errors.AvaraInvalidDataException
+import com.avara.models.autoscribe.ReportStatus
 import com.avara.models.autoscribe.StudyReportMetadata
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
@@ -281,7 +281,7 @@ private constructor(
         private val reportId: JsonField<String>,
         private val signedAt: JsonField<OffsetDateTime>,
         private val snapshotMetadata: JsonField<StudyReportMetadata>,
-        private val status: JsonField<Status>,
+        private val status: JsonField<ReportStatus>,
         private val studyId: JsonField<String>,
         private val updatedAt: JsonField<OffsetDateTime>,
         private val userId: JsonField<String>,
@@ -306,7 +306,9 @@ private constructor(
             @JsonProperty("snapshotMetadata")
             @ExcludeMissing
             snapshotMetadata: JsonField<StudyReportMetadata> = JsonMissing.of(),
-            @JsonProperty("status") @ExcludeMissing status: JsonField<Status> = JsonMissing.of(),
+            @JsonProperty("status")
+            @ExcludeMissing
+            status: JsonField<ReportStatus> = JsonMissing.of(),
             @JsonProperty("studyId") @ExcludeMissing studyId: JsonField<String> = JsonMissing.of(),
             @JsonProperty("updatedAt")
             @ExcludeMissing
@@ -371,12 +373,13 @@ private constructor(
             snapshotMetadata.getRequired("snapshotMetadata")
 
         /**
-         * Report status: 'in_progress' or 'completed'
+         * Status of an individual report. 'in_progress' = actively being dictated, 'completed' =
+         * signed.
          *
          * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
-        fun status(): Status = status.getRequired("status")
+        fun status(): ReportStatus = status.getRequired("status")
 
         /**
          * Study ID this report belongs to. Format: stu_{32-hex-chars}
@@ -459,7 +462,7 @@ private constructor(
          *
          * Unlike [status], this method doesn't throw if the JSON field has an unexpected type.
          */
-        @JsonProperty("status") @ExcludeMissing fun _status(): JsonField<Status> = status
+        @JsonProperty("status") @ExcludeMissing fun _status(): JsonField<ReportStatus> = status
 
         /**
          * Returns the raw JSON value of [studyId].
@@ -535,7 +538,7 @@ private constructor(
             private var reportId: JsonField<String>? = null
             private var signedAt: JsonField<OffsetDateTime>? = null
             private var snapshotMetadata: JsonField<StudyReportMetadata>? = null
-            private var status: JsonField<Status>? = null
+            private var status: JsonField<ReportStatus>? = null
             private var studyId: JsonField<String>? = null
             private var updatedAt: JsonField<OffsetDateTime>? = null
             private var userId: JsonField<String>? = null
@@ -628,17 +631,20 @@ private constructor(
                 this.snapshotMetadata = snapshotMetadata
             }
 
-            /** Report status: 'in_progress' or 'completed' */
-            fun status(status: Status) = status(JsonField.of(status))
+            /**
+             * Status of an individual report. 'in_progress' = actively being dictated, 'completed'
+             * = signed.
+             */
+            fun status(status: ReportStatus) = status(JsonField.of(status))
 
             /**
              * Sets [Builder.status] to an arbitrary JSON value.
              *
-             * You should usually call [Builder.status] with a well-typed [Status] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
+             * You should usually call [Builder.status] with a well-typed [ReportStatus] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun status(status: JsonField<Status>) = apply { this.status = status }
+            fun status(status: JsonField<ReportStatus>) = apply { this.status = status }
 
             /** Study ID this report belongs to. Format: stu_{32-hex-chars} */
             fun studyId(studyId: String) = studyId(JsonField.of(studyId))
@@ -808,146 +814,6 @@ private constructor(
                 (if (updatedAt.asKnown().isPresent) 1 else 0) +
                 (if (userId.asKnown().isPresent) 1 else 0) +
                 (if (reportPlainText.asKnown().isPresent) 1 else 0)
-
-        /** Report status: 'in_progress' or 'completed' */
-        class Status @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
-
-            /**
-             * Returns this class instance's raw value.
-             *
-             * This is usually only useful if this instance was deserialized from data that doesn't
-             * match any known member, and you want to know that value. For example, if the SDK is
-             * on an older version than the API, then the API may respond with new members that the
-             * SDK is unaware of.
-             */
-            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-            companion object {
-
-                @JvmField val IN_PROGRESS = of("in_progress")
-
-                @JvmField val COMPLETED = of("completed")
-
-                @JvmStatic fun of(value: String) = Status(JsonField.of(value))
-            }
-
-            /** An enum containing [Status]'s known values. */
-            enum class Known {
-                IN_PROGRESS,
-                COMPLETED,
-            }
-
-            /**
-             * An enum containing [Status]'s known values, as well as an [_UNKNOWN] member.
-             *
-             * An instance of [Status] can contain an unknown value in a couple of cases:
-             * - It was deserialized from data that doesn't match any known member. For example, if
-             *   the SDK is on an older version than the API, then the API may respond with new
-             *   members that the SDK is unaware of.
-             * - It was constructed with an arbitrary value using the [of] method.
-             */
-            enum class Value {
-                IN_PROGRESS,
-                COMPLETED,
-                /**
-                 * An enum member indicating that [Status] was instantiated with an unknown value.
-                 */
-                _UNKNOWN,
-            }
-
-            /**
-             * Returns an enum member corresponding to this class instance's value, or
-             * [Value._UNKNOWN] if the class was instantiated with an unknown value.
-             *
-             * Use the [known] method instead if you're certain the value is always known or if you
-             * want to throw for the unknown case.
-             */
-            fun value(): Value =
-                when (this) {
-                    IN_PROGRESS -> Value.IN_PROGRESS
-                    COMPLETED -> Value.COMPLETED
-                    else -> Value._UNKNOWN
-                }
-
-            /**
-             * Returns an enum member corresponding to this class instance's value.
-             *
-             * Use the [value] method instead if you're uncertain the value is always known and
-             * don't want to throw for the unknown case.
-             *
-             * @throws AvaraInvalidDataException if this class instance's value is a not a known
-             *   member.
-             */
-            fun known(): Known =
-                when (this) {
-                    IN_PROGRESS -> Known.IN_PROGRESS
-                    COMPLETED -> Known.COMPLETED
-                    else -> throw AvaraInvalidDataException("Unknown Status: $value")
-                }
-
-            /**
-             * Returns this class instance's primitive wire representation.
-             *
-             * This differs from the [toString] method because that method is primarily for
-             * debugging and generally doesn't throw.
-             *
-             * @throws AvaraInvalidDataException if this class instance's value does not have the
-             *   expected primitive type.
-             */
-            fun asString(): String =
-                _value().asString().orElseThrow {
-                    AvaraInvalidDataException("Value is not a String")
-                }
-
-            private var validated: Boolean = false
-
-            /**
-             * Validates that the types of all values in this object match their expected types
-             * recursively.
-             *
-             * This method is _not_ forwards compatible with new types from the API for existing
-             * fields.
-             *
-             * @throws AvaraInvalidDataException if any value type in this object doesn't match its
-             *   expected type.
-             */
-            fun validate(): Status = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                known()
-                validated = true
-            }
-
-            fun isValid(): Boolean =
-                try {
-                    validate()
-                    true
-                } catch (e: AvaraInvalidDataException) {
-                    false
-                }
-
-            /**
-             * Returns a score indicating how many valid values are contained in this object
-             * recursively.
-             *
-             * Used for best match union deserialization.
-             */
-            @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is Status && value == other.value
-            }
-
-            override fun hashCode() = value.hashCode()
-
-            override fun toString() = value.toString()
-        }
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {

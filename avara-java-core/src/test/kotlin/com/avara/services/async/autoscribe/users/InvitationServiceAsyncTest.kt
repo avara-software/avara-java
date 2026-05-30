@@ -3,6 +3,8 @@
 package com.avara.services.async.autoscribe.users
 
 import com.avara.client.okhttp.AvaraOkHttpClientAsync
+import com.avara.models.AssignableUserLevel
+import com.avara.models.ClinicRole
 import com.avara.models.autoscribe.users.invitations.InvitationRevokeParams
 import com.avara.models.autoscribe.users.invitations.InvitationUpdateParams
 import org.junit.jupiter.api.Disabled
@@ -35,11 +37,11 @@ internal class InvitationServiceAsyncTest {
                     .invitationId("inv_1234567890abcdef1234567890abcdef")
                     .canCreateReports(true)
                     .canManageStudies(true)
-                    .clinicRole(InvitationUpdateParams.ClinicRole.RADIOLOGIST)
+                    .clinicRole(ClinicRole.RADIOLOGIST)
                     .firstName("Michael")
                     .hasDashboardAccess(true)
                     .lastName("Chen")
-                    .level(InvitationUpdateParams.Level.ADMIN)
+                    .level(AssignableUserLevel.MEMBER)
                     .middleName("x")
                     .npiNumber("1234567893")
                     .phoneNumber("5551234567")

@@ -2,7 +2,6 @@
 
 package com.avara.models.autoscribe
 
-import com.avara.core.Enum
 import com.avara.core.ExcludeMissing
 import com.avara.core.JsonField
 import com.avara.core.JsonMissing
@@ -575,22 +574,24 @@ private constructor(
     class Height
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
-        private val unit: JsonField<Unit>,
+        private val unit: JsonField<HeightUnit>,
         private val value: JsonField<Double>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
         @JsonCreator
         private constructor(
-            @JsonProperty("unit") @ExcludeMissing unit: JsonField<Unit> = JsonMissing.of(),
+            @JsonProperty("unit") @ExcludeMissing unit: JsonField<HeightUnit> = JsonMissing.of(),
             @JsonProperty("value") @ExcludeMissing value: JsonField<Double> = JsonMissing.of(),
         ) : this(unit, value, mutableMapOf())
 
         /**
+         * Unit of measure for a height value. 'in' = inches, 'cm' = centimeters.
+         *
          * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
-        fun unit(): Unit = unit.getRequired("unit")
+        fun unit(): HeightUnit = unit.getRequired("unit")
 
         /**
          * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is
@@ -603,7 +604,7 @@ private constructor(
          *
          * Unlike [unit], this method doesn't throw if the JSON field has an unexpected type.
          */
-        @JsonProperty("unit") @ExcludeMissing fun _unit(): JsonField<Unit> = unit
+        @JsonProperty("unit") @ExcludeMissing fun _unit(): JsonField<HeightUnit> = unit
 
         /**
          * Returns the raw JSON value of [value].
@@ -641,7 +642,7 @@ private constructor(
         /** A builder for [Height]. */
         class Builder internal constructor() {
 
-            private var unit: JsonField<Unit>? = null
+            private var unit: JsonField<HeightUnit>? = null
             private var value: JsonField<Double>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -652,16 +653,17 @@ private constructor(
                 additionalProperties = height.additionalProperties.toMutableMap()
             }
 
-            fun unit(unit: Unit) = unit(JsonField.of(unit))
+            /** Unit of measure for a height value. 'in' = inches, 'cm' = centimeters. */
+            fun unit(unit: HeightUnit) = unit(JsonField.of(unit))
 
             /**
              * Sets [Builder.unit] to an arbitrary JSON value.
              *
-             * You should usually call [Builder.unit] with a well-typed [Unit] value instead. This
-             * method is primarily for setting the field to an undocumented or not yet supported
-             * value.
+             * You should usually call [Builder.unit] with a well-typed [HeightUnit] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
-            fun unit(unit: JsonField<Unit>) = apply { this.unit = unit }
+            fun unit(unit: JsonField<HeightUnit>) = apply { this.unit = unit }
 
             fun value(value: Double) = value(JsonField.of(value))
 
@@ -754,143 +756,6 @@ private constructor(
             (unit.asKnown().getOrNull()?.validity() ?: 0) +
                 (if (value.asKnown().isPresent) 1 else 0)
 
-        class Unit @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
-
-            /**
-             * Returns this class instance's raw value.
-             *
-             * This is usually only useful if this instance was deserialized from data that doesn't
-             * match any known member, and you want to know that value. For example, if the SDK is
-             * on an older version than the API, then the API may respond with new members that the
-             * SDK is unaware of.
-             */
-            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-            companion object {
-
-                @JvmField val IN = of("in")
-
-                @JvmField val CM = of("cm")
-
-                @JvmStatic fun of(value: String) = Unit(JsonField.of(value))
-            }
-
-            /** An enum containing [Unit]'s known values. */
-            enum class Known {
-                IN,
-                CM,
-            }
-
-            /**
-             * An enum containing [Unit]'s known values, as well as an [_UNKNOWN] member.
-             *
-             * An instance of [Unit] can contain an unknown value in a couple of cases:
-             * - It was deserialized from data that doesn't match any known member. For example, if
-             *   the SDK is on an older version than the API, then the API may respond with new
-             *   members that the SDK is unaware of.
-             * - It was constructed with an arbitrary value using the [of] method.
-             */
-            enum class Value {
-                IN,
-                CM,
-                /** An enum member indicating that [Unit] was instantiated with an unknown value. */
-                _UNKNOWN,
-            }
-
-            /**
-             * Returns an enum member corresponding to this class instance's value, or
-             * [Value._UNKNOWN] if the class was instantiated with an unknown value.
-             *
-             * Use the [known] method instead if you're certain the value is always known or if you
-             * want to throw for the unknown case.
-             */
-            fun value(): Value =
-                when (this) {
-                    IN -> Value.IN
-                    CM -> Value.CM
-                    else -> Value._UNKNOWN
-                }
-
-            /**
-             * Returns an enum member corresponding to this class instance's value.
-             *
-             * Use the [value] method instead if you're uncertain the value is always known and
-             * don't want to throw for the unknown case.
-             *
-             * @throws AvaraInvalidDataException if this class instance's value is a not a known
-             *   member.
-             */
-            fun known(): Known =
-                when (this) {
-                    IN -> Known.IN
-                    CM -> Known.CM
-                    else -> throw AvaraInvalidDataException("Unknown Unit: $value")
-                }
-
-            /**
-             * Returns this class instance's primitive wire representation.
-             *
-             * This differs from the [toString] method because that method is primarily for
-             * debugging and generally doesn't throw.
-             *
-             * @throws AvaraInvalidDataException if this class instance's value does not have the
-             *   expected primitive type.
-             */
-            fun asString(): String =
-                _value().asString().orElseThrow {
-                    AvaraInvalidDataException("Value is not a String")
-                }
-
-            private var validated: Boolean = false
-
-            /**
-             * Validates that the types of all values in this object match their expected types
-             * recursively.
-             *
-             * This method is _not_ forwards compatible with new types from the API for existing
-             * fields.
-             *
-             * @throws AvaraInvalidDataException if any value type in this object doesn't match its
-             *   expected type.
-             */
-            fun validate(): Unit = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                known()
-                validated = true
-            }
-
-            fun isValid(): Boolean =
-                try {
-                    validate()
-                    true
-                } catch (e: AvaraInvalidDataException) {
-                    false
-                }
-
-            /**
-             * Returns a score indicating how many valid values are contained in this object
-             * recursively.
-             *
-             * Used for best match union deserialization.
-             */
-            @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is Unit && value == other.value
-            }
-
-            override fun hashCode() = value.hashCode()
-
-            override fun toString() = value.toString()
-        }
-
         override fun equals(other: Any?): Boolean {
             if (this === other) {
                 return true
@@ -910,166 +775,28 @@ private constructor(
             "Height{unit=$unit, value=$value, additionalProperties=$additionalProperties}"
     }
 
-    /** Patient's biological sex. Options: 'male', 'female', 'other' */
-    class Sex @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
-
-        /**
-         * Returns this class instance's raw value.
-         *
-         * This is usually only useful if this instance was deserialized from data that doesn't
-         * match any known member, and you want to know that value. For example, if the SDK is on an
-         * older version than the API, then the API may respond with new members that the SDK is
-         * unaware of.
-         */
-        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-        companion object {
-
-            @JvmField val MALE = of("male")
-
-            @JvmField val FEMALE = of("female")
-
-            @JvmField val OTHER = of("other")
-
-            @JvmStatic fun of(value: String) = Sex(JsonField.of(value))
-        }
-
-        /** An enum containing [Sex]'s known values. */
-        enum class Known {
-            MALE,
-            FEMALE,
-            OTHER,
-        }
-
-        /**
-         * An enum containing [Sex]'s known values, as well as an [_UNKNOWN] member.
-         *
-         * An instance of [Sex] can contain an unknown value in a couple of cases:
-         * - It was deserialized from data that doesn't match any known member. For example, if the
-         *   SDK is on an older version than the API, then the API may respond with new members that
-         *   the SDK is unaware of.
-         * - It was constructed with an arbitrary value using the [of] method.
-         */
-        enum class Value {
-            MALE,
-            FEMALE,
-            OTHER,
-            /** An enum member indicating that [Sex] was instantiated with an unknown value. */
-            _UNKNOWN,
-        }
-
-        /**
-         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
-         * if the class was instantiated with an unknown value.
-         *
-         * Use the [known] method instead if you're certain the value is always known or if you want
-         * to throw for the unknown case.
-         */
-        fun value(): Value =
-            when (this) {
-                MALE -> Value.MALE
-                FEMALE -> Value.FEMALE
-                OTHER -> Value.OTHER
-                else -> Value._UNKNOWN
-            }
-
-        /**
-         * Returns an enum member corresponding to this class instance's value.
-         *
-         * Use the [value] method instead if you're uncertain the value is always known and don't
-         * want to throw for the unknown case.
-         *
-         * @throws AvaraInvalidDataException if this class instance's value is a not a known member.
-         */
-        fun known(): Known =
-            when (this) {
-                MALE -> Known.MALE
-                FEMALE -> Known.FEMALE
-                OTHER -> Known.OTHER
-                else -> throw AvaraInvalidDataException("Unknown Sex: $value")
-            }
-
-        /**
-         * Returns this class instance's primitive wire representation.
-         *
-         * This differs from the [toString] method because that method is primarily for debugging
-         * and generally doesn't throw.
-         *
-         * @throws AvaraInvalidDataException if this class instance's value does not have the
-         *   expected primitive type.
-         */
-        fun asString(): String =
-            _value().asString().orElseThrow { AvaraInvalidDataException("Value is not a String") }
-
-        private var validated: Boolean = false
-
-        /**
-         * Validates that the types of all values in this object match their expected types
-         * recursively.
-         *
-         * This method is _not_ forwards compatible with new types from the API for existing fields.
-         *
-         * @throws AvaraInvalidDataException if any value type in this object doesn't match its
-         *   expected type.
-         */
-        fun validate(): Sex = apply {
-            if (validated) {
-                return@apply
-            }
-
-            known()
-            validated = true
-        }
-
-        fun isValid(): Boolean =
-            try {
-                validate()
-                true
-            } catch (e: AvaraInvalidDataException) {
-                false
-            }
-
-        /**
-         * Returns a score indicating how many valid values are contained in this object
-         * recursively.
-         *
-         * Used for best match union deserialization.
-         */
-        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Sex && value == other.value
-        }
-
-        override fun hashCode() = value.hashCode()
-
-        override fun toString() = value.toString()
-    }
-
     /** Patient's weight with unit (e.g., {value: 150, unit: 'lbs'} or {value: 68, unit: 'kg'}) */
     class Weight
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
-        private val unit: JsonField<Unit>,
+        private val unit: JsonField<WeightUnit>,
         private val value: JsonField<Double>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
         @JsonCreator
         private constructor(
-            @JsonProperty("unit") @ExcludeMissing unit: JsonField<Unit> = JsonMissing.of(),
+            @JsonProperty("unit") @ExcludeMissing unit: JsonField<WeightUnit> = JsonMissing.of(),
             @JsonProperty("value") @ExcludeMissing value: JsonField<Double> = JsonMissing.of(),
         ) : this(unit, value, mutableMapOf())
 
         /**
+         * Unit of measure for a weight value. 'lbs' = pounds, 'kg' = kilograms.
+         *
          * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
-        fun unit(): Unit = unit.getRequired("unit")
+        fun unit(): WeightUnit = unit.getRequired("unit")
 
         /**
          * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is
@@ -1082,7 +809,7 @@ private constructor(
          *
          * Unlike [unit], this method doesn't throw if the JSON field has an unexpected type.
          */
-        @JsonProperty("unit") @ExcludeMissing fun _unit(): JsonField<Unit> = unit
+        @JsonProperty("unit") @ExcludeMissing fun _unit(): JsonField<WeightUnit> = unit
 
         /**
          * Returns the raw JSON value of [value].
@@ -1120,7 +847,7 @@ private constructor(
         /** A builder for [Weight]. */
         class Builder internal constructor() {
 
-            private var unit: JsonField<Unit>? = null
+            private var unit: JsonField<WeightUnit>? = null
             private var value: JsonField<Double>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -1131,16 +858,17 @@ private constructor(
                 additionalProperties = weight.additionalProperties.toMutableMap()
             }
 
-            fun unit(unit: Unit) = unit(JsonField.of(unit))
+            /** Unit of measure for a weight value. 'lbs' = pounds, 'kg' = kilograms. */
+            fun unit(unit: WeightUnit) = unit(JsonField.of(unit))
 
             /**
              * Sets [Builder.unit] to an arbitrary JSON value.
              *
-             * You should usually call [Builder.unit] with a well-typed [Unit] value instead. This
-             * method is primarily for setting the field to an undocumented or not yet supported
-             * value.
+             * You should usually call [Builder.unit] with a well-typed [WeightUnit] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
-            fun unit(unit: JsonField<Unit>) = apply { this.unit = unit }
+            fun unit(unit: JsonField<WeightUnit>) = apply { this.unit = unit }
 
             fun value(value: Double) = value(JsonField.of(value))
 
@@ -1232,143 +960,6 @@ private constructor(
         internal fun validity(): Int =
             (unit.asKnown().getOrNull()?.validity() ?: 0) +
                 (if (value.asKnown().isPresent) 1 else 0)
-
-        class Unit @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
-
-            /**
-             * Returns this class instance's raw value.
-             *
-             * This is usually only useful if this instance was deserialized from data that doesn't
-             * match any known member, and you want to know that value. For example, if the SDK is
-             * on an older version than the API, then the API may respond with new members that the
-             * SDK is unaware of.
-             */
-            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-            companion object {
-
-                @JvmField val LBS = of("lbs")
-
-                @JvmField val KG = of("kg")
-
-                @JvmStatic fun of(value: String) = Unit(JsonField.of(value))
-            }
-
-            /** An enum containing [Unit]'s known values. */
-            enum class Known {
-                LBS,
-                KG,
-            }
-
-            /**
-             * An enum containing [Unit]'s known values, as well as an [_UNKNOWN] member.
-             *
-             * An instance of [Unit] can contain an unknown value in a couple of cases:
-             * - It was deserialized from data that doesn't match any known member. For example, if
-             *   the SDK is on an older version than the API, then the API may respond with new
-             *   members that the SDK is unaware of.
-             * - It was constructed with an arbitrary value using the [of] method.
-             */
-            enum class Value {
-                LBS,
-                KG,
-                /** An enum member indicating that [Unit] was instantiated with an unknown value. */
-                _UNKNOWN,
-            }
-
-            /**
-             * Returns an enum member corresponding to this class instance's value, or
-             * [Value._UNKNOWN] if the class was instantiated with an unknown value.
-             *
-             * Use the [known] method instead if you're certain the value is always known or if you
-             * want to throw for the unknown case.
-             */
-            fun value(): Value =
-                when (this) {
-                    LBS -> Value.LBS
-                    KG -> Value.KG
-                    else -> Value._UNKNOWN
-                }
-
-            /**
-             * Returns an enum member corresponding to this class instance's value.
-             *
-             * Use the [value] method instead if you're uncertain the value is always known and
-             * don't want to throw for the unknown case.
-             *
-             * @throws AvaraInvalidDataException if this class instance's value is a not a known
-             *   member.
-             */
-            fun known(): Known =
-                when (this) {
-                    LBS -> Known.LBS
-                    KG -> Known.KG
-                    else -> throw AvaraInvalidDataException("Unknown Unit: $value")
-                }
-
-            /**
-             * Returns this class instance's primitive wire representation.
-             *
-             * This differs from the [toString] method because that method is primarily for
-             * debugging and generally doesn't throw.
-             *
-             * @throws AvaraInvalidDataException if this class instance's value does not have the
-             *   expected primitive type.
-             */
-            fun asString(): String =
-                _value().asString().orElseThrow {
-                    AvaraInvalidDataException("Value is not a String")
-                }
-
-            private var validated: Boolean = false
-
-            /**
-             * Validates that the types of all values in this object match their expected types
-             * recursively.
-             *
-             * This method is _not_ forwards compatible with new types from the API for existing
-             * fields.
-             *
-             * @throws AvaraInvalidDataException if any value type in this object doesn't match its
-             *   expected type.
-             */
-            fun validate(): Unit = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                known()
-                validated = true
-            }
-
-            fun isValid(): Boolean =
-                try {
-                    validate()
-                    true
-                } catch (e: AvaraInvalidDataException) {
-                    false
-                }
-
-            /**
-             * Returns a score indicating how many valid values are contained in this object
-             * recursively.
-             *
-             * Used for best match union deserialization.
-             */
-            @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is Unit && value == other.value
-            }
-
-            override fun hashCode() = value.hashCode()
-
-            override fun toString() = value.toString()
-        }
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {

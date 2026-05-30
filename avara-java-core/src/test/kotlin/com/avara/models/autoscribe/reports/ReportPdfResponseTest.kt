@@ -5,7 +5,10 @@ package com.avara.models.autoscribe.reports
 import com.avara.core.JsonValue
 import com.avara.core.jsonMapper
 import com.avara.errors.AvaraInvalidDataException
+import com.avara.models.autoscribe.HeightUnit
+import com.avara.models.autoscribe.Sex
 import com.avara.models.autoscribe.StudyReportMetadata
+import com.avara.models.autoscribe.WeightUnit
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -28,7 +31,7 @@ internal class ReportPdfResponseTest {
                         .facilityName("City Medical Center")
                         .height(
                             StudyReportMetadata.Height.builder()
-                                .unit(StudyReportMetadata.Height.Unit.CM)
+                                .unit(HeightUnit.CM)
                                 .value(165.0)
                                 .build()
                         )
@@ -36,12 +39,12 @@ internal class ReportPdfResponseTest {
                         .patientName("Jane Doe")
                         .procedure("MRI Brain with Contrast")
                         .referringPhysicianName("Dr. Michael Chen")
-                        .sex(StudyReportMetadata.Sex.FEMALE)
+                        .sex(Sex.FEMALE)
                         .studyDate("2024-03-15")
                         .studyTime("14:30")
                         .weight(
                             StudyReportMetadata.Weight.builder()
-                                .unit(StudyReportMetadata.Weight.Unit.KG)
+                                .unit(WeightUnit.KG)
                                 .value(62.0)
                                 .build()
                         )
@@ -74,7 +77,7 @@ internal class ReportPdfResponseTest {
                             .facilityName("City Medical Center")
                             .height(
                                 StudyReportMetadata.Height.builder()
-                                    .unit(StudyReportMetadata.Height.Unit.CM)
+                                    .unit(HeightUnit.CM)
                                     .value(165.0)
                                     .build()
                             )
@@ -82,12 +85,12 @@ internal class ReportPdfResponseTest {
                             .patientName("Jane Doe")
                             .procedure("MRI Brain with Contrast")
                             .referringPhysicianName("Dr. Michael Chen")
-                            .sex(StudyReportMetadata.Sex.FEMALE)
+                            .sex(Sex.FEMALE)
                             .studyDate("2024-03-15")
                             .studyTime("14:30")
                             .weight(
                                 StudyReportMetadata.Weight.builder()
-                                    .unit(StudyReportMetadata.Weight.Unit.KG)
+                                    .unit(WeightUnit.KG)
                                     .value(62.0)
                                     .build()
                             )
@@ -124,7 +127,7 @@ internal class ReportPdfResponseTest {
                                 .facilityName("City Medical Center")
                                 .height(
                                     StudyReportMetadata.Height.builder()
-                                        .unit(StudyReportMetadata.Height.Unit.CM)
+                                        .unit(HeightUnit.CM)
                                         .value(165.0)
                                         .build()
                                 )
@@ -132,12 +135,12 @@ internal class ReportPdfResponseTest {
                                 .patientName("Jane Doe")
                                 .procedure("MRI Brain with Contrast")
                                 .referringPhysicianName("Dr. Michael Chen")
-                                .sex(StudyReportMetadata.Sex.FEMALE)
+                                .sex(Sex.FEMALE)
                                 .studyDate("2024-03-15")
                                 .studyTime("14:30")
                                 .weight(
                                     StudyReportMetadata.Weight.builder()
-                                        .unit(StudyReportMetadata.Weight.Unit.KG)
+                                        .unit(WeightUnit.KG)
                                         .value(62.0)
                                         .build()
                                 )
@@ -176,7 +179,7 @@ internal class ReportPdfResponseTest {
                                     .facilityName("City Medical Center")
                                     .height(
                                         StudyReportMetadata.Height.builder()
-                                            .unit(StudyReportMetadata.Height.Unit.CM)
+                                            .unit(HeightUnit.CM)
                                             .value(165.0)
                                             .build()
                                     )
@@ -184,12 +187,12 @@ internal class ReportPdfResponseTest {
                                     .patientName("Jane Doe")
                                     .procedure("MRI Brain with Contrast")
                                     .referringPhysicianName("Dr. Michael Chen")
-                                    .sex(StudyReportMetadata.Sex.FEMALE)
+                                    .sex(Sex.FEMALE)
                                     .studyDate("2024-03-15")
                                     .studyTime("14:30")
                                     .weight(
                                         StudyReportMetadata.Weight.builder()
-                                            .unit(StudyReportMetadata.Weight.Unit.KG)
+                                            .unit(WeightUnit.KG)
                                             .value(62.0)
                                             .build()
                                     )

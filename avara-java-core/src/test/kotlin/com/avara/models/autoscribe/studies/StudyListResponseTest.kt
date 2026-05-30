@@ -4,7 +4,13 @@ package com.avara.models.autoscribe.studies
 
 import com.avara.core.JsonValue
 import com.avara.core.jsonMapper
+import com.avara.models.Severity
+import com.avara.models.autoscribe.HeightUnit
+import com.avara.models.autoscribe.ReportStatus
+import com.avara.models.autoscribe.Sex
 import com.avara.models.autoscribe.StudyReportMetadata
+import com.avara.models.autoscribe.StudyReportStatus
+import com.avara.models.autoscribe.WeightUnit
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import java.time.OffsetDateTime
 import kotlin.jvm.optionals.getOrNull
@@ -27,7 +33,7 @@ internal class StudyListResponseTest {
                         .facilityName("City Medical Center")
                         .height(
                             StudyReportMetadata.Height.builder()
-                                .unit(StudyReportMetadata.Height.Unit.CM)
+                                .unit(HeightUnit.CM)
                                 .value(165.0)
                                 .build()
                         )
@@ -35,22 +41,22 @@ internal class StudyListResponseTest {
                         .patientName("Jane Doe")
                         .procedure("MRI Brain with Contrast")
                         .referringPhysicianName("Dr. Michael Chen")
-                        .sex(StudyReportMetadata.Sex.FEMALE)
+                        .sex(Sex.FEMALE)
                         .studyDate("2024-03-15")
                         .studyTime("14:30")
                         .weight(
                             StudyReportMetadata.Weight.builder()
-                                .unit(StudyReportMetadata.Weight.Unit.KG)
+                                .unit(WeightUnit.KG)
                                 .value(62.0)
                                 .build()
                         )
                         .build()
                 )
-                .severity(StudyListResponse.Severity.NORMAL)
+                .severity(Severity.NORMAL)
                 .studyDescription("Brain MRI with Contrast")
                 .studyId("stu_1234567890abcdef1234567890abcdef")
                 .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
-                .studyReportStatus(StudyListResponse.StudyReportStatus.IN_PROGRESS)
+                .studyReportStatus(StudyReportStatus.IN_PROGRESS)
                 .updatedAt(OffsetDateTime.parse("2024-03-15T14:20:00Z"))
                 .assignedTo(
                     StudyListResponse.AssignedTo.builder()
@@ -98,7 +104,7 @@ internal class StudyListResponseTest {
                 )
                 .modality("modality")
                 .addPriorReport(
-                    StudyListResponse.PriorReport.builder()
+                    PriorReport.builder()
                         .reportText("IMPRESSION: No acute cardiopulmonary process.")
                         .externalStudyId("EXT-2024-001")
                         .modality("CT")
@@ -109,7 +115,7 @@ internal class StudyListResponseTest {
                 .addReportId(
                     ReportIdWithStatus.builder()
                         .reportId("rep_1234567890abcdef1234567890abcdef")
-                        .status(ReportIdWithStatus.Status.IN_PROGRESS)
+                        .status(ReportStatus.IN_PROGRESS)
                         .build()
                 )
                 .addTechnologistNote("x")
@@ -128,7 +134,7 @@ internal class StudyListResponseTest {
                     .facilityName("City Medical Center")
                     .height(
                         StudyReportMetadata.Height.builder()
-                            .unit(StudyReportMetadata.Height.Unit.CM)
+                            .unit(HeightUnit.CM)
                             .value(165.0)
                             .build()
                     )
@@ -136,24 +142,20 @@ internal class StudyListResponseTest {
                     .patientName("Jane Doe")
                     .procedure("MRI Brain with Contrast")
                     .referringPhysicianName("Dr. Michael Chen")
-                    .sex(StudyReportMetadata.Sex.FEMALE)
+                    .sex(Sex.FEMALE)
                     .studyDate("2024-03-15")
                     .studyTime("14:30")
                     .weight(
-                        StudyReportMetadata.Weight.builder()
-                            .unit(StudyReportMetadata.Weight.Unit.KG)
-                            .value(62.0)
-                            .build()
+                        StudyReportMetadata.Weight.builder().unit(WeightUnit.KG).value(62.0).build()
                     )
                     .build()
             )
-        assertThat(studyListResponse.severity()).isEqualTo(StudyListResponse.Severity.NORMAL)
+        assertThat(studyListResponse.severity()).isEqualTo(Severity.NORMAL)
         assertThat(studyListResponse.studyDescription()).isEqualTo("Brain MRI with Contrast")
         assertThat(studyListResponse.studyId()).isEqualTo("stu_1234567890abcdef1234567890abcdef")
         assertThat(studyListResponse.studyInstanceUid())
             .isEqualTo("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
-        assertThat(studyListResponse.studyReportStatus())
-            .isEqualTo(StudyListResponse.StudyReportStatus.IN_PROGRESS)
+        assertThat(studyListResponse.studyReportStatus()).isEqualTo(StudyReportStatus.IN_PROGRESS)
         assertThat(studyListResponse.updatedAt())
             .contains(OffsetDateTime.parse("2024-03-15T14:20:00Z"))
         assertThat(studyListResponse.assignedTo())
@@ -208,7 +210,7 @@ internal class StudyListResponseTest {
         assertThat(studyListResponse.modality()).contains("modality")
         assertThat(studyListResponse.priorReports().getOrNull())
             .containsExactly(
-                StudyListResponse.PriorReport.builder()
+                PriorReport.builder()
                     .reportText("IMPRESSION: No acute cardiopulmonary process.")
                     .externalStudyId("EXT-2024-001")
                     .modality("CT")
@@ -220,7 +222,7 @@ internal class StudyListResponseTest {
             .containsExactly(
                 ReportIdWithStatus.builder()
                     .reportId("rep_1234567890abcdef1234567890abcdef")
-                    .status(ReportIdWithStatus.Status.IN_PROGRESS)
+                    .status(ReportStatus.IN_PROGRESS)
                     .build()
             )
         assertThat(studyListResponse.technologistNotes().getOrNull()).containsExactly("x")
@@ -242,7 +244,7 @@ internal class StudyListResponseTest {
                         .facilityName("City Medical Center")
                         .height(
                             StudyReportMetadata.Height.builder()
-                                .unit(StudyReportMetadata.Height.Unit.CM)
+                                .unit(HeightUnit.CM)
                                 .value(165.0)
                                 .build()
                         )
@@ -250,22 +252,22 @@ internal class StudyListResponseTest {
                         .patientName("Jane Doe")
                         .procedure("MRI Brain with Contrast")
                         .referringPhysicianName("Dr. Michael Chen")
-                        .sex(StudyReportMetadata.Sex.FEMALE)
+                        .sex(Sex.FEMALE)
                         .studyDate("2024-03-15")
                         .studyTime("14:30")
                         .weight(
                             StudyReportMetadata.Weight.builder()
-                                .unit(StudyReportMetadata.Weight.Unit.KG)
+                                .unit(WeightUnit.KG)
                                 .value(62.0)
                                 .build()
                         )
                         .build()
                 )
-                .severity(StudyListResponse.Severity.NORMAL)
+                .severity(Severity.NORMAL)
                 .studyDescription("Brain MRI with Contrast")
                 .studyId("stu_1234567890abcdef1234567890abcdef")
                 .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
-                .studyReportStatus(StudyListResponse.StudyReportStatus.IN_PROGRESS)
+                .studyReportStatus(StudyReportStatus.IN_PROGRESS)
                 .updatedAt(OffsetDateTime.parse("2024-03-15T14:20:00Z"))
                 .assignedTo(
                     StudyListResponse.AssignedTo.builder()
@@ -313,7 +315,7 @@ internal class StudyListResponseTest {
                 )
                 .modality("modality")
                 .addPriorReport(
-                    StudyListResponse.PriorReport.builder()
+                    PriorReport.builder()
                         .reportText("IMPRESSION: No acute cardiopulmonary process.")
                         .externalStudyId("EXT-2024-001")
                         .modality("CT")
@@ -324,7 +326,7 @@ internal class StudyListResponseTest {
                 .addReportId(
                     ReportIdWithStatus.builder()
                         .reportId("rep_1234567890abcdef1234567890abcdef")
-                        .status(ReportIdWithStatus.Status.IN_PROGRESS)
+                        .status(ReportStatus.IN_PROGRESS)
                         .build()
                 )
                 .addTechnologistNote("x")

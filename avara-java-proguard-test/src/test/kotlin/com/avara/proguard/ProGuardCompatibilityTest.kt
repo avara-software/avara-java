@@ -6,10 +6,16 @@ import com.avara.client.okhttp.AvaraOkHttpClient
 import com.avara.core.JsonValue
 import com.avara.core.jsonMapper
 import com.avara.models.ApiKeyReference
+import com.avara.models.AssignableUserLevel
 import com.avara.models.ExpressCustomerReference
+import com.avara.models.Severity
 import com.avara.models.UserReference
+import com.avara.models.autoscribe.HeightUnit
+import com.avara.models.autoscribe.Sex
 import com.avara.models.autoscribe.StudyReportMetadata
+import com.avara.models.autoscribe.WeightUnit
 import com.avara.models.autoscribe.reports.ReportPdfResponse
+import com.avara.models.viewer.StudyViewerStatus
 import com.avara.models.viewer.studies.StudyCreateResponse
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import java.time.OffsetDateTime
@@ -68,11 +74,11 @@ internal class ProGuardCompatibilityTest {
                 .cancelledAt(null)
                 .createdAt(OffsetDateTime.parse("2024-03-15T10:30:00Z"))
                 .isCancelled(false)
-                .severity(StudyCreateResponse.Severity.HIGH)
+                .severity(Severity.HIGH)
                 .studyDescription("CT Chest/Abdomen/Pelvis")
                 .studyId("stu_1234567890abcdef1234567890abcdef")
                 .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
-                .studyViewerStatus(StudyCreateResponse.StudyViewerStatus.INCOMPLETE)
+                .studyViewerStatus(StudyViewerStatus.INCOMPLETE)
                 .updatedAt(OffsetDateTime.parse("2024-03-15T14:20:00Z"))
                 .assignedTo(
                     UserReference.builder()
@@ -143,7 +149,7 @@ internal class ProGuardCompatibilityTest {
                             .facilityName("City Medical Center")
                             .height(
                                 StudyReportMetadata.Height.builder()
-                                    .unit(StudyReportMetadata.Height.Unit.CM)
+                                    .unit(HeightUnit.CM)
                                     .value(165.0)
                                     .build()
                             )
@@ -151,12 +157,12 @@ internal class ProGuardCompatibilityTest {
                             .patientName("Jane Doe")
                             .procedure("MRI Brain with Contrast")
                             .referringPhysicianName("Dr. Michael Chen")
-                            .sex(StudyReportMetadata.Sex.FEMALE)
+                            .sex(Sex.FEMALE)
                             .studyDate("2024-03-15")
                             .studyTime("14:30")
                             .weight(
                                 StudyReportMetadata.Weight.builder()
-                                    .unit(StudyReportMetadata.Weight.Unit.KG)
+                                    .unit(WeightUnit.KG)
                                     .value(62.0)
                                     .build()
                             )
@@ -174,5 +180,19 @@ internal class ProGuardCompatibilityTest {
             )
 
         assertThat(roundtrippedReportPdfResponse).isEqualTo(reportPdfResponse)
+    }
+
+    @Test
+    fun assignableUserLevelRoundtrip() {
+        val jsonMapper = jsonMapper()
+        val assignableUserLevel = AssignableUserLevel.MEMBER
+
+        val roundtrippedAssignableUserLevel =
+            jsonMapper.readValue(
+                jsonMapper.writeValueAsString(assignableUserLevel),
+                jacksonTypeRef<AssignableUserLevel>(),
+            )
+
+        assertThat(roundtrippedAssignableUserLevel).isEqualTo(assignableUserLevel)
     }
 }

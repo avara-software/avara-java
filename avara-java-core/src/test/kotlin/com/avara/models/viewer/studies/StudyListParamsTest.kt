@@ -3,6 +3,8 @@
 package com.avara.models.viewer.studies
 
 import com.avara.core.http.QueryParams
+import com.avara.models.Severity
+import com.avara.models.viewer.StudyViewerStatus
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -16,9 +18,9 @@ internal class StudyListParamsTest {
             .expressCustomerId("cus_1234567890abcdef1234567890abcdef")
             .isCancelled(false)
             .limit(20.0)
-            .severity(StudyListParams.Severity.NORMAL)
+            .severity(Severity.NORMAL)
             .studyDescription("CT Head")
-            .studyViewerStatus(StudyListParams.StudyViewerStatus.COMPLETE)
+            .studyViewerStatus(StudyViewerStatus.INCOMPLETE)
             .build()
     }
 
@@ -31,9 +33,9 @@ internal class StudyListParamsTest {
                 .expressCustomerId("cus_1234567890abcdef1234567890abcdef")
                 .isCancelled(false)
                 .limit(20.0)
-                .severity(StudyListParams.Severity.NORMAL)
+                .severity(Severity.NORMAL)
                 .studyDescription("CT Head")
-                .studyViewerStatus(StudyListParams.StudyViewerStatus.COMPLETE)
+                .studyViewerStatus(StudyViewerStatus.INCOMPLETE)
                 .build()
 
         val queryParams = params._queryParams()
@@ -48,7 +50,7 @@ internal class StudyListParamsTest {
                     .put("limit", "20.0")
                     .put("severity", "normal")
                     .put("studyDescription", "CT Head")
-                    .put("studyViewerStatus", "complete")
+                    .put("studyViewerStatus", "incomplete")
                     .build()
             )
     }

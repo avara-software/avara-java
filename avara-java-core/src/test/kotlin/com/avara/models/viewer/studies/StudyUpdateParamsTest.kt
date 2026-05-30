@@ -3,6 +3,8 @@
 package com.avara.models.viewer.studies
 
 import com.avara.core.JsonValue
+import com.avara.models.Severity
+import com.avara.models.viewer.StudyViewerStatus
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -18,9 +20,9 @@ internal class StudyUpdateParamsTest {
                     .putAdditionalProperty("foo", JsonValue.from("string"))
                     .build()
             )
-            .severity(StudyUpdateParams.Severity.STAT)
+            .severity(Severity.STAT)
             .studyDescription("CT Chest/Abdomen/Pelvis with Contrast")
-            .studyViewerStatus(StudyUpdateParams.StudyViewerStatus.COMPLETE)
+            .studyViewerStatus(StudyViewerStatus.COMPLETE)
             .build()
     }
 
@@ -45,9 +47,9 @@ internal class StudyUpdateParamsTest {
                         .putAdditionalProperty("foo", JsonValue.from("string"))
                         .build()
                 )
-                .severity(StudyUpdateParams.Severity.STAT)
+                .severity(Severity.STAT)
                 .studyDescription("CT Chest/Abdomen/Pelvis with Contrast")
-                .studyViewerStatus(StudyUpdateParams.StudyViewerStatus.COMPLETE)
+                .studyViewerStatus(StudyViewerStatus.COMPLETE)
                 .build()
 
         val body = params._body()
@@ -59,9 +61,9 @@ internal class StudyUpdateParamsTest {
                     .putAdditionalProperty("foo", JsonValue.from("string"))
                     .build()
             )
-        assertThat(body.severity()).contains(StudyUpdateParams.Severity.STAT)
+        assertThat(body.severity()).contains(Severity.STAT)
         assertThat(body.studyDescription()).contains("CT Chest/Abdomen/Pelvis with Contrast")
-        assertThat(body.studyViewerStatus()).contains(StudyUpdateParams.StudyViewerStatus.COMPLETE)
+        assertThat(body.studyViewerStatus()).contains(StudyViewerStatus.COMPLETE)
     }
 
     @Test

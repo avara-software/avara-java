@@ -2,6 +2,8 @@
 
 package com.avara.models.viewer.users.invitations
 
+import com.avara.models.AssignableUserLevel
+import com.avara.models.ClinicRole
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -12,11 +14,11 @@ internal class InvitationUpdateParamsTest {
         InvitationUpdateParams.builder()
             .invitationId("inv_1234567890abcdef1234567890abcdef")
             .canManageStudies(true)
-            .clinicRole(InvitationUpdateParams.ClinicRole.RADIOLOGIST)
+            .clinicRole(ClinicRole.RADIOLOGIST)
             .firstName("Michael")
             .hasDashboardAccess(true)
             .lastName("Chen")
-            .level(InvitationUpdateParams.Level.ADMIN)
+            .level(AssignableUserLevel.MEMBER)
             .middleName("x")
             .phoneNumber("5551234567")
             .suffix1("x")
@@ -42,11 +44,11 @@ internal class InvitationUpdateParamsTest {
             InvitationUpdateParams.builder()
                 .invitationId("inv_1234567890abcdef1234567890abcdef")
                 .canManageStudies(true)
-                .clinicRole(InvitationUpdateParams.ClinicRole.RADIOLOGIST)
+                .clinicRole(ClinicRole.RADIOLOGIST)
                 .firstName("Michael")
                 .hasDashboardAccess(true)
                 .lastName("Chen")
-                .level(InvitationUpdateParams.Level.ADMIN)
+                .level(AssignableUserLevel.MEMBER)
                 .middleName("x")
                 .phoneNumber("5551234567")
                 .suffix1("x")
@@ -56,11 +58,11 @@ internal class InvitationUpdateParamsTest {
         val body = params._body()
 
         assertThat(body.canManageStudies()).contains(true)
-        assertThat(body.clinicRole()).contains(InvitationUpdateParams.ClinicRole.RADIOLOGIST)
+        assertThat(body.clinicRole()).contains(ClinicRole.RADIOLOGIST)
         assertThat(body.firstName()).contains("Michael")
         assertThat(body.hasDashboardAccess()).contains(true)
         assertThat(body.lastName()).contains("Chen")
-        assertThat(body.level()).contains(InvitationUpdateParams.Level.ADMIN)
+        assertThat(body.level()).contains(AssignableUserLevel.MEMBER)
         assertThat(body.middleName()).contains("x")
         assertThat(body.phoneNumber()).contains("5551234567")
         assertThat(body.suffix1()).contains("x")

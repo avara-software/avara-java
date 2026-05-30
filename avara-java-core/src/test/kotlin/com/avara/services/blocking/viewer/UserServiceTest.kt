@@ -3,6 +3,8 @@
 package com.avara.services.blocking.viewer
 
 import com.avara.client.okhttp.AvaraOkHttpClient
+import com.avara.models.AssignableUserLevel
+import com.avara.models.ClinicRole
 import com.avara.models.viewer.users.UserInviteParams
 import com.avara.models.viewer.users.UserReactivateParams
 import com.avara.models.viewer.users.UserRevokeAccessParams
@@ -34,11 +36,11 @@ internal class UserServiceTest {
                 UserUpdateParams.builder()
                     .userId("usr_1234567890abcdef1234567890abcdef")
                     .canManageStudies(true)
-                    .clinicRole(UserUpdateParams.ClinicRole.RADIOLOGIST)
+                    .clinicRole(ClinicRole.RADIOLOGIST)
                     .firstName("Sarah")
                     .hasDashboardAccess(true)
                     .lastName("Johnson-Smith")
-                    .level(UserUpdateParams.Level.ADMIN)
+                    .level(AssignableUserLevel.ADMIN)
                     .middleName("x")
                     .phoneNumber("5551234567")
                     .suffix1("x")
@@ -70,12 +72,12 @@ internal class UserServiceTest {
             userService.invite(
                 UserInviteParams.builder()
                     .canManageStudies(true)
-                    .clinicRole(UserInviteParams.ClinicRole.RADIOLOGIST)
+                    .clinicRole(ClinicRole.RADIOLOGIST)
                     .email("dr.johnson@hospital.org")
                     .firstName("Sarah")
                     .hasDashboardAccess(true)
                     .lastName("Johnson")
-                    .level(UserInviteParams.Level.MEMBER)
+                    .level(AssignableUserLevel.MEMBER)
                     .middleName("Marie")
                     .phoneNumber("5551234567")
                     .suffix1("MD")

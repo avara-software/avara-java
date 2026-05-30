@@ -36,6 +36,7 @@ This library requires Java 8 or later.
 ```java
 import com.avara.client.AvaraClient;
 import com.avara.client.okhttp.AvaraOkHttpClient;
+import com.avara.models.Severity;
 import com.avara.models.viewer.studies.StudyCreateParams;
 import com.avara.models.viewer.studies.StudyCreateResponse;
 
@@ -44,7 +45,7 @@ import com.avara.models.viewer.studies.StudyCreateResponse;
 AvaraClient client = AvaraOkHttpClient.fromEnv();
 
 StudyCreateParams params = StudyCreateParams.builder()
-    .severity(StudyCreateParams.Severity.NORMAL)
+    .severity(Severity.NORMAL)
     .studyDescription("Brain MRI with Contrast")
     .studyInstanceUid("1.3.6.1.4.1.62853.20250130.1738242672936.234543143652")
     .build();
@@ -139,6 +140,7 @@ The default client is synchronous. To switch to asynchronous execution, call the
 ```java
 import com.avara.client.AvaraClient;
 import com.avara.client.okhttp.AvaraOkHttpClient;
+import com.avara.models.Severity;
 import com.avara.models.viewer.studies.StudyCreateParams;
 import com.avara.models.viewer.studies.StudyCreateResponse;
 import java.util.concurrent.CompletableFuture;
@@ -148,7 +150,7 @@ import java.util.concurrent.CompletableFuture;
 AvaraClient client = AvaraOkHttpClient.fromEnv();
 
 StudyCreateParams params = StudyCreateParams.builder()
-    .severity(StudyCreateParams.Severity.NORMAL)
+    .severity(Severity.NORMAL)
     .studyDescription("Brain MRI with Contrast")
     .studyInstanceUid("1.3.6.1.4.1.62853.20250130.1738242672936.234543143652")
     .build();
@@ -160,6 +162,7 @@ Or create an asynchronous client from the beginning:
 ```java
 import com.avara.client.AvaraClientAsync;
 import com.avara.client.okhttp.AvaraOkHttpClientAsync;
+import com.avara.models.Severity;
 import com.avara.models.viewer.studies.StudyCreateParams;
 import com.avara.models.viewer.studies.StudyCreateResponse;
 import java.util.concurrent.CompletableFuture;
@@ -169,7 +172,7 @@ import java.util.concurrent.CompletableFuture;
 AvaraClientAsync client = AvaraOkHttpClientAsync.fromEnv();
 
 StudyCreateParams params = StudyCreateParams.builder()
-    .severity(StudyCreateParams.Severity.NORMAL)
+    .severity(Severity.NORMAL)
     .studyDescription("Brain MRI with Contrast")
     .studyInstanceUid("1.3.6.1.4.1.62853.20250130.1738242672936.234543143652")
     .build();
@@ -187,11 +190,12 @@ To access this data, prefix any HTTP method call on a client or service with `wi
 ```java
 import com.avara.core.http.Headers;
 import com.avara.core.http.HttpResponseFor;
+import com.avara.models.Severity;
 import com.avara.models.viewer.studies.StudyCreateParams;
 import com.avara.models.viewer.studies.StudyCreateResponse;
 
 StudyCreateParams params = StudyCreateParams.builder()
-    .severity(StudyCreateParams.Severity.NORMAL)
+    .severity(Severity.NORMAL)
     .studyDescription("Brain MRI with Contrast")
     .studyInstanceUid("1.3.6.1.4.1.62853.20250130.1738242672936.234543143652")
     .build();
@@ -686,10 +690,10 @@ To access a property's raw JSON value, which may be undocumented, call its `_` p
 
 ```java
 import com.avara.core.JsonField;
-import com.avara.models.viewer.studies.StudyCreateParams;
+import com.avara.models.Severity;
 import java.util.Optional;
 
-JsonField<StudyCreateParams.Severity> severity = client.viewer().studies().create(params)._severity();
+JsonField<Severity> severity = client.viewer().studies().create(params)._severity();
 
 if (severity.isMissing()) {
   // The property is absent from the JSON response

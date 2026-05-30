@@ -2,7 +2,6 @@
 
 package com.avara.models.viewer.users
 
-import com.avara.core.Enum
 import com.avara.core.ExcludeMissing
 import com.avara.core.JsonField
 import com.avara.core.JsonMissing
@@ -11,6 +10,8 @@ import com.avara.core.Params
 import com.avara.core.http.Headers
 import com.avara.core.http.QueryParams
 import com.avara.errors.AvaraInvalidDataException
+import com.avara.models.AssignableUserLevel
+import com.avara.models.ClinicRole
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
@@ -42,6 +43,8 @@ private constructor(
     fun canManageStudies(): Optional<Boolean> = body.canManageStudies()
 
     /**
+     * A user's clinical or organizational role within the clinic.
+     *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
@@ -72,10 +75,13 @@ private constructor(
     fun lastName(): Optional<String> = body.lastName()
 
     /**
+     * User access level assignable via the API. 'admin' can manage users/settings, 'member' has
+     * standard access. 'owner' is dashboard-only and cannot be assigned via the API.
+     *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun level(): Optional<Level> = body.level()
+    fun level(): Optional<AssignableUserLevel> = body.level()
 
     /**
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -143,7 +149,7 @@ private constructor(
      *
      * Unlike [level], this method doesn't throw if the JSON field has an unexpected type.
      */
-    fun _level(): JsonField<Level> = body._level()
+    fun _level(): JsonField<AssignableUserLevel> = body._level()
 
     /**
      * Returns the raw JSON value of [middleName].
@@ -242,6 +248,7 @@ private constructor(
             body.canManageStudies(canManageStudies)
         }
 
+        /** A user's clinical or organizational role within the clinic. */
         fun clinicRole(clinicRole: ClinicRole?) = apply { body.clinicRole(clinicRole) }
 
         /** Alias for calling [Builder.clinicRole] with `clinicRole.orElse(null)`. */
@@ -295,15 +302,20 @@ private constructor(
          */
         fun lastName(lastName: JsonField<String>) = apply { body.lastName(lastName) }
 
-        fun level(level: Level) = apply { body.level(level) }
+        /**
+         * User access level assignable via the API. 'admin' can manage users/settings, 'member' has
+         * standard access. 'owner' is dashboard-only and cannot be assigned via the API.
+         */
+        fun level(level: AssignableUserLevel) = apply { body.level(level) }
 
         /**
          * Sets [Builder.level] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.level] with a well-typed [Level] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
+         * You should usually call [Builder.level] with a well-typed [AssignableUserLevel] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
          */
-        fun level(level: JsonField<Level>) = apply { body.level(level) }
+        fun level(level: JsonField<AssignableUserLevel>) = apply { body.level(level) }
 
         fun middleName(middleName: String?) = apply { body.middleName(middleName) }
 
@@ -511,7 +523,7 @@ private constructor(
         private val firstName: JsonField<String>,
         private val hasDashboardAccess: JsonField<Boolean>,
         private val lastName: JsonField<String>,
-        private val level: JsonField<Level>,
+        private val level: JsonField<AssignableUserLevel>,
         private val middleName: JsonField<String>,
         private val phoneNumber: JsonField<String>,
         private val suffix1: JsonField<String>,
@@ -536,7 +548,9 @@ private constructor(
             @JsonProperty("lastName")
             @ExcludeMissing
             lastName: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("level") @ExcludeMissing level: JsonField<Level> = JsonMissing.of(),
+            @JsonProperty("level")
+            @ExcludeMissing
+            level: JsonField<AssignableUserLevel> = JsonMissing.of(),
             @JsonProperty("middleName")
             @ExcludeMissing
             middleName: JsonField<String> = JsonMissing.of(),
@@ -566,6 +580,8 @@ private constructor(
         fun canManageStudies(): Optional<Boolean> = canManageStudies.getOptional("canManageStudies")
 
         /**
+         * A user's clinical or organizational role within the clinic.
+         *
          * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
@@ -597,10 +613,13 @@ private constructor(
         fun lastName(): Optional<String> = lastName.getOptional("lastName")
 
         /**
+         * User access level assignable via the API. 'admin' can manage users/settings, 'member' has
+         * standard access. 'owner' is dashboard-only and cannot be assigned via the API.
+         *
          * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun level(): Optional<Level> = level.getOptional("level")
+        fun level(): Optional<AssignableUserLevel> = level.getOptional("level")
 
         /**
          * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -674,7 +693,7 @@ private constructor(
          *
          * Unlike [level], this method doesn't throw if the JSON field has an unexpected type.
          */
-        @JsonProperty("level") @ExcludeMissing fun _level(): JsonField<Level> = level
+        @JsonProperty("level") @ExcludeMissing fun _level(): JsonField<AssignableUserLevel> = level
 
         /**
          * Returns the raw JSON value of [middleName].
@@ -734,7 +753,7 @@ private constructor(
             private var firstName: JsonField<String> = JsonMissing.of()
             private var hasDashboardAccess: JsonField<Boolean> = JsonMissing.of()
             private var lastName: JsonField<String> = JsonMissing.of()
-            private var level: JsonField<Level> = JsonMissing.of()
+            private var level: JsonField<AssignableUserLevel> = JsonMissing.of()
             private var middleName: JsonField<String> = JsonMissing.of()
             private var phoneNumber: JsonField<String> = JsonMissing.of()
             private var suffix1: JsonField<String> = JsonMissing.of()
@@ -770,6 +789,7 @@ private constructor(
                 this.canManageStudies = canManageStudies
             }
 
+            /** A user's clinical or organizational role within the clinic. */
             fun clinicRole(clinicRole: ClinicRole?) = clinicRole(JsonField.ofNullable(clinicRole))
 
             /** Alias for calling [Builder.clinicRole] with `clinicRole.orElse(null)`. */
@@ -825,16 +845,20 @@ private constructor(
              */
             fun lastName(lastName: JsonField<String>) = apply { this.lastName = lastName }
 
-            fun level(level: Level) = level(JsonField.of(level))
+            /**
+             * User access level assignable via the API. 'admin' can manage users/settings, 'member'
+             * has standard access. 'owner' is dashboard-only and cannot be assigned via the API.
+             */
+            fun level(level: AssignableUserLevel) = level(JsonField.of(level))
 
             /**
              * Sets [Builder.level] to an arbitrary JSON value.
              *
-             * You should usually call [Builder.level] with a well-typed [Level] value instead. This
-             * method is primarily for setting the field to an undocumented or not yet supported
-             * value.
+             * You should usually call [Builder.level] with a well-typed [AssignableUserLevel] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
-            fun level(level: JsonField<Level>) = apply { this.level = level }
+            fun level(level: JsonField<AssignableUserLevel>) = apply { this.level = level }
 
             fun middleName(middleName: String?) = middleName(JsonField.ofNullable(middleName))
 
@@ -1029,388 +1053,6 @@ private constructor(
 
         override fun toString() =
             "Body{canManageStudies=$canManageStudies, clinicRole=$clinicRole, firstName=$firstName, hasDashboardAccess=$hasDashboardAccess, lastName=$lastName, level=$level, middleName=$middleName, phoneNumber=$phoneNumber, suffix1=$suffix1, suffix2=$suffix2, additionalProperties=$additionalProperties}"
-    }
-
-    class ClinicRole @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
-
-        /**
-         * Returns this class instance's raw value.
-         *
-         * This is usually only useful if this instance was deserialized from data that doesn't
-         * match any known member, and you want to know that value. For example, if the SDK is on an
-         * older version than the API, then the API may respond with new members that the SDK is
-         * unaware of.
-         */
-        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-        companion object {
-
-            @JvmField val RADIOLOGIST = of("Radiologist")
-
-            @JvmField val CARDIOLOGIST = of("Cardiologist")
-
-            @JvmField val NEUROLOGIST = of("Neurologist")
-
-            @JvmField val UROLOGIST = of("Urologist")
-
-            @JvmField val GYNECOLOGIST = of("Gynecologist")
-
-            @JvmField val ENDOCRINOLOGIST = of("Endocrinologist")
-
-            @JvmField val DOCTOR = of("Doctor")
-
-            @JvmField val SURGEON = of("Surgeon")
-
-            @JvmField val PHYSICIAN = of("Physician")
-
-            @JvmField val PHYSICIAN_ASSISTANT = of("Physician Assistant")
-
-            @JvmField val NURSE_PRACTITIONER = of("Nurse Practitioner")
-
-            @JvmField val REGISTERED_NURSE = of("Registered Nurse")
-
-            @JvmField val PATIENT_CARE_COORDINATOR = of("Patient Care Coordinator")
-
-            @JvmField val FRONT_DESK_OPERATOR = of("Front Desk Operator")
-
-            @JvmField val IMAGING_TECHNOLOGIST = of("Imaging Technologist")
-
-            @JvmField val PACS_ADMINISTRATOR = of("PACS Administrator")
-
-            @JvmField val SOFTWARE_ENGINEER = of("Software Engineer")
-
-            @JvmField val REVENUE_CYCLE_MANAGER = of("Revenue Cycle Manager")
-
-            @JvmField val ADMINISTRATIVE_DIRECTOR = of("Administrative Director")
-
-            @JvmField val ADMINISTRATIVE_ASSISTANT = of("Administrative Assistant")
-
-            @JvmField val OTHER = of("Other")
-
-            @JvmStatic fun of(value: String) = ClinicRole(JsonField.of(value))
-        }
-
-        /** An enum containing [ClinicRole]'s known values. */
-        enum class Known {
-            RADIOLOGIST,
-            CARDIOLOGIST,
-            NEUROLOGIST,
-            UROLOGIST,
-            GYNECOLOGIST,
-            ENDOCRINOLOGIST,
-            DOCTOR,
-            SURGEON,
-            PHYSICIAN,
-            PHYSICIAN_ASSISTANT,
-            NURSE_PRACTITIONER,
-            REGISTERED_NURSE,
-            PATIENT_CARE_COORDINATOR,
-            FRONT_DESK_OPERATOR,
-            IMAGING_TECHNOLOGIST,
-            PACS_ADMINISTRATOR,
-            SOFTWARE_ENGINEER,
-            REVENUE_CYCLE_MANAGER,
-            ADMINISTRATIVE_DIRECTOR,
-            ADMINISTRATIVE_ASSISTANT,
-            OTHER,
-        }
-
-        /**
-         * An enum containing [ClinicRole]'s known values, as well as an [_UNKNOWN] member.
-         *
-         * An instance of [ClinicRole] can contain an unknown value in a couple of cases:
-         * - It was deserialized from data that doesn't match any known member. For example, if the
-         *   SDK is on an older version than the API, then the API may respond with new members that
-         *   the SDK is unaware of.
-         * - It was constructed with an arbitrary value using the [of] method.
-         */
-        enum class Value {
-            RADIOLOGIST,
-            CARDIOLOGIST,
-            NEUROLOGIST,
-            UROLOGIST,
-            GYNECOLOGIST,
-            ENDOCRINOLOGIST,
-            DOCTOR,
-            SURGEON,
-            PHYSICIAN,
-            PHYSICIAN_ASSISTANT,
-            NURSE_PRACTITIONER,
-            REGISTERED_NURSE,
-            PATIENT_CARE_COORDINATOR,
-            FRONT_DESK_OPERATOR,
-            IMAGING_TECHNOLOGIST,
-            PACS_ADMINISTRATOR,
-            SOFTWARE_ENGINEER,
-            REVENUE_CYCLE_MANAGER,
-            ADMINISTRATIVE_DIRECTOR,
-            ADMINISTRATIVE_ASSISTANT,
-            OTHER,
-            /**
-             * An enum member indicating that [ClinicRole] was instantiated with an unknown value.
-             */
-            _UNKNOWN,
-        }
-
-        /**
-         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
-         * if the class was instantiated with an unknown value.
-         *
-         * Use the [known] method instead if you're certain the value is always known or if you want
-         * to throw for the unknown case.
-         */
-        fun value(): Value =
-            when (this) {
-                RADIOLOGIST -> Value.RADIOLOGIST
-                CARDIOLOGIST -> Value.CARDIOLOGIST
-                NEUROLOGIST -> Value.NEUROLOGIST
-                UROLOGIST -> Value.UROLOGIST
-                GYNECOLOGIST -> Value.GYNECOLOGIST
-                ENDOCRINOLOGIST -> Value.ENDOCRINOLOGIST
-                DOCTOR -> Value.DOCTOR
-                SURGEON -> Value.SURGEON
-                PHYSICIAN -> Value.PHYSICIAN
-                PHYSICIAN_ASSISTANT -> Value.PHYSICIAN_ASSISTANT
-                NURSE_PRACTITIONER -> Value.NURSE_PRACTITIONER
-                REGISTERED_NURSE -> Value.REGISTERED_NURSE
-                PATIENT_CARE_COORDINATOR -> Value.PATIENT_CARE_COORDINATOR
-                FRONT_DESK_OPERATOR -> Value.FRONT_DESK_OPERATOR
-                IMAGING_TECHNOLOGIST -> Value.IMAGING_TECHNOLOGIST
-                PACS_ADMINISTRATOR -> Value.PACS_ADMINISTRATOR
-                SOFTWARE_ENGINEER -> Value.SOFTWARE_ENGINEER
-                REVENUE_CYCLE_MANAGER -> Value.REVENUE_CYCLE_MANAGER
-                ADMINISTRATIVE_DIRECTOR -> Value.ADMINISTRATIVE_DIRECTOR
-                ADMINISTRATIVE_ASSISTANT -> Value.ADMINISTRATIVE_ASSISTANT
-                OTHER -> Value.OTHER
-                else -> Value._UNKNOWN
-            }
-
-        /**
-         * Returns an enum member corresponding to this class instance's value.
-         *
-         * Use the [value] method instead if you're uncertain the value is always known and don't
-         * want to throw for the unknown case.
-         *
-         * @throws AvaraInvalidDataException if this class instance's value is a not a known member.
-         */
-        fun known(): Known =
-            when (this) {
-                RADIOLOGIST -> Known.RADIOLOGIST
-                CARDIOLOGIST -> Known.CARDIOLOGIST
-                NEUROLOGIST -> Known.NEUROLOGIST
-                UROLOGIST -> Known.UROLOGIST
-                GYNECOLOGIST -> Known.GYNECOLOGIST
-                ENDOCRINOLOGIST -> Known.ENDOCRINOLOGIST
-                DOCTOR -> Known.DOCTOR
-                SURGEON -> Known.SURGEON
-                PHYSICIAN -> Known.PHYSICIAN
-                PHYSICIAN_ASSISTANT -> Known.PHYSICIAN_ASSISTANT
-                NURSE_PRACTITIONER -> Known.NURSE_PRACTITIONER
-                REGISTERED_NURSE -> Known.REGISTERED_NURSE
-                PATIENT_CARE_COORDINATOR -> Known.PATIENT_CARE_COORDINATOR
-                FRONT_DESK_OPERATOR -> Known.FRONT_DESK_OPERATOR
-                IMAGING_TECHNOLOGIST -> Known.IMAGING_TECHNOLOGIST
-                PACS_ADMINISTRATOR -> Known.PACS_ADMINISTRATOR
-                SOFTWARE_ENGINEER -> Known.SOFTWARE_ENGINEER
-                REVENUE_CYCLE_MANAGER -> Known.REVENUE_CYCLE_MANAGER
-                ADMINISTRATIVE_DIRECTOR -> Known.ADMINISTRATIVE_DIRECTOR
-                ADMINISTRATIVE_ASSISTANT -> Known.ADMINISTRATIVE_ASSISTANT
-                OTHER -> Known.OTHER
-                else -> throw AvaraInvalidDataException("Unknown ClinicRole: $value")
-            }
-
-        /**
-         * Returns this class instance's primitive wire representation.
-         *
-         * This differs from the [toString] method because that method is primarily for debugging
-         * and generally doesn't throw.
-         *
-         * @throws AvaraInvalidDataException if this class instance's value does not have the
-         *   expected primitive type.
-         */
-        fun asString(): String =
-            _value().asString().orElseThrow { AvaraInvalidDataException("Value is not a String") }
-
-        private var validated: Boolean = false
-
-        /**
-         * Validates that the types of all values in this object match their expected types
-         * recursively.
-         *
-         * This method is _not_ forwards compatible with new types from the API for existing fields.
-         *
-         * @throws AvaraInvalidDataException if any value type in this object doesn't match its
-         *   expected type.
-         */
-        fun validate(): ClinicRole = apply {
-            if (validated) {
-                return@apply
-            }
-
-            known()
-            validated = true
-        }
-
-        fun isValid(): Boolean =
-            try {
-                validate()
-                true
-            } catch (e: AvaraInvalidDataException) {
-                false
-            }
-
-        /**
-         * Returns a score indicating how many valid values are contained in this object
-         * recursively.
-         *
-         * Used for best match union deserialization.
-         */
-        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is ClinicRole && value == other.value
-        }
-
-        override fun hashCode() = value.hashCode()
-
-        override fun toString() = value.toString()
-    }
-
-    class Level @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
-
-        /**
-         * Returns this class instance's raw value.
-         *
-         * This is usually only useful if this instance was deserialized from data that doesn't
-         * match any known member, and you want to know that value. For example, if the SDK is on an
-         * older version than the API, then the API may respond with new members that the SDK is
-         * unaware of.
-         */
-        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-        companion object {
-
-            @JvmField val ADMIN = of("admin")
-
-            @JvmField val MEMBER = of("member")
-
-            @JvmStatic fun of(value: String) = Level(JsonField.of(value))
-        }
-
-        /** An enum containing [Level]'s known values. */
-        enum class Known {
-            ADMIN,
-            MEMBER,
-        }
-
-        /**
-         * An enum containing [Level]'s known values, as well as an [_UNKNOWN] member.
-         *
-         * An instance of [Level] can contain an unknown value in a couple of cases:
-         * - It was deserialized from data that doesn't match any known member. For example, if the
-         *   SDK is on an older version than the API, then the API may respond with new members that
-         *   the SDK is unaware of.
-         * - It was constructed with an arbitrary value using the [of] method.
-         */
-        enum class Value {
-            ADMIN,
-            MEMBER,
-            /** An enum member indicating that [Level] was instantiated with an unknown value. */
-            _UNKNOWN,
-        }
-
-        /**
-         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
-         * if the class was instantiated with an unknown value.
-         *
-         * Use the [known] method instead if you're certain the value is always known or if you want
-         * to throw for the unknown case.
-         */
-        fun value(): Value =
-            when (this) {
-                ADMIN -> Value.ADMIN
-                MEMBER -> Value.MEMBER
-                else -> Value._UNKNOWN
-            }
-
-        /**
-         * Returns an enum member corresponding to this class instance's value.
-         *
-         * Use the [value] method instead if you're uncertain the value is always known and don't
-         * want to throw for the unknown case.
-         *
-         * @throws AvaraInvalidDataException if this class instance's value is a not a known member.
-         */
-        fun known(): Known =
-            when (this) {
-                ADMIN -> Known.ADMIN
-                MEMBER -> Known.MEMBER
-                else -> throw AvaraInvalidDataException("Unknown Level: $value")
-            }
-
-        /**
-         * Returns this class instance's primitive wire representation.
-         *
-         * This differs from the [toString] method because that method is primarily for debugging
-         * and generally doesn't throw.
-         *
-         * @throws AvaraInvalidDataException if this class instance's value does not have the
-         *   expected primitive type.
-         */
-        fun asString(): String =
-            _value().asString().orElseThrow { AvaraInvalidDataException("Value is not a String") }
-
-        private var validated: Boolean = false
-
-        /**
-         * Validates that the types of all values in this object match their expected types
-         * recursively.
-         *
-         * This method is _not_ forwards compatible with new types from the API for existing fields.
-         *
-         * @throws AvaraInvalidDataException if any value type in this object doesn't match its
-         *   expected type.
-         */
-        fun validate(): Level = apply {
-            if (validated) {
-                return@apply
-            }
-
-            known()
-            validated = true
-        }
-
-        fun isValid(): Boolean =
-            try {
-                validate()
-                true
-            } catch (e: AvaraInvalidDataException) {
-                false
-            }
-
-        /**
-         * Returns a score indicating how many valid values are contained in this object
-         * recursively.
-         *
-         * Used for best match union deserialization.
-         */
-        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Level && value == other.value
-        }
-
-        override fun hashCode() = value.hashCode()
-
-        override fun toString() = value.toString()
     }
 
     override fun equals(other: Any?): Boolean {

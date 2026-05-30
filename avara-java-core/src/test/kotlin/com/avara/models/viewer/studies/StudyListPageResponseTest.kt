@@ -6,7 +6,9 @@ import com.avara.core.JsonValue
 import com.avara.core.jsonMapper
 import com.avara.models.ApiKeyReference
 import com.avara.models.ExpressCustomerReference
+import com.avara.models.Severity
 import com.avara.models.UserReference
+import com.avara.models.viewer.StudyViewerStatus
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import java.time.OffsetDateTime
 import org.assertj.core.api.Assertions.assertThat
@@ -24,11 +26,11 @@ internal class StudyListPageResponseTest {
                         .cancelledAt(null)
                         .createdAt(OffsetDateTime.parse("2024-03-15T10:30:00Z"))
                         .isCancelled(false)
-                        .severity(StudyListResponse.Severity.HIGH)
+                        .severity(Severity.HIGH)
                         .studyDescription("CT Chest/Abdomen/Pelvis")
                         .studyId("stu_1234567890abcdef1234567890abcdef")
                         .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
-                        .studyViewerStatus(StudyListResponse.StudyViewerStatus.INCOMPLETE)
+                        .studyViewerStatus(StudyViewerStatus.INCOMPLETE)
                         .updatedAt(OffsetDateTime.parse("2024-03-15T14:20:00Z"))
                         .assignedTo(
                             UserReference.builder()
@@ -83,11 +85,11 @@ internal class StudyListPageResponseTest {
                     .cancelledAt(null)
                     .createdAt(OffsetDateTime.parse("2024-03-15T10:30:00Z"))
                     .isCancelled(false)
-                    .severity(StudyListResponse.Severity.HIGH)
+                    .severity(Severity.HIGH)
                     .studyDescription("CT Chest/Abdomen/Pelvis")
                     .studyId("stu_1234567890abcdef1234567890abcdef")
                     .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
-                    .studyViewerStatus(StudyListResponse.StudyViewerStatus.INCOMPLETE)
+                    .studyViewerStatus(StudyViewerStatus.INCOMPLETE)
                     .updatedAt(OffsetDateTime.parse("2024-03-15T14:20:00Z"))
                     .assignedTo(
                         UserReference.builder()
@@ -146,11 +148,11 @@ internal class StudyListPageResponseTest {
                         .cancelledAt(null)
                         .createdAt(OffsetDateTime.parse("2024-03-15T10:30:00Z"))
                         .isCancelled(false)
-                        .severity(StudyListResponse.Severity.HIGH)
+                        .severity(Severity.HIGH)
                         .studyDescription("CT Chest/Abdomen/Pelvis")
                         .studyId("stu_1234567890abcdef1234567890abcdef")
                         .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
-                        .studyViewerStatus(StudyListResponse.StudyViewerStatus.INCOMPLETE)
+                        .studyViewerStatus(StudyViewerStatus.INCOMPLETE)
                         .updatedAt(OffsetDateTime.parse("2024-03-15T14:20:00Z"))
                         .assignedTo(
                             UserReference.builder()

@@ -16,6 +16,7 @@ import com.avara.errors.RateLimitException
 import com.avara.errors.UnauthorizedException
 import com.avara.errors.UnexpectedStatusCodeException
 import com.avara.errors.UnprocessableEntityException
+import com.avara.models.Severity
 import com.avara.models.viewer.studies.StudyCreateParams
 import com.github.tomakehurst.wiremock.client.WireMock.anyUrl
 import com.github.tomakehurst.wiremock.client.WireMock.post
@@ -72,7 +73,7 @@ internal class ErrorHandlingTest {
             assertThrows<BadRequestException> {
                 studyService.create(
                     StudyCreateParams.builder()
-                        .severity(StudyCreateParams.Severity.HIGH)
+                        .severity(Severity.HIGH)
                         .studyDescription("CT Chest/Abdomen/Pelvis")
                         .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
                         .assignedTo("usr_1234567890abcdef1234567890abcdef")
@@ -106,7 +107,7 @@ internal class ErrorHandlingTest {
             assertThrows<BadRequestException> {
                 studyService.create(
                     StudyCreateParams.builder()
-                        .severity(StudyCreateParams.Severity.HIGH)
+                        .severity(Severity.HIGH)
                         .studyDescription("CT Chest/Abdomen/Pelvis")
                         .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
                         .assignedTo("usr_1234567890abcdef1234567890abcdef")
@@ -140,7 +141,7 @@ internal class ErrorHandlingTest {
             assertThrows<UnauthorizedException> {
                 studyService.create(
                     StudyCreateParams.builder()
-                        .severity(StudyCreateParams.Severity.HIGH)
+                        .severity(Severity.HIGH)
                         .studyDescription("CT Chest/Abdomen/Pelvis")
                         .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
                         .assignedTo("usr_1234567890abcdef1234567890abcdef")
@@ -174,7 +175,7 @@ internal class ErrorHandlingTest {
             assertThrows<UnauthorizedException> {
                 studyService.create(
                     StudyCreateParams.builder()
-                        .severity(StudyCreateParams.Severity.HIGH)
+                        .severity(Severity.HIGH)
                         .studyDescription("CT Chest/Abdomen/Pelvis")
                         .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
                         .assignedTo("usr_1234567890abcdef1234567890abcdef")
@@ -208,7 +209,7 @@ internal class ErrorHandlingTest {
             assertThrows<PermissionDeniedException> {
                 studyService.create(
                     StudyCreateParams.builder()
-                        .severity(StudyCreateParams.Severity.HIGH)
+                        .severity(Severity.HIGH)
                         .studyDescription("CT Chest/Abdomen/Pelvis")
                         .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
                         .assignedTo("usr_1234567890abcdef1234567890abcdef")
@@ -242,7 +243,7 @@ internal class ErrorHandlingTest {
             assertThrows<PermissionDeniedException> {
                 studyService.create(
                     StudyCreateParams.builder()
-                        .severity(StudyCreateParams.Severity.HIGH)
+                        .severity(Severity.HIGH)
                         .studyDescription("CT Chest/Abdomen/Pelvis")
                         .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
                         .assignedTo("usr_1234567890abcdef1234567890abcdef")
@@ -276,7 +277,7 @@ internal class ErrorHandlingTest {
             assertThrows<NotFoundException> {
                 studyService.create(
                     StudyCreateParams.builder()
-                        .severity(StudyCreateParams.Severity.HIGH)
+                        .severity(Severity.HIGH)
                         .studyDescription("CT Chest/Abdomen/Pelvis")
                         .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
                         .assignedTo("usr_1234567890abcdef1234567890abcdef")
@@ -310,7 +311,7 @@ internal class ErrorHandlingTest {
             assertThrows<NotFoundException> {
                 studyService.create(
                     StudyCreateParams.builder()
-                        .severity(StudyCreateParams.Severity.HIGH)
+                        .severity(Severity.HIGH)
                         .studyDescription("CT Chest/Abdomen/Pelvis")
                         .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
                         .assignedTo("usr_1234567890abcdef1234567890abcdef")
@@ -344,7 +345,7 @@ internal class ErrorHandlingTest {
             assertThrows<UnprocessableEntityException> {
                 studyService.create(
                     StudyCreateParams.builder()
-                        .severity(StudyCreateParams.Severity.HIGH)
+                        .severity(Severity.HIGH)
                         .studyDescription("CT Chest/Abdomen/Pelvis")
                         .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
                         .assignedTo("usr_1234567890abcdef1234567890abcdef")
@@ -378,7 +379,7 @@ internal class ErrorHandlingTest {
             assertThrows<UnprocessableEntityException> {
                 studyService.create(
                     StudyCreateParams.builder()
-                        .severity(StudyCreateParams.Severity.HIGH)
+                        .severity(Severity.HIGH)
                         .studyDescription("CT Chest/Abdomen/Pelvis")
                         .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
                         .assignedTo("usr_1234567890abcdef1234567890abcdef")
@@ -412,7 +413,7 @@ internal class ErrorHandlingTest {
             assertThrows<RateLimitException> {
                 studyService.create(
                     StudyCreateParams.builder()
-                        .severity(StudyCreateParams.Severity.HIGH)
+                        .severity(Severity.HIGH)
                         .studyDescription("CT Chest/Abdomen/Pelvis")
                         .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
                         .assignedTo("usr_1234567890abcdef1234567890abcdef")
@@ -446,7 +447,7 @@ internal class ErrorHandlingTest {
             assertThrows<RateLimitException> {
                 studyService.create(
                     StudyCreateParams.builder()
-                        .severity(StudyCreateParams.Severity.HIGH)
+                        .severity(Severity.HIGH)
                         .studyDescription("CT Chest/Abdomen/Pelvis")
                         .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
                         .assignedTo("usr_1234567890abcdef1234567890abcdef")
@@ -480,7 +481,7 @@ internal class ErrorHandlingTest {
             assertThrows<InternalServerException> {
                 studyService.create(
                     StudyCreateParams.builder()
-                        .severity(StudyCreateParams.Severity.HIGH)
+                        .severity(Severity.HIGH)
                         .studyDescription("CT Chest/Abdomen/Pelvis")
                         .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
                         .assignedTo("usr_1234567890abcdef1234567890abcdef")
@@ -514,7 +515,7 @@ internal class ErrorHandlingTest {
             assertThrows<InternalServerException> {
                 studyService.create(
                     StudyCreateParams.builder()
-                        .severity(StudyCreateParams.Severity.HIGH)
+                        .severity(Severity.HIGH)
                         .studyDescription("CT Chest/Abdomen/Pelvis")
                         .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
                         .assignedTo("usr_1234567890abcdef1234567890abcdef")
@@ -548,7 +549,7 @@ internal class ErrorHandlingTest {
             assertThrows<UnexpectedStatusCodeException> {
                 studyService.create(
                     StudyCreateParams.builder()
-                        .severity(StudyCreateParams.Severity.HIGH)
+                        .severity(Severity.HIGH)
                         .studyDescription("CT Chest/Abdomen/Pelvis")
                         .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
                         .assignedTo("usr_1234567890abcdef1234567890abcdef")
@@ -582,7 +583,7 @@ internal class ErrorHandlingTest {
             assertThrows<UnexpectedStatusCodeException> {
                 studyService.create(
                     StudyCreateParams.builder()
-                        .severity(StudyCreateParams.Severity.HIGH)
+                        .severity(Severity.HIGH)
                         .studyDescription("CT Chest/Abdomen/Pelvis")
                         .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
                         .assignedTo("usr_1234567890abcdef1234567890abcdef")
@@ -614,7 +615,7 @@ internal class ErrorHandlingTest {
             assertThrows<AvaraException> {
                 studyService.create(
                     StudyCreateParams.builder()
-                        .severity(StudyCreateParams.Severity.HIGH)
+                        .severity(Severity.HIGH)
                         .studyDescription("CT Chest/Abdomen/Pelvis")
                         .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
                         .assignedTo("usr_1234567890abcdef1234567890abcdef")

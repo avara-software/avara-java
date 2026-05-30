@@ -3,6 +3,8 @@
 package com.avara.models.viewer.users
 
 import com.avara.core.http.QueryParams
+import com.avara.models.InvitedSource
+import com.avara.models.UserLevel
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -14,9 +16,9 @@ internal class UserListParamsTest {
             .cursor("eyJvZmZzZXQiOjIwfQ==")
             .email("user@example.com")
             .firstName("John")
-            .invitedSource(UserListParams.InvitedSource.API)
+            .invitedSource(InvitedSource.API)
             .lastName("Doe")
-            .level(UserListParams.Level.MEMBER)
+            .level(UserLevel.MEMBER)
             .limit(20.0)
             .build()
     }
@@ -28,9 +30,9 @@ internal class UserListParamsTest {
                 .cursor("eyJvZmZzZXQiOjIwfQ==")
                 .email("user@example.com")
                 .firstName("John")
-                .invitedSource(UserListParams.InvitedSource.API)
+                .invitedSource(InvitedSource.API)
                 .lastName("Doe")
-                .level(UserListParams.Level.MEMBER)
+                .level(UserLevel.MEMBER)
                 .limit(20.0)
                 .build()
 

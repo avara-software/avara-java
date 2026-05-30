@@ -2,6 +2,8 @@
 
 package com.avara.models.viewer.users
 
+import com.avara.models.AssignableUserLevel
+import com.avara.models.ClinicRole
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -11,12 +13,12 @@ internal class UserInviteParamsTest {
     fun create() {
         UserInviteParams.builder()
             .canManageStudies(true)
-            .clinicRole(UserInviteParams.ClinicRole.RADIOLOGIST)
+            .clinicRole(ClinicRole.RADIOLOGIST)
             .email("dr.johnson@hospital.org")
             .firstName("Sarah")
             .hasDashboardAccess(true)
             .lastName("Johnson")
-            .level(UserInviteParams.Level.MEMBER)
+            .level(AssignableUserLevel.MEMBER)
             .middleName("Marie")
             .phoneNumber("5551234567")
             .suffix1("MD")
@@ -29,12 +31,12 @@ internal class UserInviteParamsTest {
         val params =
             UserInviteParams.builder()
                 .canManageStudies(true)
-                .clinicRole(UserInviteParams.ClinicRole.RADIOLOGIST)
+                .clinicRole(ClinicRole.RADIOLOGIST)
                 .email("dr.johnson@hospital.org")
                 .firstName("Sarah")
                 .hasDashboardAccess(true)
                 .lastName("Johnson")
-                .level(UserInviteParams.Level.MEMBER)
+                .level(AssignableUserLevel.MEMBER)
                 .middleName("Marie")
                 .phoneNumber("5551234567")
                 .suffix1("MD")
@@ -44,12 +46,12 @@ internal class UserInviteParamsTest {
         val body = params._body()
 
         assertThat(body.canManageStudies()).isEqualTo(true)
-        assertThat(body.clinicRole()).isEqualTo(UserInviteParams.ClinicRole.RADIOLOGIST)
+        assertThat(body.clinicRole()).isEqualTo(ClinicRole.RADIOLOGIST)
         assertThat(body.email()).isEqualTo("dr.johnson@hospital.org")
         assertThat(body.firstName()).isEqualTo("Sarah")
         assertThat(body.hasDashboardAccess()).isEqualTo(true)
         assertThat(body.lastName()).isEqualTo("Johnson")
-        assertThat(body.level()).isEqualTo(UserInviteParams.Level.MEMBER)
+        assertThat(body.level()).isEqualTo(AssignableUserLevel.MEMBER)
         assertThat(body.middleName()).contains("Marie")
         assertThat(body.phoneNumber()).contains("5551234567")
         assertThat(body.suffix1()).contains("MD")
@@ -61,22 +63,22 @@ internal class UserInviteParamsTest {
         val params =
             UserInviteParams.builder()
                 .canManageStudies(true)
-                .clinicRole(UserInviteParams.ClinicRole.RADIOLOGIST)
+                .clinicRole(ClinicRole.RADIOLOGIST)
                 .email("dr.johnson@hospital.org")
                 .firstName("Sarah")
                 .hasDashboardAccess(true)
                 .lastName("Johnson")
-                .level(UserInviteParams.Level.MEMBER)
+                .level(AssignableUserLevel.MEMBER)
                 .build()
 
         val body = params._body()
 
         assertThat(body.canManageStudies()).isEqualTo(true)
-        assertThat(body.clinicRole()).isEqualTo(UserInviteParams.ClinicRole.RADIOLOGIST)
+        assertThat(body.clinicRole()).isEqualTo(ClinicRole.RADIOLOGIST)
         assertThat(body.email()).isEqualTo("dr.johnson@hospital.org")
         assertThat(body.firstName()).isEqualTo("Sarah")
         assertThat(body.hasDashboardAccess()).isEqualTo(true)
         assertThat(body.lastName()).isEqualTo("Johnson")
-        assertThat(body.level()).isEqualTo(UserInviteParams.Level.MEMBER)
+        assertThat(body.level()).isEqualTo(AssignableUserLevel.MEMBER)
     }
 }

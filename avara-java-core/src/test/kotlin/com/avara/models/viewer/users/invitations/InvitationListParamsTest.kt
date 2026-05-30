@@ -3,6 +3,8 @@
 package com.avara.models.viewer.users.invitations
 
 import com.avara.core.http.QueryParams
+import com.avara.models.InvitationExpiredFilter
+import com.avara.models.InvitationStatus
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -13,10 +15,10 @@ internal class InvitationListParamsTest {
         InvitationListParams.builder()
             .cursor("eyJvZmZzZXQiOjIwfQ==")
             .endDate("2024-12-31")
-            .expired(InvitationListParams.Expired.NOT_EXPIRED)
+            .expired(InvitationExpiredFilter.NOT_EXPIRED)
             .limit(20.0)
             .startDate("2024-01-01")
-            .addStatus(InvitationListParams.Status.SENT)
+            .addStatus(InvitationStatus.SENT)
             .userId("usr_1234567890abcdef1234567890abcdef")
             .build()
     }
@@ -27,10 +29,10 @@ internal class InvitationListParamsTest {
             InvitationListParams.builder()
                 .cursor("eyJvZmZzZXQiOjIwfQ==")
                 .endDate("2024-12-31")
-                .expired(InvitationListParams.Expired.NOT_EXPIRED)
+                .expired(InvitationExpiredFilter.NOT_EXPIRED)
                 .limit(20.0)
                 .startDate("2024-01-01")
-                .addStatus(InvitationListParams.Status.SENT)
+                .addStatus(InvitationStatus.SENT)
                 .userId("usr_1234567890abcdef1234567890abcdef")
                 .build()
 
