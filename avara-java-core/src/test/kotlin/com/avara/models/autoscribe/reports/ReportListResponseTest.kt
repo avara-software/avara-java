@@ -20,7 +20,7 @@ internal class ReportListResponseTest {
         val reportListResponse =
             ReportListResponse.builder()
                 .addReport(
-                    ReportListResponse.Report.builder()
+                    Report.builder()
                         .createdAt(OffsetDateTime.parse("2024-03-15T14:30:00Z"))
                         .isAddendum(false)
                         .reportId("rep_1234567890abcdef1234567890abcdef")
@@ -66,7 +66,7 @@ internal class ReportListResponseTest {
 
         assertThat(reportListResponse.reports())
             .containsExactly(
-                ReportListResponse.Report.builder()
+                Report.builder()
                     .createdAt(OffsetDateTime.parse("2024-03-15T14:30:00Z"))
                     .isAddendum(false)
                     .reportId("rep_1234567890abcdef1234567890abcdef")
@@ -117,7 +117,7 @@ internal class ReportListResponseTest {
         val reportListResponse =
             ReportListResponse.builder()
                 .addReport(
-                    ReportListResponse.Report.builder()
+                    Report.builder()
                         .createdAt(OffsetDateTime.parse("2024-03-15T14:30:00Z"))
                         .isAddendum(false)
                         .reportId("rep_1234567890abcdef1234567890abcdef")
