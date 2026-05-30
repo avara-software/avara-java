@@ -4,7 +4,10 @@ package com.avara.models.autoscribe.studies
 
 import com.avara.core.JsonValue
 import com.avara.core.jsonMapper
+import com.avara.models.ApiKeyReference
+import com.avara.models.ExpressCustomerReference
 import com.avara.models.Severity
+import com.avara.models.UserReference
 import com.avara.models.autoscribe.HeightUnit
 import com.avara.models.autoscribe.ReportStatus
 import com.avara.models.autoscribe.Sex
@@ -61,7 +64,7 @@ internal class StudyListPageResponseTest {
                         .studyReportStatus(StudyReportStatus.IN_PROGRESS)
                         .updatedAt(OffsetDateTime.parse("2024-03-15T14:20:00Z"))
                         .assignedTo(
-                            StudyListResponse.AssignedTo.builder()
+                            UserReference.builder()
                                 .email("dr.smith@radiology.com")
                                 .userId("usr_1234567890abcdef1234567890abcdef")
                                 .firstName("John")
@@ -74,14 +77,14 @@ internal class StudyListPageResponseTest {
                         .clinicalHistory("clinicalHistory")
                         .clinicalIndication("clinicalIndication")
                         .createdByApiKey(
-                            StudyListResponse.CreatedByApiKey.builder()
+                            ApiKeyReference.builder()
                                 .apiKeyId("550e8400-e29b-41d4-a716-446655440000")
                                 .description("Production API Key")
                                 .isViewerEnabled(true)
                                 .build()
                         )
                         .createdByUser(
-                            StudyListResponse.CreatedByUser.builder()
+                            UserReference.builder()
                                 .email("dr.smith@radiology.com")
                                 .userId("usr_1234567890abcdef1234567890abcdef")
                                 .firstName("John")
@@ -92,7 +95,7 @@ internal class StudyListPageResponseTest {
                                 .build()
                         )
                         .expressCustomer(
-                            StudyListResponse.ExpressCustomer.builder()
+                            ExpressCustomerReference.builder()
                                 .expressCustomerId("cus_1234567890abcdef1234567890abcdef")
                                 .expressCustomerName("City Medical Center")
                                 .build()
@@ -167,7 +170,7 @@ internal class StudyListPageResponseTest {
                     .studyReportStatus(StudyReportStatus.IN_PROGRESS)
                     .updatedAt(OffsetDateTime.parse("2024-03-15T14:20:00Z"))
                     .assignedTo(
-                        StudyListResponse.AssignedTo.builder()
+                        UserReference.builder()
                             .email("dr.smith@radiology.com")
                             .userId("usr_1234567890abcdef1234567890abcdef")
                             .firstName("John")
@@ -180,14 +183,14 @@ internal class StudyListPageResponseTest {
                     .clinicalHistory("clinicalHistory")
                     .clinicalIndication("clinicalIndication")
                     .createdByApiKey(
-                        StudyListResponse.CreatedByApiKey.builder()
+                        ApiKeyReference.builder()
                             .apiKeyId("550e8400-e29b-41d4-a716-446655440000")
                             .description("Production API Key")
                             .isViewerEnabled(true)
                             .build()
                     )
                     .createdByUser(
-                        StudyListResponse.CreatedByUser.builder()
+                        UserReference.builder()
                             .email("dr.smith@radiology.com")
                             .userId("usr_1234567890abcdef1234567890abcdef")
                             .firstName("John")
@@ -198,7 +201,7 @@ internal class StudyListPageResponseTest {
                             .build()
                     )
                     .expressCustomer(
-                        StudyListResponse.ExpressCustomer.builder()
+                        ExpressCustomerReference.builder()
                             .expressCustomerId("cus_1234567890abcdef1234567890abcdef")
                             .expressCustomerName("City Medical Center")
                             .build()
@@ -277,7 +280,7 @@ internal class StudyListPageResponseTest {
                         .studyReportStatus(StudyReportStatus.IN_PROGRESS)
                         .updatedAt(OffsetDateTime.parse("2024-03-15T14:20:00Z"))
                         .assignedTo(
-                            StudyListResponse.AssignedTo.builder()
+                            UserReference.builder()
                                 .email("dr.smith@radiology.com")
                                 .userId("usr_1234567890abcdef1234567890abcdef")
                                 .firstName("John")
@@ -290,14 +293,14 @@ internal class StudyListPageResponseTest {
                         .clinicalHistory("clinicalHistory")
                         .clinicalIndication("clinicalIndication")
                         .createdByApiKey(
-                            StudyListResponse.CreatedByApiKey.builder()
+                            ApiKeyReference.builder()
                                 .apiKeyId("550e8400-e29b-41d4-a716-446655440000")
                                 .description("Production API Key")
                                 .isViewerEnabled(true)
                                 .build()
                         )
                         .createdByUser(
-                            StudyListResponse.CreatedByUser.builder()
+                            UserReference.builder()
                                 .email("dr.smith@radiology.com")
                                 .userId("usr_1234567890abcdef1234567890abcdef")
                                 .firstName("John")
@@ -308,7 +311,7 @@ internal class StudyListPageResponseTest {
                                 .build()
                         )
                         .expressCustomer(
-                            StudyListResponse.ExpressCustomer.builder()
+                            ExpressCustomerReference.builder()
                                 .expressCustomerId("cus_1234567890abcdef1234567890abcdef")
                                 .expressCustomerName("City Medical Center")
                                 .build()

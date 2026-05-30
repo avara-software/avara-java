@@ -15,7 +15,7 @@ internal class ReportDeliveredEventTest {
             ReportDeliveredEvent.builder()
                 .id("whe_1234567890abcdef1234567890abcdef")
                 .data(
-                    ReportDeliveredEvent.Data.builder()
+                    ReportDeliveredEventData.builder()
                         .presignedUrl(
                             "https://storage.avarasoftware.com/reports/rep_1234.pdf?token=xyz789"
                         )
@@ -31,7 +31,7 @@ internal class ReportDeliveredEventTest {
         assertThat(reportDeliveredEvent.id()).isEqualTo("whe_1234567890abcdef1234567890abcdef")
         assertThat(reportDeliveredEvent.data())
             .isEqualTo(
-                ReportDeliveredEvent.Data.builder()
+                ReportDeliveredEventData.builder()
                     .presignedUrl(
                         "https://storage.avarasoftware.com/reports/rep_1234.pdf?token=xyz789"
                     )
@@ -49,7 +49,7 @@ internal class ReportDeliveredEventTest {
             ReportDeliveredEvent.builder()
                 .id("whe_1234567890abcdef1234567890abcdef")
                 .data(
-                    ReportDeliveredEvent.Data.builder()
+                    ReportDeliveredEventData.builder()
                         .presignedUrl(
                             "https://storage.avarasoftware.com/reports/rep_1234.pdf?token=xyz789"
                         )

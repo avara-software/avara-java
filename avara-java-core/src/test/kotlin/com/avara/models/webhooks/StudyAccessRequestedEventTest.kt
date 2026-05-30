@@ -15,7 +15,7 @@ internal class StudyAccessRequestedEventTest {
             StudyAccessRequestedEvent.builder()
                 .id("whe_1234567890abcdef1234567890abcdef")
                 .data(
-                    StudyAccessRequestedEvent.Data.builder()
+                    StudyAccessRequestedEventData.builder()
                         .studyId("stu_1234567890abcdef1234567890abcdef")
                         .studyInstanceUid("1.2.840.113619.2.55.3.1234567890")
                         .build()
@@ -25,7 +25,7 @@ internal class StudyAccessRequestedEventTest {
         assertThat(studyAccessRequestedEvent.id()).isEqualTo("whe_1234567890abcdef1234567890abcdef")
         assertThat(studyAccessRequestedEvent.data())
             .isEqualTo(
-                StudyAccessRequestedEvent.Data.builder()
+                StudyAccessRequestedEventData.builder()
                     .studyId("stu_1234567890abcdef1234567890abcdef")
                     .studyInstanceUid("1.2.840.113619.2.55.3.1234567890")
                     .build()
@@ -39,7 +39,7 @@ internal class StudyAccessRequestedEventTest {
             StudyAccessRequestedEvent.builder()
                 .id("whe_1234567890abcdef1234567890abcdef")
                 .data(
-                    StudyAccessRequestedEvent.Data.builder()
+                    StudyAccessRequestedEventData.builder()
                         .studyId("stu_1234567890abcdef1234567890abcdef")
                         .studyInstanceUid("1.2.840.113619.2.55.3.1234567890")
                         .build()

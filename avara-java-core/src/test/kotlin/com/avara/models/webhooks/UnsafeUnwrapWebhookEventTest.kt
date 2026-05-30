@@ -20,7 +20,7 @@ internal class UnsafeUnwrapWebhookEventTest {
             StudyAccessRequestedEvent.builder()
                 .id("whe_1234567890abcdef1234567890abcdef")
                 .data(
-                    StudyAccessRequestedEvent.Data.builder()
+                    StudyAccessRequestedEventData.builder()
                         .studyId("stu_1234567890abcdef1234567890abcdef")
                         .studyInstanceUid("1.2.840.113619.2.55.3.1234567890")
                         .build()
@@ -42,7 +42,7 @@ internal class UnsafeUnwrapWebhookEventTest {
                 StudyAccessRequestedEvent.builder()
                     .id("whe_1234567890abcdef1234567890abcdef")
                     .data(
-                        StudyAccessRequestedEvent.Data.builder()
+                        StudyAccessRequestedEventData.builder()
                             .studyId("stu_1234567890abcdef1234567890abcdef")
                             .studyInstanceUid("1.2.840.113619.2.55.3.1234567890")
                             .build()
@@ -65,7 +65,7 @@ internal class UnsafeUnwrapWebhookEventTest {
             ReportDeliveredEvent.builder()
                 .id("whe_1234567890abcdef1234567890abcdef")
                 .data(
-                    ReportDeliveredEvent.Data.builder()
+                    ReportDeliveredEventData.builder()
                         .presignedUrl(
                             "https://storage.avarasoftware.com/reports/rep_1234.pdf?token=xyz789"
                         )
@@ -92,7 +92,7 @@ internal class UnsafeUnwrapWebhookEventTest {
                 ReportDeliveredEvent.builder()
                     .id("whe_1234567890abcdef1234567890abcdef")
                     .data(
-                        ReportDeliveredEvent.Data.builder()
+                        ReportDeliveredEventData.builder()
                             .presignedUrl(
                                 "https://storage.avarasoftware.com/reports/rep_1234.pdf?token=xyz789"
                             )
