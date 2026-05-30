@@ -47,6 +47,22 @@ private constructor(
     fun assignedTo(): Optional<String> = body.assignedTo()
 
     /**
+     * Relevant clinical history for the patient/study. Null clears.
+     *
+     * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun clinicalHistory(): Optional<String> = body.clinicalHistory()
+
+    /**
+     * Clinical indication for the study. Null clears.
+     *
+     * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun clinicalIndication(): Optional<String> = body.clinicalIndication()
+
+    /**
      * Express Customer ID for the study, or null to remove. Format: cus_{32-hex-chars}
      *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -55,22 +71,36 @@ private constructor(
     fun expressCustomerId(): Optional<String> = body.expressCustomerId()
 
     /**
+     * Integrator-provided stable patient identifier used to link studies for the same patient. Null
+     * clears.
+     *
+     * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun externalPatientId(): Optional<String> = body.externalPatientId()
+
+    /**
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
     fun metadata(): Optional<Metadata> = body.metadata()
 
     /**
+     * Imaging modality for the study (free text). Null clears.
+     *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun priorReportTexts(): Optional<List<String>> = body.priorReportTexts()
+    fun modality(): Optional<String> = body.modality()
 
     /**
+     * External prior reports (metadata + full report text) for comparison context. Null clears; an
+     * array replaces the existing set. Maximum 50 items
+     *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun priorStudyIds(): Optional<List<String>> = body.priorStudyIds()
+    fun priorReports(): Optional<List<PriorReport>> = body.priorReports()
 
     /**
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -96,11 +126,43 @@ private constructor(
     fun studyDescription(): Optional<String> = body.studyDescription()
 
     /**
+     * Technologist notes for the study. Null clears; an array replaces the existing set. Maximum 50
+     * items, each up to 1000 characters
+     *
+     * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun technologistNotes(): Optional<List<String>> = body.technologistNotes()
+
+    /**
+     * Imaging technique description provided by the technologist. Null clears.
+     *
+     * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun technologistTechnique(): Optional<String> = body.technologistTechnique()
+
+    /**
      * Returns the raw JSON value of [assignedTo].
      *
      * Unlike [assignedTo], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _assignedTo(): JsonField<String> = body._assignedTo()
+
+    /**
+     * Returns the raw JSON value of [clinicalHistory].
+     *
+     * Unlike [clinicalHistory], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _clinicalHistory(): JsonField<String> = body._clinicalHistory()
+
+    /**
+     * Returns the raw JSON value of [clinicalIndication].
+     *
+     * Unlike [clinicalIndication], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
+    fun _clinicalIndication(): JsonField<String> = body._clinicalIndication()
 
     /**
      * Returns the raw JSON value of [expressCustomerId].
@@ -111,6 +173,14 @@ private constructor(
     fun _expressCustomerId(): JsonField<String> = body._expressCustomerId()
 
     /**
+     * Returns the raw JSON value of [externalPatientId].
+     *
+     * Unlike [externalPatientId], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
+    fun _externalPatientId(): JsonField<String> = body._externalPatientId()
+
+    /**
      * Returns the raw JSON value of [metadata].
      *
      * Unlike [metadata], this method doesn't throw if the JSON field has an unexpected type.
@@ -118,19 +188,18 @@ private constructor(
     fun _metadata(): JsonField<Metadata> = body._metadata()
 
     /**
-     * Returns the raw JSON value of [priorReportTexts].
+     * Returns the raw JSON value of [modality].
      *
-     * Unlike [priorReportTexts], this method doesn't throw if the JSON field has an unexpected
-     * type.
+     * Unlike [modality], this method doesn't throw if the JSON field has an unexpected type.
      */
-    fun _priorReportTexts(): JsonField<List<String>> = body._priorReportTexts()
+    fun _modality(): JsonField<String> = body._modality()
 
     /**
-     * Returns the raw JSON value of [priorStudyIds].
+     * Returns the raw JSON value of [priorReports].
      *
-     * Unlike [priorStudyIds], this method doesn't throw if the JSON field has an unexpected type.
+     * Unlike [priorReports], this method doesn't throw if the JSON field has an unexpected type.
      */
-    fun _priorStudyIds(): JsonField<List<String>> = body._priorStudyIds()
+    fun _priorReports(): JsonField<List<PriorReport>> = body._priorReports()
 
     /**
      * Returns the raw JSON value of [reportMetadata].
@@ -153,6 +222,22 @@ private constructor(
      * type.
      */
     fun _studyDescription(): JsonField<String> = body._studyDescription()
+
+    /**
+     * Returns the raw JSON value of [technologistNotes].
+     *
+     * Unlike [technologistNotes], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
+    fun _technologistNotes(): JsonField<List<String>> = body._technologistNotes()
+
+    /**
+     * Returns the raw JSON value of [technologistTechnique].
+     *
+     * Unlike [technologistTechnique], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
+    fun _technologistTechnique(): JsonField<String> = body._technologistTechnique()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
@@ -200,10 +285,10 @@ private constructor(
          * This is generally only useful if you are already constructing the body separately.
          * Otherwise, it's more convenient to use the top-level setters instead:
          * - [assignedTo]
+         * - [clinicalHistory]
+         * - [clinicalIndication]
          * - [expressCustomerId]
-         * - [metadata]
-         * - [priorReportTexts]
-         * - [priorStudyIds]
+         * - [externalPatientId]
          * - etc.
          */
         fun body(body: Body) = apply { this.body = body.toBuilder() }
@@ -219,6 +304,48 @@ private constructor(
          * value.
          */
         fun assignedTo(assignedTo: JsonField<String>) = apply { body.assignedTo(assignedTo) }
+
+        /** Relevant clinical history for the patient/study. Null clears. */
+        fun clinicalHistory(clinicalHistory: String?) = apply {
+            body.clinicalHistory(clinicalHistory)
+        }
+
+        /** Alias for calling [Builder.clinicalHistory] with `clinicalHistory.orElse(null)`. */
+        fun clinicalHistory(clinicalHistory: Optional<String>) =
+            clinicalHistory(clinicalHistory.getOrNull())
+
+        /**
+         * Sets [Builder.clinicalHistory] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.clinicalHistory] with a well-typed [String] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun clinicalHistory(clinicalHistory: JsonField<String>) = apply {
+            body.clinicalHistory(clinicalHistory)
+        }
+
+        /** Clinical indication for the study. Null clears. */
+        fun clinicalIndication(clinicalIndication: String?) = apply {
+            body.clinicalIndication(clinicalIndication)
+        }
+
+        /**
+         * Alias for calling [Builder.clinicalIndication] with `clinicalIndication.orElse(null)`.
+         */
+        fun clinicalIndication(clinicalIndication: Optional<String>) =
+            clinicalIndication(clinicalIndication.getOrNull())
+
+        /**
+         * Sets [Builder.clinicalIndication] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.clinicalIndication] with a well-typed [String] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun clinicalIndication(clinicalIndication: JsonField<String>) = apply {
+            body.clinicalIndication(clinicalIndication)
+        }
 
         /** Express Customer ID for the study, or null to remove. Format: cus_{32-hex-chars} */
         fun expressCustomerId(expressCustomerId: String) = apply {
@@ -236,6 +363,29 @@ private constructor(
             body.expressCustomerId(expressCustomerId)
         }
 
+        /**
+         * Integrator-provided stable patient identifier used to link studies for the same patient.
+         * Null clears.
+         */
+        fun externalPatientId(externalPatientId: String?) = apply {
+            body.externalPatientId(externalPatientId)
+        }
+
+        /** Alias for calling [Builder.externalPatientId] with `externalPatientId.orElse(null)`. */
+        fun externalPatientId(externalPatientId: Optional<String>) =
+            externalPatientId(externalPatientId.getOrNull())
+
+        /**
+         * Sets [Builder.externalPatientId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.externalPatientId] with a well-typed [String] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun externalPatientId(externalPatientId: JsonField<String>) = apply {
+            body.externalPatientId(externalPatientId)
+        }
+
         fun metadata(metadata: Metadata?) = apply { body.metadata(metadata) }
 
         /** Alias for calling [Builder.metadata] with `metadata.orElse(null)`. */
@@ -250,59 +400,49 @@ private constructor(
          */
         fun metadata(metadata: JsonField<Metadata>) = apply { body.metadata(metadata) }
 
-        fun priorReportTexts(priorReportTexts: List<String>?) = apply {
-            body.priorReportTexts(priorReportTexts)
-        }
+        /** Imaging modality for the study (free text). Null clears. */
+        fun modality(modality: String?) = apply { body.modality(modality) }
 
-        /** Alias for calling [Builder.priorReportTexts] with `priorReportTexts.orElse(null)`. */
-        fun priorReportTexts(priorReportTexts: Optional<List<String>>) =
-            priorReportTexts(priorReportTexts.getOrNull())
+        /** Alias for calling [Builder.modality] with `modality.orElse(null)`. */
+        fun modality(modality: Optional<String>) = modality(modality.getOrNull())
 
         /**
-         * Sets [Builder.priorReportTexts] to an arbitrary JSON value.
+         * Sets [Builder.modality] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.priorReportTexts] with a well-typed `List<String>` value
-         * instead. This method is primarily for setting the field to an undocumented or not yet
-         * supported value.
+         * You should usually call [Builder.modality] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun priorReportTexts(priorReportTexts: JsonField<List<String>>) = apply {
-            body.priorReportTexts(priorReportTexts)
-        }
+        fun modality(modality: JsonField<String>) = apply { body.modality(modality) }
 
         /**
-         * Adds a single [String] to [priorReportTexts].
+         * External prior reports (metadata + full report text) for comparison context. Null clears;
+         * an array replaces the existing set. Maximum 50 items
+         */
+        fun priorReports(priorReports: List<PriorReport>?) = apply {
+            body.priorReports(priorReports)
+        }
+
+        /** Alias for calling [Builder.priorReports] with `priorReports.orElse(null)`. */
+        fun priorReports(priorReports: Optional<List<PriorReport>>) =
+            priorReports(priorReports.getOrNull())
+
+        /**
+         * Sets [Builder.priorReports] to an arbitrary JSON value.
          *
-         * @throws IllegalStateException if the field was previously set to a non-list.
+         * You should usually call [Builder.priorReports] with a well-typed `List<PriorReport>`
+         * value instead. This method is primarily for setting the field to an undocumented or not
+         * yet supported value.
          */
-        fun addPriorReportText(priorReportText: String) = apply {
-            body.addPriorReportText(priorReportText)
-        }
-
-        fun priorStudyIds(priorStudyIds: List<String>?) = apply {
-            body.priorStudyIds(priorStudyIds)
-        }
-
-        /** Alias for calling [Builder.priorStudyIds] with `priorStudyIds.orElse(null)`. */
-        fun priorStudyIds(priorStudyIds: Optional<List<String>>) =
-            priorStudyIds(priorStudyIds.getOrNull())
-
-        /**
-         * Sets [Builder.priorStudyIds] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.priorStudyIds] with a well-typed `List<String>` value
-         * instead. This method is primarily for setting the field to an undocumented or not yet
-         * supported value.
-         */
-        fun priorStudyIds(priorStudyIds: JsonField<List<String>>) = apply {
-            body.priorStudyIds(priorStudyIds)
+        fun priorReports(priorReports: JsonField<List<PriorReport>>) = apply {
+            body.priorReports(priorReports)
         }
 
         /**
-         * Adds a single [String] to [priorStudyIds].
+         * Adds a single [PriorReport] to [priorReports].
          *
          * @throws IllegalStateException if the field was previously set to a non-list.
          */
-        fun addPriorStudyId(priorStudyId: String) = apply { body.addPriorStudyId(priorStudyId) }
+        fun addPriorReport(priorReport: PriorReport) = apply { body.addPriorReport(priorReport) }
 
         fun reportMetadata(reportMetadata: ReportMetadata) = apply {
             body.reportMetadata(reportMetadata)
@@ -348,6 +488,61 @@ private constructor(
          */
         fun studyDescription(studyDescription: JsonField<String>) = apply {
             body.studyDescription(studyDescription)
+        }
+
+        /**
+         * Technologist notes for the study. Null clears; an array replaces the existing set.
+         * Maximum 50 items, each up to 1000 characters
+         */
+        fun technologistNotes(technologistNotes: List<String>?) = apply {
+            body.technologistNotes(technologistNotes)
+        }
+
+        /** Alias for calling [Builder.technologistNotes] with `technologistNotes.orElse(null)`. */
+        fun technologistNotes(technologistNotes: Optional<List<String>>) =
+            technologistNotes(technologistNotes.getOrNull())
+
+        /**
+         * Sets [Builder.technologistNotes] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.technologistNotes] with a well-typed `List<String>`
+         * value instead. This method is primarily for setting the field to an undocumented or not
+         * yet supported value.
+         */
+        fun technologistNotes(technologistNotes: JsonField<List<String>>) = apply {
+            body.technologistNotes(technologistNotes)
+        }
+
+        /**
+         * Adds a single [String] to [technologistNotes].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
+        fun addTechnologistNote(technologistNote: String) = apply {
+            body.addTechnologistNote(technologistNote)
+        }
+
+        /** Imaging technique description provided by the technologist. Null clears. */
+        fun technologistTechnique(technologistTechnique: String?) = apply {
+            body.technologistTechnique(technologistTechnique)
+        }
+
+        /**
+         * Alias for calling [Builder.technologistTechnique] with
+         * `technologistTechnique.orElse(null)`.
+         */
+        fun technologistTechnique(technologistTechnique: Optional<String>) =
+            technologistTechnique(technologistTechnique.getOrNull())
+
+        /**
+         * Sets [Builder.technologistTechnique] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.technologistTechnique] with a well-typed [String] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun technologistTechnique(technologistTechnique: JsonField<String>) = apply {
+            body.technologistTechnique(technologistTechnique)
         }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
@@ -498,13 +693,18 @@ private constructor(
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val assignedTo: JsonField<String>,
+        private val clinicalHistory: JsonField<String>,
+        private val clinicalIndication: JsonField<String>,
         private val expressCustomerId: JsonField<String>,
+        private val externalPatientId: JsonField<String>,
         private val metadata: JsonField<Metadata>,
-        private val priorReportTexts: JsonField<List<String>>,
-        private val priorStudyIds: JsonField<List<String>>,
+        private val modality: JsonField<String>,
+        private val priorReports: JsonField<List<PriorReport>>,
         private val reportMetadata: JsonField<ReportMetadata>,
         private val severity: JsonField<Severity>,
         private val studyDescription: JsonField<String>,
+        private val technologistNotes: JsonField<List<String>>,
+        private val technologistTechnique: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
@@ -513,18 +713,27 @@ private constructor(
             @JsonProperty("assignedTo")
             @ExcludeMissing
             assignedTo: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("clinicalHistory")
+            @ExcludeMissing
+            clinicalHistory: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("clinicalIndication")
+            @ExcludeMissing
+            clinicalIndication: JsonField<String> = JsonMissing.of(),
             @JsonProperty("expressCustomerId")
             @ExcludeMissing
             expressCustomerId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("externalPatientId")
+            @ExcludeMissing
+            externalPatientId: JsonField<String> = JsonMissing.of(),
             @JsonProperty("metadata")
             @ExcludeMissing
             metadata: JsonField<Metadata> = JsonMissing.of(),
-            @JsonProperty("priorReportTexts")
+            @JsonProperty("modality")
             @ExcludeMissing
-            priorReportTexts: JsonField<List<String>> = JsonMissing.of(),
-            @JsonProperty("priorStudyIds")
+            modality: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("priorReports")
             @ExcludeMissing
-            priorStudyIds: JsonField<List<String>> = JsonMissing.of(),
+            priorReports: JsonField<List<PriorReport>> = JsonMissing.of(),
             @JsonProperty("reportMetadata")
             @ExcludeMissing
             reportMetadata: JsonField<ReportMetadata> = JsonMissing.of(),
@@ -534,15 +743,26 @@ private constructor(
             @JsonProperty("studyDescription")
             @ExcludeMissing
             studyDescription: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("technologistNotes")
+            @ExcludeMissing
+            technologistNotes: JsonField<List<String>> = JsonMissing.of(),
+            @JsonProperty("technologistTechnique")
+            @ExcludeMissing
+            technologistTechnique: JsonField<String> = JsonMissing.of(),
         ) : this(
             assignedTo,
+            clinicalHistory,
+            clinicalIndication,
             expressCustomerId,
+            externalPatientId,
             metadata,
-            priorReportTexts,
-            priorStudyIds,
+            modality,
+            priorReports,
             reportMetadata,
             severity,
             studyDescription,
+            technologistNotes,
+            technologistTechnique,
             mutableMapOf(),
         )
 
@@ -555,6 +775,23 @@ private constructor(
         fun assignedTo(): Optional<String> = assignedTo.getOptional("assignedTo")
 
         /**
+         * Relevant clinical history for the patient/study. Null clears.
+         *
+         * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun clinicalHistory(): Optional<String> = clinicalHistory.getOptional("clinicalHistory")
+
+        /**
+         * Clinical indication for the study. Null clears.
+         *
+         * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun clinicalIndication(): Optional<String> =
+            clinicalIndication.getOptional("clinicalIndication")
+
+        /**
          * Express Customer ID for the study, or null to remove. Format: cus_{32-hex-chars}
          *
          * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -564,23 +801,37 @@ private constructor(
             expressCustomerId.getOptional("expressCustomerId")
 
         /**
+         * Integrator-provided stable patient identifier used to link studies for the same patient.
+         * Null clears.
+         *
+         * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun externalPatientId(): Optional<String> =
+            externalPatientId.getOptional("externalPatientId")
+
+        /**
          * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
         fun metadata(): Optional<Metadata> = metadata.getOptional("metadata")
 
         /**
+         * Imaging modality for the study (free text). Null clears.
+         *
          * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun priorReportTexts(): Optional<List<String>> =
-            priorReportTexts.getOptional("priorReportTexts")
+        fun modality(): Optional<String> = modality.getOptional("modality")
 
         /**
+         * External prior reports (metadata + full report text) for comparison context. Null clears;
+         * an array replaces the existing set. Maximum 50 items
+         *
          * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun priorStudyIds(): Optional<List<String>> = priorStudyIds.getOptional("priorStudyIds")
+        fun priorReports(): Optional<List<PriorReport>> = priorReports.getOptional("priorReports")
 
         /**
          * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -607,6 +858,25 @@ private constructor(
         fun studyDescription(): Optional<String> = studyDescription.getOptional("studyDescription")
 
         /**
+         * Technologist notes for the study. Null clears; an array replaces the existing set.
+         * Maximum 50 items, each up to 1000 characters
+         *
+         * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun technologistNotes(): Optional<List<String>> =
+            technologistNotes.getOptional("technologistNotes")
+
+        /**
+         * Imaging technique description provided by the technologist. Null clears.
+         *
+         * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun technologistTechnique(): Optional<String> =
+            technologistTechnique.getOptional("technologistTechnique")
+
+        /**
          * Returns the raw JSON value of [assignedTo].
          *
          * Unlike [assignedTo], this method doesn't throw if the JSON field has an unexpected type.
@@ -614,6 +884,26 @@ private constructor(
         @JsonProperty("assignedTo")
         @ExcludeMissing
         fun _assignedTo(): JsonField<String> = assignedTo
+
+        /**
+         * Returns the raw JSON value of [clinicalHistory].
+         *
+         * Unlike [clinicalHistory], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("clinicalHistory")
+        @ExcludeMissing
+        fun _clinicalHistory(): JsonField<String> = clinicalHistory
+
+        /**
+         * Returns the raw JSON value of [clinicalIndication].
+         *
+         * Unlike [clinicalIndication], this method doesn't throw if the JSON field has an
+         * unexpected type.
+         */
+        @JsonProperty("clinicalIndication")
+        @ExcludeMissing
+        fun _clinicalIndication(): JsonField<String> = clinicalIndication
 
         /**
          * Returns the raw JSON value of [expressCustomerId].
@@ -626,6 +916,16 @@ private constructor(
         fun _expressCustomerId(): JsonField<String> = expressCustomerId
 
         /**
+         * Returns the raw JSON value of [externalPatientId].
+         *
+         * Unlike [externalPatientId], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("externalPatientId")
+        @ExcludeMissing
+        fun _externalPatientId(): JsonField<String> = externalPatientId
+
+        /**
          * Returns the raw JSON value of [metadata].
          *
          * Unlike [metadata], this method doesn't throw if the JSON field has an unexpected type.
@@ -633,24 +933,21 @@ private constructor(
         @JsonProperty("metadata") @ExcludeMissing fun _metadata(): JsonField<Metadata> = metadata
 
         /**
-         * Returns the raw JSON value of [priorReportTexts].
+         * Returns the raw JSON value of [modality].
          *
-         * Unlike [priorReportTexts], this method doesn't throw if the JSON field has an unexpected
-         * type.
+         * Unlike [modality], this method doesn't throw if the JSON field has an unexpected type.
          */
-        @JsonProperty("priorReportTexts")
-        @ExcludeMissing
-        fun _priorReportTexts(): JsonField<List<String>> = priorReportTexts
+        @JsonProperty("modality") @ExcludeMissing fun _modality(): JsonField<String> = modality
 
         /**
-         * Returns the raw JSON value of [priorStudyIds].
+         * Returns the raw JSON value of [priorReports].
          *
-         * Unlike [priorStudyIds], this method doesn't throw if the JSON field has an unexpected
+         * Unlike [priorReports], this method doesn't throw if the JSON field has an unexpected
          * type.
          */
-        @JsonProperty("priorStudyIds")
+        @JsonProperty("priorReports")
         @ExcludeMissing
-        fun _priorStudyIds(): JsonField<List<String>> = priorStudyIds
+        fun _priorReports(): JsonField<List<PriorReport>> = priorReports
 
         /**
          * Returns the raw JSON value of [reportMetadata].
@@ -679,6 +976,26 @@ private constructor(
         @ExcludeMissing
         fun _studyDescription(): JsonField<String> = studyDescription
 
+        /**
+         * Returns the raw JSON value of [technologistNotes].
+         *
+         * Unlike [technologistNotes], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("technologistNotes")
+        @ExcludeMissing
+        fun _technologistNotes(): JsonField<List<String>> = technologistNotes
+
+        /**
+         * Returns the raw JSON value of [technologistTechnique].
+         *
+         * Unlike [technologistTechnique], this method doesn't throw if the JSON field has an
+         * unexpected type.
+         */
+        @JsonProperty("technologistTechnique")
+        @ExcludeMissing
+        fun _technologistTechnique(): JsonField<String> = technologistTechnique
+
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
             additionalProperties.put(key, value)
@@ -701,25 +1018,35 @@ private constructor(
         class Builder internal constructor() {
 
             private var assignedTo: JsonField<String> = JsonMissing.of()
+            private var clinicalHistory: JsonField<String> = JsonMissing.of()
+            private var clinicalIndication: JsonField<String> = JsonMissing.of()
             private var expressCustomerId: JsonField<String> = JsonMissing.of()
+            private var externalPatientId: JsonField<String> = JsonMissing.of()
             private var metadata: JsonField<Metadata> = JsonMissing.of()
-            private var priorReportTexts: JsonField<MutableList<String>>? = null
-            private var priorStudyIds: JsonField<MutableList<String>>? = null
+            private var modality: JsonField<String> = JsonMissing.of()
+            private var priorReports: JsonField<MutableList<PriorReport>>? = null
             private var reportMetadata: JsonField<ReportMetadata> = JsonMissing.of()
             private var severity: JsonField<Severity> = JsonMissing.of()
             private var studyDescription: JsonField<String> = JsonMissing.of()
+            private var technologistNotes: JsonField<MutableList<String>>? = null
+            private var technologistTechnique: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(body: Body) = apply {
                 assignedTo = body.assignedTo
+                clinicalHistory = body.clinicalHistory
+                clinicalIndication = body.clinicalIndication
                 expressCustomerId = body.expressCustomerId
+                externalPatientId = body.externalPatientId
                 metadata = body.metadata
-                priorReportTexts = body.priorReportTexts.map { it.toMutableList() }
-                priorStudyIds = body.priorStudyIds.map { it.toMutableList() }
+                modality = body.modality
+                priorReports = body.priorReports.map { it.toMutableList() }
                 reportMetadata = body.reportMetadata
                 severity = body.severity
                 studyDescription = body.studyDescription
+                technologistNotes = body.technologistNotes.map { it.toMutableList() }
+                technologistTechnique = body.technologistTechnique
                 additionalProperties = body.additionalProperties.toMutableMap()
             }
 
@@ -734,6 +1061,47 @@ private constructor(
              * supported value.
              */
             fun assignedTo(assignedTo: JsonField<String>) = apply { this.assignedTo = assignedTo }
+
+            /** Relevant clinical history for the patient/study. Null clears. */
+            fun clinicalHistory(clinicalHistory: String?) =
+                clinicalHistory(JsonField.ofNullable(clinicalHistory))
+
+            /** Alias for calling [Builder.clinicalHistory] with `clinicalHistory.orElse(null)`. */
+            fun clinicalHistory(clinicalHistory: Optional<String>) =
+                clinicalHistory(clinicalHistory.getOrNull())
+
+            /**
+             * Sets [Builder.clinicalHistory] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.clinicalHistory] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun clinicalHistory(clinicalHistory: JsonField<String>) = apply {
+                this.clinicalHistory = clinicalHistory
+            }
+
+            /** Clinical indication for the study. Null clears. */
+            fun clinicalIndication(clinicalIndication: String?) =
+                clinicalIndication(JsonField.ofNullable(clinicalIndication))
+
+            /**
+             * Alias for calling [Builder.clinicalIndication] with
+             * `clinicalIndication.orElse(null)`.
+             */
+            fun clinicalIndication(clinicalIndication: Optional<String>) =
+                clinicalIndication(clinicalIndication.getOrNull())
+
+            /**
+             * Sets [Builder.clinicalIndication] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.clinicalIndication] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun clinicalIndication(clinicalIndication: JsonField<String>) = apply {
+                this.clinicalIndication = clinicalIndication
+            }
 
             /** Express Customer ID for the study, or null to remove. Format: cus_{32-hex-chars} */
             fun expressCustomerId(expressCustomerId: String) =
@@ -750,6 +1118,30 @@ private constructor(
                 this.expressCustomerId = expressCustomerId
             }
 
+            /**
+             * Integrator-provided stable patient identifier used to link studies for the same
+             * patient. Null clears.
+             */
+            fun externalPatientId(externalPatientId: String?) =
+                externalPatientId(JsonField.ofNullable(externalPatientId))
+
+            /**
+             * Alias for calling [Builder.externalPatientId] with `externalPatientId.orElse(null)`.
+             */
+            fun externalPatientId(externalPatientId: Optional<String>) =
+                externalPatientId(externalPatientId.getOrNull())
+
+            /**
+             * Sets [Builder.externalPatientId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.externalPatientId] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun externalPatientId(externalPatientId: JsonField<String>) = apply {
+                this.externalPatientId = externalPatientId
+            }
+
             fun metadata(metadata: Metadata?) = metadata(JsonField.ofNullable(metadata))
 
             /** Alias for calling [Builder.metadata] with `metadata.orElse(null)`. */
@@ -764,65 +1156,52 @@ private constructor(
              */
             fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
 
-            fun priorReportTexts(priorReportTexts: List<String>?) =
-                priorReportTexts(JsonField.ofNullable(priorReportTexts))
+            /** Imaging modality for the study (free text). Null clears. */
+            fun modality(modality: String?) = modality(JsonField.ofNullable(modality))
+
+            /** Alias for calling [Builder.modality] with `modality.orElse(null)`. */
+            fun modality(modality: Optional<String>) = modality(modality.getOrNull())
 
             /**
-             * Alias for calling [Builder.priorReportTexts] with `priorReportTexts.orElse(null)`.
-             */
-            fun priorReportTexts(priorReportTexts: Optional<List<String>>) =
-                priorReportTexts(priorReportTexts.getOrNull())
-
-            /**
-             * Sets [Builder.priorReportTexts] to an arbitrary JSON value.
+             * Sets [Builder.modality] to an arbitrary JSON value.
              *
-             * You should usually call [Builder.priorReportTexts] with a well-typed `List<String>`
+             * You should usually call [Builder.modality] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun modality(modality: JsonField<String>) = apply { this.modality = modality }
+
+            /**
+             * External prior reports (metadata + full report text) for comparison context. Null
+             * clears; an array replaces the existing set. Maximum 50 items
+             */
+            fun priorReports(priorReports: List<PriorReport>?) =
+                priorReports(JsonField.ofNullable(priorReports))
+
+            /** Alias for calling [Builder.priorReports] with `priorReports.orElse(null)`. */
+            fun priorReports(priorReports: Optional<List<PriorReport>>) =
+                priorReports(priorReports.getOrNull())
+
+            /**
+             * Sets [Builder.priorReports] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.priorReports] with a well-typed `List<PriorReport>`
              * value instead. This method is primarily for setting the field to an undocumented or
              * not yet supported value.
              */
-            fun priorReportTexts(priorReportTexts: JsonField<List<String>>) = apply {
-                this.priorReportTexts = priorReportTexts.map { it.toMutableList() }
+            fun priorReports(priorReports: JsonField<List<PriorReport>>) = apply {
+                this.priorReports = priorReports.map { it.toMutableList() }
             }
 
             /**
-             * Adds a single [String] to [priorReportTexts].
+             * Adds a single [PriorReport] to [priorReports].
              *
              * @throws IllegalStateException if the field was previously set to a non-list.
              */
-            fun addPriorReportText(priorReportText: String) = apply {
-                priorReportTexts =
-                    (priorReportTexts ?: JsonField.of(mutableListOf())).also {
-                        checkKnown("priorReportTexts", it).add(priorReportText)
-                    }
-            }
-
-            fun priorStudyIds(priorStudyIds: List<String>?) =
-                priorStudyIds(JsonField.ofNullable(priorStudyIds))
-
-            /** Alias for calling [Builder.priorStudyIds] with `priorStudyIds.orElse(null)`. */
-            fun priorStudyIds(priorStudyIds: Optional<List<String>>) =
-                priorStudyIds(priorStudyIds.getOrNull())
-
-            /**
-             * Sets [Builder.priorStudyIds] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.priorStudyIds] with a well-typed `List<String>`
-             * value instead. This method is primarily for setting the field to an undocumented or
-             * not yet supported value.
-             */
-            fun priorStudyIds(priorStudyIds: JsonField<List<String>>) = apply {
-                this.priorStudyIds = priorStudyIds.map { it.toMutableList() }
-            }
-
-            /**
-             * Adds a single [String] to [priorStudyIds].
-             *
-             * @throws IllegalStateException if the field was previously set to a non-list.
-             */
-            fun addPriorStudyId(priorStudyId: String) = apply {
-                priorStudyIds =
-                    (priorStudyIds ?: JsonField.of(mutableListOf())).also {
-                        checkKnown("priorStudyIds", it).add(priorStudyId)
+            fun addPriorReport(priorReport: PriorReport) = apply {
+                priorReports =
+                    (priorReports ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("priorReports", it).add(priorReport)
                     }
             }
 
@@ -870,6 +1249,64 @@ private constructor(
                 this.studyDescription = studyDescription
             }
 
+            /**
+             * Technologist notes for the study. Null clears; an array replaces the existing set.
+             * Maximum 50 items, each up to 1000 characters
+             */
+            fun technologistNotes(technologistNotes: List<String>?) =
+                technologistNotes(JsonField.ofNullable(technologistNotes))
+
+            /**
+             * Alias for calling [Builder.technologistNotes] with `technologistNotes.orElse(null)`.
+             */
+            fun technologistNotes(technologistNotes: Optional<List<String>>) =
+                technologistNotes(technologistNotes.getOrNull())
+
+            /**
+             * Sets [Builder.technologistNotes] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.technologistNotes] with a well-typed `List<String>`
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
+            fun technologistNotes(technologistNotes: JsonField<List<String>>) = apply {
+                this.technologistNotes = technologistNotes.map { it.toMutableList() }
+            }
+
+            /**
+             * Adds a single [String] to [technologistNotes].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
+            fun addTechnologistNote(technologistNote: String) = apply {
+                technologistNotes =
+                    (technologistNotes ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("technologistNotes", it).add(technologistNote)
+                    }
+            }
+
+            /** Imaging technique description provided by the technologist. Null clears. */
+            fun technologistTechnique(technologistTechnique: String?) =
+                technologistTechnique(JsonField.ofNullable(technologistTechnique))
+
+            /**
+             * Alias for calling [Builder.technologistTechnique] with
+             * `technologistTechnique.orElse(null)`.
+             */
+            fun technologistTechnique(technologistTechnique: Optional<String>) =
+                technologistTechnique(technologistTechnique.getOrNull())
+
+            /**
+             * Sets [Builder.technologistTechnique] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.technologistTechnique] with a well-typed [String]
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
+            fun technologistTechnique(technologistTechnique: JsonField<String>) = apply {
+                this.technologistTechnique = technologistTechnique
+            }
+
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
                 putAllAdditionalProperties(additionalProperties)
@@ -897,13 +1334,18 @@ private constructor(
             fun build(): Body =
                 Body(
                     assignedTo,
+                    clinicalHistory,
+                    clinicalIndication,
                     expressCustomerId,
+                    externalPatientId,
                     metadata,
-                    (priorReportTexts ?: JsonMissing.of()).map { it.toImmutable() },
-                    (priorStudyIds ?: JsonMissing.of()).map { it.toImmutable() },
+                    modality,
+                    (priorReports ?: JsonMissing.of()).map { it.toImmutable() },
                     reportMetadata,
                     severity,
                     studyDescription,
+                    (technologistNotes ?: JsonMissing.of()).map { it.toImmutable() },
+                    technologistTechnique,
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -925,13 +1367,18 @@ private constructor(
             }
 
             assignedTo()
+            clinicalHistory()
+            clinicalIndication()
             expressCustomerId()
+            externalPatientId()
             metadata().ifPresent { it.validate() }
-            priorReportTexts()
-            priorStudyIds()
+            modality()
+            priorReports().ifPresent { it.forEach { it.validate() } }
             reportMetadata().ifPresent { it.validate() }
             severity().ifPresent { it.validate() }
             studyDescription()
+            technologistNotes()
+            technologistTechnique()
             validated = true
         }
 
@@ -952,13 +1399,18 @@ private constructor(
         @JvmSynthetic
         internal fun validity(): Int =
             (if (assignedTo.asKnown().isPresent) 1 else 0) +
+                (if (clinicalHistory.asKnown().isPresent) 1 else 0) +
+                (if (clinicalIndication.asKnown().isPresent) 1 else 0) +
                 (if (expressCustomerId.asKnown().isPresent) 1 else 0) +
+                (if (externalPatientId.asKnown().isPresent) 1 else 0) +
                 (metadata.asKnown().getOrNull()?.validity() ?: 0) +
-                (priorReportTexts.asKnown().getOrNull()?.size ?: 0) +
-                (priorStudyIds.asKnown().getOrNull()?.size ?: 0) +
+                (if (modality.asKnown().isPresent) 1 else 0) +
+                (priorReports.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
                 (reportMetadata.asKnown().getOrNull()?.validity() ?: 0) +
                 (severity.asKnown().getOrNull()?.validity() ?: 0) +
-                (if (studyDescription.asKnown().isPresent) 1 else 0)
+                (if (studyDescription.asKnown().isPresent) 1 else 0) +
+                (technologistNotes.asKnown().getOrNull()?.size ?: 0) +
+                (if (technologistTechnique.asKnown().isPresent) 1 else 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -967,26 +1419,36 @@ private constructor(
 
             return other is Body &&
                 assignedTo == other.assignedTo &&
+                clinicalHistory == other.clinicalHistory &&
+                clinicalIndication == other.clinicalIndication &&
                 expressCustomerId == other.expressCustomerId &&
+                externalPatientId == other.externalPatientId &&
                 metadata == other.metadata &&
-                priorReportTexts == other.priorReportTexts &&
-                priorStudyIds == other.priorStudyIds &&
+                modality == other.modality &&
+                priorReports == other.priorReports &&
                 reportMetadata == other.reportMetadata &&
                 severity == other.severity &&
                 studyDescription == other.studyDescription &&
+                technologistNotes == other.technologistNotes &&
+                technologistTechnique == other.technologistTechnique &&
                 additionalProperties == other.additionalProperties
         }
 
         private val hashCode: Int by lazy {
             Objects.hash(
                 assignedTo,
+                clinicalHistory,
+                clinicalIndication,
                 expressCustomerId,
+                externalPatientId,
                 metadata,
-                priorReportTexts,
-                priorStudyIds,
+                modality,
+                priorReports,
                 reportMetadata,
                 severity,
                 studyDescription,
+                technologistNotes,
+                technologistTechnique,
                 additionalProperties,
             )
         }
@@ -994,7 +1456,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{assignedTo=$assignedTo, expressCustomerId=$expressCustomerId, metadata=$metadata, priorReportTexts=$priorReportTexts, priorStudyIds=$priorStudyIds, reportMetadata=$reportMetadata, severity=$severity, studyDescription=$studyDescription, additionalProperties=$additionalProperties}"
+            "Body{assignedTo=$assignedTo, clinicalHistory=$clinicalHistory, clinicalIndication=$clinicalIndication, expressCustomerId=$expressCustomerId, externalPatientId=$externalPatientId, metadata=$metadata, modality=$modality, priorReports=$priorReports, reportMetadata=$reportMetadata, severity=$severity, studyDescription=$studyDescription, technologistNotes=$technologistNotes, technologistTechnique=$technologistTechnique, additionalProperties=$additionalProperties}"
     }
 
     class Metadata
@@ -1105,6 +1567,350 @@ private constructor(
         override fun toString() = "Metadata{additionalProperties=$additionalProperties}"
     }
 
+    /** External prior report metadata and text stored on a study */
+    class PriorReport
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+    private constructor(
+        private val reportText: JsonField<String>,
+        private val externalStudyId: JsonField<String>,
+        private val modality: JsonField<String>,
+        private val studyDate: JsonField<String>,
+        private val studyDescription: JsonField<String>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
+    ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("reportText")
+            @ExcludeMissing
+            reportText: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("externalStudyId")
+            @ExcludeMissing
+            externalStudyId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("modality")
+            @ExcludeMissing
+            modality: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("studyDate")
+            @ExcludeMissing
+            studyDate: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("studyDescription")
+            @ExcludeMissing
+            studyDescription: JsonField<String> = JsonMissing.of(),
+        ) : this(reportText, externalStudyId, modality, studyDate, studyDescription, mutableMapOf())
+
+        /**
+         * Full prior report text
+         *
+         * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun reportText(): String = reportText.getRequired("reportText")
+
+        /**
+         * Integrator's external study identifier
+         *
+         * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun externalStudyId(): Optional<String> = externalStudyId.getOptional("externalStudyId")
+
+        /**
+         * Imaging modality for the prior study
+         *
+         * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun modality(): Optional<String> = modality.getOptional("modality")
+
+        /**
+         * Prior study date (YYYY-MM-DD)
+         *
+         * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun studyDate(): Optional<String> = studyDate.getOptional("studyDate")
+
+        /**
+         * Description of the prior study
+         *
+         * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun studyDescription(): Optional<String> = studyDescription.getOptional("studyDescription")
+
+        /**
+         * Returns the raw JSON value of [reportText].
+         *
+         * Unlike [reportText], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("reportText")
+        @ExcludeMissing
+        fun _reportText(): JsonField<String> = reportText
+
+        /**
+         * Returns the raw JSON value of [externalStudyId].
+         *
+         * Unlike [externalStudyId], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("externalStudyId")
+        @ExcludeMissing
+        fun _externalStudyId(): JsonField<String> = externalStudyId
+
+        /**
+         * Returns the raw JSON value of [modality].
+         *
+         * Unlike [modality], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("modality") @ExcludeMissing fun _modality(): JsonField<String> = modality
+
+        /**
+         * Returns the raw JSON value of [studyDate].
+         *
+         * Unlike [studyDate], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("studyDate") @ExcludeMissing fun _studyDate(): JsonField<String> = studyDate
+
+        /**
+         * Returns the raw JSON value of [studyDescription].
+         *
+         * Unlike [studyDescription], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("studyDescription")
+        @ExcludeMissing
+        fun _studyDescription(): JsonField<String> = studyDescription
+
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
+
+        fun toBuilder() = Builder().from(this)
+
+        companion object {
+
+            /**
+             * Returns a mutable builder for constructing an instance of [PriorReport].
+             *
+             * The following fields are required:
+             * ```java
+             * .reportText()
+             * ```
+             */
+            @JvmStatic fun builder() = Builder()
+        }
+
+        /** A builder for [PriorReport]. */
+        class Builder internal constructor() {
+
+            private var reportText: JsonField<String>? = null
+            private var externalStudyId: JsonField<String> = JsonMissing.of()
+            private var modality: JsonField<String> = JsonMissing.of()
+            private var studyDate: JsonField<String> = JsonMissing.of()
+            private var studyDescription: JsonField<String> = JsonMissing.of()
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            @JvmSynthetic
+            internal fun from(priorReport: PriorReport) = apply {
+                reportText = priorReport.reportText
+                externalStudyId = priorReport.externalStudyId
+                modality = priorReport.modality
+                studyDate = priorReport.studyDate
+                studyDescription = priorReport.studyDescription
+                additionalProperties = priorReport.additionalProperties.toMutableMap()
+            }
+
+            /** Full prior report text */
+            fun reportText(reportText: String) = reportText(JsonField.of(reportText))
+
+            /**
+             * Sets [Builder.reportText] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.reportText] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun reportText(reportText: JsonField<String>) = apply { this.reportText = reportText }
+
+            /** Integrator's external study identifier */
+            fun externalStudyId(externalStudyId: String) =
+                externalStudyId(JsonField.of(externalStudyId))
+
+            /**
+             * Sets [Builder.externalStudyId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.externalStudyId] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun externalStudyId(externalStudyId: JsonField<String>) = apply {
+                this.externalStudyId = externalStudyId
+            }
+
+            /** Imaging modality for the prior study */
+            fun modality(modality: String) = modality(JsonField.of(modality))
+
+            /**
+             * Sets [Builder.modality] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.modality] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun modality(modality: JsonField<String>) = apply { this.modality = modality }
+
+            /** Prior study date (YYYY-MM-DD) */
+            fun studyDate(studyDate: String) = studyDate(JsonField.of(studyDate))
+
+            /**
+             * Sets [Builder.studyDate] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.studyDate] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun studyDate(studyDate: JsonField<String>) = apply { this.studyDate = studyDate }
+
+            /** Description of the prior study */
+            fun studyDescription(studyDescription: String) =
+                studyDescription(JsonField.of(studyDescription))
+
+            /**
+             * Sets [Builder.studyDescription] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.studyDescription] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun studyDescription(studyDescription: JsonField<String>) = apply {
+                this.studyDescription = studyDescription
+            }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
+
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
+            /**
+             * Returns an immutable instance of [PriorReport].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```java
+             * .reportText()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
+             */
+            fun build(): PriorReport =
+                PriorReport(
+                    checkRequired("reportText", reportText),
+                    externalStudyId,
+                    modality,
+                    studyDate,
+                    studyDescription,
+                    additionalProperties.toMutableMap(),
+                )
+        }
+
+        private var validated: Boolean = false
+
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws AvaraInvalidDataException if any value type in this object doesn't match its
+         *   expected type.
+         */
+        fun validate(): PriorReport = apply {
+            if (validated) {
+                return@apply
+            }
+
+            reportText()
+            externalStudyId()
+            modality()
+            studyDate()
+            studyDescription()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: AvaraInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (if (reportText.asKnown().isPresent) 1 else 0) +
+                (if (externalStudyId.asKnown().isPresent) 1 else 0) +
+                (if (modality.asKnown().isPresent) 1 else 0) +
+                (if (studyDate.asKnown().isPresent) 1 else 0) +
+                (if (studyDescription.asKnown().isPresent) 1 else 0)
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is PriorReport &&
+                reportText == other.reportText &&
+                externalStudyId == other.externalStudyId &&
+                modality == other.modality &&
+                studyDate == other.studyDate &&
+                studyDescription == other.studyDescription &&
+                additionalProperties == other.additionalProperties
+        }
+
+        private val hashCode: Int by lazy {
+            Objects.hash(
+                reportText,
+                externalStudyId,
+                modality,
+                studyDate,
+                studyDescription,
+                additionalProperties,
+            )
+        }
+
+        override fun hashCode(): Int = hashCode
+
+        override fun toString() =
+            "PriorReport{reportText=$reportText, externalStudyId=$externalStudyId, modality=$modality, studyDate=$studyDate, studyDescription=$studyDescription, additionalProperties=$additionalProperties}"
+    }
+
     class ReportMetadata
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
@@ -1114,11 +1920,11 @@ private constructor(
         private val height: JsonField<Height>,
         private val mrn: JsonField<String>,
         private val patientName: JsonField<String>,
+        private val procedure: JsonField<String>,
         private val referringPhysicianName: JsonField<String>,
-        private val scanDate: JsonField<String>,
-        private val scanTime: JsonField<String>,
-        private val scanType: JsonField<String>,
         private val sex: JsonField<Sex>,
+        private val studyDate: JsonField<String>,
+        private val studyTime: JsonField<String>,
         private val weight: JsonField<Weight>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
@@ -1137,19 +1943,19 @@ private constructor(
             @JsonProperty("patientName")
             @ExcludeMissing
             patientName: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("procedure")
+            @ExcludeMissing
+            procedure: JsonField<String> = JsonMissing.of(),
             @JsonProperty("referringPhysicianName")
             @ExcludeMissing
             referringPhysicianName: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("scanDate")
-            @ExcludeMissing
-            scanDate: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("scanTime")
-            @ExcludeMissing
-            scanTime: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("scanType")
-            @ExcludeMissing
-            scanType: JsonField<String> = JsonMissing.of(),
             @JsonProperty("sex") @ExcludeMissing sex: JsonField<Sex> = JsonMissing.of(),
+            @JsonProperty("studyDate")
+            @ExcludeMissing
+            studyDate: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("studyTime")
+            @ExcludeMissing
+            studyTime: JsonField<String> = JsonMissing.of(),
             @JsonProperty("weight") @ExcludeMissing weight: JsonField<Weight> = JsonMissing.of(),
         ) : this(
             age,
@@ -1158,11 +1964,11 @@ private constructor(
             height,
             mrn,
             patientName,
+            procedure,
             referringPhysicianName,
-            scanDate,
-            scanTime,
-            scanType,
             sex,
+            studyDate,
+            studyTime,
             weight,
             mutableMapOf(),
         )
@@ -1204,6 +2010,15 @@ private constructor(
         fun patientName(): Optional<String> = patientName.getOptional("patientName")
 
         /**
+         * Procedure or study type. Nullable on PATCH. Maps to DB scan_type and
+         * report_header.scan_type.
+         *
+         * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun procedure(): Optional<String> = procedure.getOptional("procedure")
+
+        /**
          * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
@@ -1214,25 +2029,24 @@ private constructor(
          * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun scanDate(): Optional<String> = scanDate.getOptional("scanDate")
-
-        /**
-         * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun scanTime(): Optional<String> = scanTime.getOptional("scanTime")
-
-        /**
-         * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun scanType(): Optional<String> = scanType.getOptional("scanType")
-
-        /**
-         * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
         fun sex(): Optional<Sex> = sex.getOptional("sex")
+
+        /**
+         * Study date (YYYY-MM-DD). Nullable on PATCH. Maps to DB scan_date and
+         * report_header.scan_date.
+         *
+         * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun studyDate(): Optional<String> = studyDate.getOptional("studyDate")
+
+        /**
+         * Study time (HH:MM). Nullable on PATCH. Maps to DB scan_time and report_header.scan_time.
+         *
+         * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun studyTime(): Optional<String> = studyTime.getOptional("studyTime")
 
         /**
          * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -1290,6 +2104,13 @@ private constructor(
         fun _patientName(): JsonField<String> = patientName
 
         /**
+         * Returns the raw JSON value of [procedure].
+         *
+         * Unlike [procedure], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("procedure") @ExcludeMissing fun _procedure(): JsonField<String> = procedure
+
+        /**
          * Returns the raw JSON value of [referringPhysicianName].
          *
          * Unlike [referringPhysicianName], this method doesn't throw if the JSON field has an
@@ -1300,32 +2121,25 @@ private constructor(
         fun _referringPhysicianName(): JsonField<String> = referringPhysicianName
 
         /**
-         * Returns the raw JSON value of [scanDate].
-         *
-         * Unlike [scanDate], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("scanDate") @ExcludeMissing fun _scanDate(): JsonField<String> = scanDate
-
-        /**
-         * Returns the raw JSON value of [scanTime].
-         *
-         * Unlike [scanTime], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("scanTime") @ExcludeMissing fun _scanTime(): JsonField<String> = scanTime
-
-        /**
-         * Returns the raw JSON value of [scanType].
-         *
-         * Unlike [scanType], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("scanType") @ExcludeMissing fun _scanType(): JsonField<String> = scanType
-
-        /**
          * Returns the raw JSON value of [sex].
          *
          * Unlike [sex], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("sex") @ExcludeMissing fun _sex(): JsonField<Sex> = sex
+
+        /**
+         * Returns the raw JSON value of [studyDate].
+         *
+         * Unlike [studyDate], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("studyDate") @ExcludeMissing fun _studyDate(): JsonField<String> = studyDate
+
+        /**
+         * Returns the raw JSON value of [studyTime].
+         *
+         * Unlike [studyTime], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("studyTime") @ExcludeMissing fun _studyTime(): JsonField<String> = studyTime
 
         /**
          * Returns the raw JSON value of [weight].
@@ -1361,11 +2175,11 @@ private constructor(
             private var height: JsonField<Height> = JsonMissing.of()
             private var mrn: JsonField<String> = JsonMissing.of()
             private var patientName: JsonField<String> = JsonMissing.of()
+            private var procedure: JsonField<String> = JsonMissing.of()
             private var referringPhysicianName: JsonField<String> = JsonMissing.of()
-            private var scanDate: JsonField<String> = JsonMissing.of()
-            private var scanTime: JsonField<String> = JsonMissing.of()
-            private var scanType: JsonField<String> = JsonMissing.of()
             private var sex: JsonField<Sex> = JsonMissing.of()
+            private var studyDate: JsonField<String> = JsonMissing.of()
+            private var studyTime: JsonField<String> = JsonMissing.of()
             private var weight: JsonField<Weight> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -1377,11 +2191,11 @@ private constructor(
                 height = reportMetadata.height
                 mrn = reportMetadata.mrn
                 patientName = reportMetadata.patientName
+                procedure = reportMetadata.procedure
                 referringPhysicianName = reportMetadata.referringPhysicianName
-                scanDate = reportMetadata.scanDate
-                scanTime = reportMetadata.scanTime
-                scanType = reportMetadata.scanType
                 sex = reportMetadata.sex
+                studyDate = reportMetadata.studyDate
+                studyTime = reportMetadata.studyTime
                 weight = reportMetadata.weight
                 additionalProperties = reportMetadata.additionalProperties.toMutableMap()
             }
@@ -1478,6 +2292,24 @@ private constructor(
                 this.patientName = patientName
             }
 
+            /**
+             * Procedure or study type. Nullable on PATCH. Maps to DB scan_type and
+             * report_header.scan_type.
+             */
+            fun procedure(procedure: String?) = procedure(JsonField.ofNullable(procedure))
+
+            /** Alias for calling [Builder.procedure] with `procedure.orElse(null)`. */
+            fun procedure(procedure: Optional<String>) = procedure(procedure.getOrNull())
+
+            /**
+             * Sets [Builder.procedure] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.procedure] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun procedure(procedure: JsonField<String>) = apply { this.procedure = procedure }
+
             fun referringPhysicianName(referringPhysicianName: String?) =
                 referringPhysicianName(JsonField.ofNullable(referringPhysicianName))
 
@@ -1499,48 +2331,6 @@ private constructor(
                 this.referringPhysicianName = referringPhysicianName
             }
 
-            fun scanDate(scanDate: String?) = scanDate(JsonField.ofNullable(scanDate))
-
-            /** Alias for calling [Builder.scanDate] with `scanDate.orElse(null)`. */
-            fun scanDate(scanDate: Optional<String>) = scanDate(scanDate.getOrNull())
-
-            /**
-             * Sets [Builder.scanDate] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.scanDate] with a well-typed [String] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun scanDate(scanDate: JsonField<String>) = apply { this.scanDate = scanDate }
-
-            fun scanTime(scanTime: String?) = scanTime(JsonField.ofNullable(scanTime))
-
-            /** Alias for calling [Builder.scanTime] with `scanTime.orElse(null)`. */
-            fun scanTime(scanTime: Optional<String>) = scanTime(scanTime.getOrNull())
-
-            /**
-             * Sets [Builder.scanTime] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.scanTime] with a well-typed [String] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun scanTime(scanTime: JsonField<String>) = apply { this.scanTime = scanTime }
-
-            fun scanType(scanType: String?) = scanType(JsonField.ofNullable(scanType))
-
-            /** Alias for calling [Builder.scanType] with `scanType.orElse(null)`. */
-            fun scanType(scanType: Optional<String>) = scanType(scanType.getOrNull())
-
-            /**
-             * Sets [Builder.scanType] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.scanType] with a well-typed [String] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun scanType(scanType: JsonField<String>) = apply { this.scanType = scanType }
-
             fun sex(sex: Sex?) = sex(JsonField.ofNullable(sex))
 
             /** Alias for calling [Builder.sex] with `sex.orElse(null)`. */
@@ -1554,6 +2344,42 @@ private constructor(
              * value.
              */
             fun sex(sex: JsonField<Sex>) = apply { this.sex = sex }
+
+            /**
+             * Study date (YYYY-MM-DD). Nullable on PATCH. Maps to DB scan_date and
+             * report_header.scan_date.
+             */
+            fun studyDate(studyDate: String?) = studyDate(JsonField.ofNullable(studyDate))
+
+            /** Alias for calling [Builder.studyDate] with `studyDate.orElse(null)`. */
+            fun studyDate(studyDate: Optional<String>) = studyDate(studyDate.getOrNull())
+
+            /**
+             * Sets [Builder.studyDate] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.studyDate] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun studyDate(studyDate: JsonField<String>) = apply { this.studyDate = studyDate }
+
+            /**
+             * Study time (HH:MM). Nullable on PATCH. Maps to DB scan_time and
+             * report_header.scan_time.
+             */
+            fun studyTime(studyTime: String?) = studyTime(JsonField.ofNullable(studyTime))
+
+            /** Alias for calling [Builder.studyTime] with `studyTime.orElse(null)`. */
+            fun studyTime(studyTime: Optional<String>) = studyTime(studyTime.getOrNull())
+
+            /**
+             * Sets [Builder.studyTime] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.studyTime] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun studyTime(studyTime: JsonField<String>) = apply { this.studyTime = studyTime }
 
             fun weight(weight: Weight?) = weight(JsonField.ofNullable(weight))
 
@@ -1601,11 +2427,11 @@ private constructor(
                     height,
                     mrn,
                     patientName,
+                    procedure,
                     referringPhysicianName,
-                    scanDate,
-                    scanTime,
-                    scanType,
                     sex,
+                    studyDate,
+                    studyTime,
                     weight,
                     additionalProperties.toMutableMap(),
                 )
@@ -1633,11 +2459,11 @@ private constructor(
             height().ifPresent { it.validate() }
             mrn()
             patientName()
+            procedure()
             referringPhysicianName()
-            scanDate()
-            scanTime()
-            scanType()
             sex().ifPresent { it.validate() }
+            studyDate()
+            studyTime()
             weight().ifPresent { it.validate() }
             validated = true
         }
@@ -1664,11 +2490,11 @@ private constructor(
                 (height.asKnown().getOrNull()?.validity() ?: 0) +
                 (if (mrn.asKnown().isPresent) 1 else 0) +
                 (if (patientName.asKnown().isPresent) 1 else 0) +
+                (if (procedure.asKnown().isPresent) 1 else 0) +
                 (if (referringPhysicianName.asKnown().isPresent) 1 else 0) +
-                (if (scanDate.asKnown().isPresent) 1 else 0) +
-                (if (scanTime.asKnown().isPresent) 1 else 0) +
-                (if (scanType.asKnown().isPresent) 1 else 0) +
                 (sex.asKnown().getOrNull()?.validity() ?: 0) +
+                (if (studyDate.asKnown().isPresent) 1 else 0) +
+                (if (studyTime.asKnown().isPresent) 1 else 0) +
                 (weight.asKnown().getOrNull()?.validity() ?: 0)
 
         class Height
@@ -2520,11 +3346,11 @@ private constructor(
                 height == other.height &&
                 mrn == other.mrn &&
                 patientName == other.patientName &&
+                procedure == other.procedure &&
                 referringPhysicianName == other.referringPhysicianName &&
-                scanDate == other.scanDate &&
-                scanTime == other.scanTime &&
-                scanType == other.scanType &&
                 sex == other.sex &&
+                studyDate == other.studyDate &&
+                studyTime == other.studyTime &&
                 weight == other.weight &&
                 additionalProperties == other.additionalProperties
         }
@@ -2537,11 +3363,11 @@ private constructor(
                 height,
                 mrn,
                 patientName,
+                procedure,
                 referringPhysicianName,
-                scanDate,
-                scanTime,
-                scanType,
                 sex,
+                studyDate,
+                studyTime,
                 weight,
                 additionalProperties,
             )
@@ -2550,7 +3376,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "ReportMetadata{age=$age, dateOfBirth=$dateOfBirth, facilityName=$facilityName, height=$height, mrn=$mrn, patientName=$patientName, referringPhysicianName=$referringPhysicianName, scanDate=$scanDate, scanTime=$scanTime, scanType=$scanType, sex=$sex, weight=$weight, additionalProperties=$additionalProperties}"
+            "ReportMetadata{age=$age, dateOfBirth=$dateOfBirth, facilityName=$facilityName, height=$height, mrn=$mrn, patientName=$patientName, procedure=$procedure, referringPhysicianName=$referringPhysicianName, sex=$sex, studyDate=$studyDate, studyTime=$studyTime, weight=$weight, additionalProperties=$additionalProperties}"
     }
 
     /**
