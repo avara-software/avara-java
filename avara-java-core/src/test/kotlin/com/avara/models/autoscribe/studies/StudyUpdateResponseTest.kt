@@ -4,7 +4,10 @@ package com.avara.models.autoscribe.studies
 
 import com.avara.core.JsonValue
 import com.avara.core.jsonMapper
+import com.avara.models.ApiKeyReference
+import com.avara.models.ExpressCustomerReference
 import com.avara.models.Severity
+import com.avara.models.UserReference
 import com.avara.models.autoscribe.HeightUnit
 import com.avara.models.autoscribe.ReportStatus
 import com.avara.models.autoscribe.Sex
@@ -59,7 +62,7 @@ internal class StudyUpdateResponseTest {
                 .studyReportStatus(StudyReportStatus.IN_PROGRESS)
                 .updatedAt(OffsetDateTime.parse("2024-03-15T14:20:00Z"))
                 .assignedTo(
-                    StudyUpdateResponse.AssignedTo.builder()
+                    UserReference.builder()
                         .email("dr.smith@radiology.com")
                         .userId("usr_1234567890abcdef1234567890abcdef")
                         .firstName("John")
@@ -72,14 +75,14 @@ internal class StudyUpdateResponseTest {
                 .clinicalHistory("clinicalHistory")
                 .clinicalIndication("clinicalIndication")
                 .createdByApiKey(
-                    StudyUpdateResponse.CreatedByApiKey.builder()
+                    ApiKeyReference.builder()
                         .apiKeyId("550e8400-e29b-41d4-a716-446655440000")
                         .description("Production API Key")
                         .isViewerEnabled(true)
                         .build()
                 )
                 .createdByUser(
-                    StudyUpdateResponse.CreatedByUser.builder()
+                    UserReference.builder()
                         .email("dr.smith@radiology.com")
                         .userId("usr_1234567890abcdef1234567890abcdef")
                         .firstName("John")
@@ -90,7 +93,7 @@ internal class StudyUpdateResponseTest {
                         .build()
                 )
                 .expressCustomer(
-                    StudyUpdateResponse.ExpressCustomer.builder()
+                    ExpressCustomerReference.builder()
                         .expressCustomerId("cus_1234567890abcdef1234567890abcdef")
                         .expressCustomerName("City Medical Center")
                         .build()
@@ -160,7 +163,7 @@ internal class StudyUpdateResponseTest {
             .contains(OffsetDateTime.parse("2024-03-15T14:20:00Z"))
         assertThat(studyUpdateResponse.assignedTo())
             .contains(
-                StudyUpdateResponse.AssignedTo.builder()
+                UserReference.builder()
                     .email("dr.smith@radiology.com")
                     .userId("usr_1234567890abcdef1234567890abcdef")
                     .firstName("John")
@@ -174,7 +177,7 @@ internal class StudyUpdateResponseTest {
         assertThat(studyUpdateResponse.clinicalIndication()).contains("clinicalIndication")
         assertThat(studyUpdateResponse.createdByApiKey())
             .contains(
-                StudyUpdateResponse.CreatedByApiKey.builder()
+                ApiKeyReference.builder()
                     .apiKeyId("550e8400-e29b-41d4-a716-446655440000")
                     .description("Production API Key")
                     .isViewerEnabled(true)
@@ -182,7 +185,7 @@ internal class StudyUpdateResponseTest {
             )
         assertThat(studyUpdateResponse.createdByUser())
             .contains(
-                StudyUpdateResponse.CreatedByUser.builder()
+                UserReference.builder()
                     .email("dr.smith@radiology.com")
                     .userId("usr_1234567890abcdef1234567890abcdef")
                     .firstName("John")
@@ -194,7 +197,7 @@ internal class StudyUpdateResponseTest {
             )
         assertThat(studyUpdateResponse.expressCustomer())
             .contains(
-                StudyUpdateResponse.ExpressCustomer.builder()
+                ExpressCustomerReference.builder()
                     .expressCustomerId("cus_1234567890abcdef1234567890abcdef")
                     .expressCustomerName("City Medical Center")
                     .build()
@@ -270,7 +273,7 @@ internal class StudyUpdateResponseTest {
                 .studyReportStatus(StudyReportStatus.IN_PROGRESS)
                 .updatedAt(OffsetDateTime.parse("2024-03-15T14:20:00Z"))
                 .assignedTo(
-                    StudyUpdateResponse.AssignedTo.builder()
+                    UserReference.builder()
                         .email("dr.smith@radiology.com")
                         .userId("usr_1234567890abcdef1234567890abcdef")
                         .firstName("John")
@@ -283,14 +286,14 @@ internal class StudyUpdateResponseTest {
                 .clinicalHistory("clinicalHistory")
                 .clinicalIndication("clinicalIndication")
                 .createdByApiKey(
-                    StudyUpdateResponse.CreatedByApiKey.builder()
+                    ApiKeyReference.builder()
                         .apiKeyId("550e8400-e29b-41d4-a716-446655440000")
                         .description("Production API Key")
                         .isViewerEnabled(true)
                         .build()
                 )
                 .createdByUser(
-                    StudyUpdateResponse.CreatedByUser.builder()
+                    UserReference.builder()
                         .email("dr.smith@radiology.com")
                         .userId("usr_1234567890abcdef1234567890abcdef")
                         .firstName("John")
@@ -301,7 +304,7 @@ internal class StudyUpdateResponseTest {
                         .build()
                 )
                 .expressCustomer(
-                    StudyUpdateResponse.ExpressCustomer.builder()
+                    ExpressCustomerReference.builder()
                         .expressCustomerId("cus_1234567890abcdef1234567890abcdef")
                         .expressCustomerName("City Medical Center")
                         .build()

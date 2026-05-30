@@ -4,7 +4,10 @@ package com.avara.models.autoscribe.studies
 
 import com.avara.core.JsonValue
 import com.avara.core.jsonMapper
+import com.avara.models.ApiKeyReference
+import com.avara.models.ExpressCustomerReference
 import com.avara.models.Severity
+import com.avara.models.UserReference
 import com.avara.models.autoscribe.HeightUnit
 import com.avara.models.autoscribe.ReportStatus
 import com.avara.models.autoscribe.Sex
@@ -59,7 +62,7 @@ internal class StudyRetrieveByUidResponseTest {
                 .studyReportStatus(StudyReportStatus.IN_PROGRESS)
                 .updatedAt(OffsetDateTime.parse("2024-03-15T14:20:00Z"))
                 .assignedTo(
-                    StudyRetrieveByUidResponse.AssignedTo.builder()
+                    UserReference.builder()
                         .email("dr.smith@radiology.com")
                         .userId("usr_1234567890abcdef1234567890abcdef")
                         .firstName("John")
@@ -72,14 +75,14 @@ internal class StudyRetrieveByUidResponseTest {
                 .clinicalHistory("clinicalHistory")
                 .clinicalIndication("clinicalIndication")
                 .createdByApiKey(
-                    StudyRetrieveByUidResponse.CreatedByApiKey.builder()
+                    ApiKeyReference.builder()
                         .apiKeyId("550e8400-e29b-41d4-a716-446655440000")
                         .description("Production API Key")
                         .isViewerEnabled(true)
                         .build()
                 )
                 .createdByUser(
-                    StudyRetrieveByUidResponse.CreatedByUser.builder()
+                    UserReference.builder()
                         .email("dr.smith@radiology.com")
                         .userId("usr_1234567890abcdef1234567890abcdef")
                         .firstName("John")
@@ -90,7 +93,7 @@ internal class StudyRetrieveByUidResponseTest {
                         .build()
                 )
                 .expressCustomer(
-                    StudyRetrieveByUidResponse.ExpressCustomer.builder()
+                    ExpressCustomerReference.builder()
                         .expressCustomerId("cus_1234567890abcdef1234567890abcdef")
                         .expressCustomerName("City Medical Center")
                         .build()
@@ -163,7 +166,7 @@ internal class StudyRetrieveByUidResponseTest {
             .contains(OffsetDateTime.parse("2024-03-15T14:20:00Z"))
         assertThat(studyRetrieveByUidResponse.assignedTo())
             .contains(
-                StudyRetrieveByUidResponse.AssignedTo.builder()
+                UserReference.builder()
                     .email("dr.smith@radiology.com")
                     .userId("usr_1234567890abcdef1234567890abcdef")
                     .firstName("John")
@@ -177,7 +180,7 @@ internal class StudyRetrieveByUidResponseTest {
         assertThat(studyRetrieveByUidResponse.clinicalIndication()).contains("clinicalIndication")
         assertThat(studyRetrieveByUidResponse.createdByApiKey())
             .contains(
-                StudyRetrieveByUidResponse.CreatedByApiKey.builder()
+                ApiKeyReference.builder()
                     .apiKeyId("550e8400-e29b-41d4-a716-446655440000")
                     .description("Production API Key")
                     .isViewerEnabled(true)
@@ -185,7 +188,7 @@ internal class StudyRetrieveByUidResponseTest {
             )
         assertThat(studyRetrieveByUidResponse.createdByUser())
             .contains(
-                StudyRetrieveByUidResponse.CreatedByUser.builder()
+                UserReference.builder()
                     .email("dr.smith@radiology.com")
                     .userId("usr_1234567890abcdef1234567890abcdef")
                     .firstName("John")
@@ -197,7 +200,7 @@ internal class StudyRetrieveByUidResponseTest {
             )
         assertThat(studyRetrieveByUidResponse.expressCustomer())
             .contains(
-                StudyRetrieveByUidResponse.ExpressCustomer.builder()
+                ExpressCustomerReference.builder()
                     .expressCustomerId("cus_1234567890abcdef1234567890abcdef")
                     .expressCustomerName("City Medical Center")
                     .build()
@@ -274,7 +277,7 @@ internal class StudyRetrieveByUidResponseTest {
                 .studyReportStatus(StudyReportStatus.IN_PROGRESS)
                 .updatedAt(OffsetDateTime.parse("2024-03-15T14:20:00Z"))
                 .assignedTo(
-                    StudyRetrieveByUidResponse.AssignedTo.builder()
+                    UserReference.builder()
                         .email("dr.smith@radiology.com")
                         .userId("usr_1234567890abcdef1234567890abcdef")
                         .firstName("John")
@@ -287,14 +290,14 @@ internal class StudyRetrieveByUidResponseTest {
                 .clinicalHistory("clinicalHistory")
                 .clinicalIndication("clinicalIndication")
                 .createdByApiKey(
-                    StudyRetrieveByUidResponse.CreatedByApiKey.builder()
+                    ApiKeyReference.builder()
                         .apiKeyId("550e8400-e29b-41d4-a716-446655440000")
                         .description("Production API Key")
                         .isViewerEnabled(true)
                         .build()
                 )
                 .createdByUser(
-                    StudyRetrieveByUidResponse.CreatedByUser.builder()
+                    UserReference.builder()
                         .email("dr.smith@radiology.com")
                         .userId("usr_1234567890abcdef1234567890abcdef")
                         .firstName("John")
@@ -305,7 +308,7 @@ internal class StudyRetrieveByUidResponseTest {
                         .build()
                 )
                 .expressCustomer(
-                    StudyRetrieveByUidResponse.ExpressCustomer.builder()
+                    ExpressCustomerReference.builder()
                         .expressCustomerId("cus_1234567890abcdef1234567890abcdef")
                         .expressCustomerName("City Medical Center")
                         .build()

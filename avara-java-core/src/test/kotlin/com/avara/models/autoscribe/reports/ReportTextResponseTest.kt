@@ -117,7 +117,7 @@ internal class ReportTextResponseTest {
         val listReports =
             ReportTextResponse.ListReportsTextResponse.builder()
                 .addReport(
-                    ReportTextResponse.ListReportsTextResponse.Report.builder()
+                    ReportTextItem.builder()
                         .reportId("rep_1234567890abcdef1234567890abcdef")
                         .snapshotMetadata(
                             StudyReportMetadata.builder()
@@ -169,7 +169,7 @@ internal class ReportTextResponseTest {
             ReportTextResponse.ofListReports(
                 ReportTextResponse.ListReportsTextResponse.builder()
                     .addReport(
-                        ReportTextResponse.ListReportsTextResponse.Report.builder()
+                        ReportTextItem.builder()
                             .reportId("rep_1234567890abcdef1234567890abcdef")
                             .snapshotMetadata(
                                 StudyReportMetadata.builder()

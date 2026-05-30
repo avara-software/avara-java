@@ -10,7 +10,10 @@ import com.avara.core.checkKnown
 import com.avara.core.checkRequired
 import com.avara.core.toImmutable
 import com.avara.errors.AvaraInvalidDataException
+import com.avara.models.ApiKeyReference
+import com.avara.models.ExpressCustomerReference
 import com.avara.models.Severity
+import com.avara.models.UserReference
 import com.avara.models.autoscribe.StudyReportMetadata
 import com.avara.models.autoscribe.StudyReportStatus
 import com.fasterxml.jackson.annotation.JsonAnyGetter
@@ -37,12 +40,12 @@ private constructor(
     private val studyInstanceUid: JsonField<String>,
     private val studyReportStatus: JsonField<StudyReportStatus>,
     private val updatedAt: JsonField<OffsetDateTime>,
-    private val assignedTo: JsonField<AssignedTo>,
+    private val assignedTo: JsonField<UserReference>,
     private val clinicalHistory: JsonField<String>,
     private val clinicalIndication: JsonField<String>,
-    private val createdByApiKey: JsonField<CreatedByApiKey>,
-    private val createdByUser: JsonField<CreatedByUser>,
-    private val expressCustomer: JsonField<ExpressCustomer>,
+    private val createdByApiKey: JsonField<ApiKeyReference>,
+    private val createdByUser: JsonField<UserReference>,
+    private val expressCustomer: JsonField<ExpressCustomerReference>,
     private val externalPatientId: JsonField<String>,
     private val metadata: JsonField<Metadata>,
     private val modality: JsonField<String>,
@@ -83,7 +86,7 @@ private constructor(
         updatedAt: JsonField<OffsetDateTime> = JsonMissing.of(),
         @JsonProperty("assignedTo")
         @ExcludeMissing
-        assignedTo: JsonField<AssignedTo> = JsonMissing.of(),
+        assignedTo: JsonField<UserReference> = JsonMissing.of(),
         @JsonProperty("clinicalHistory")
         @ExcludeMissing
         clinicalHistory: JsonField<String> = JsonMissing.of(),
@@ -92,13 +95,13 @@ private constructor(
         clinicalIndication: JsonField<String> = JsonMissing.of(),
         @JsonProperty("createdByApiKey")
         @ExcludeMissing
-        createdByApiKey: JsonField<CreatedByApiKey> = JsonMissing.of(),
+        createdByApiKey: JsonField<ApiKeyReference> = JsonMissing.of(),
         @JsonProperty("createdByUser")
         @ExcludeMissing
-        createdByUser: JsonField<CreatedByUser> = JsonMissing.of(),
+        createdByUser: JsonField<UserReference> = JsonMissing.of(),
         @JsonProperty("expressCustomer")
         @ExcludeMissing
-        expressCustomer: JsonField<ExpressCustomer> = JsonMissing.of(),
+        expressCustomer: JsonField<ExpressCustomerReference> = JsonMissing.of(),
         @JsonProperty("externalPatientId")
         @ExcludeMissing
         externalPatientId: JsonField<String> = JsonMissing.of(),
@@ -228,12 +231,12 @@ private constructor(
     fun updatedAt(): Optional<OffsetDateTime> = updatedAt.getOptional("updatedAt")
 
     /**
-     * Reference to the assigned radiologist, null if unassigned
+     * A reference to a user with basic identifying information
      *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun assignedTo(): Optional<AssignedTo> = assignedTo.getOptional("assignedTo")
+    fun assignedTo(): Optional<UserReference> = assignedTo.getOptional("assignedTo")
 
     /**
      * Relevant clinical history for the study
@@ -253,29 +256,29 @@ private constructor(
         clinicalIndication.getOptional("clinicalIndication")
 
     /**
-     * Reference to the API key used to create this study
+     * A reference to an API key with basic identifying information
      *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun createdByApiKey(): Optional<CreatedByApiKey> =
+    fun createdByApiKey(): Optional<ApiKeyReference> =
         createdByApiKey.getOptional("createdByApiKey")
 
     /**
-     * Reference to the user who created this study via dashboard
+     * A reference to a user with basic identifying information
      *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun createdByUser(): Optional<CreatedByUser> = createdByUser.getOptional("createdByUser")
+    fun createdByUser(): Optional<UserReference> = createdByUser.getOptional("createdByUser")
 
     /**
-     * Reference to the Express customer this study belongs to
+     * A reference to an Express customer with basic identifying information
      *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun expressCustomer(): Optional<ExpressCustomer> =
+    fun expressCustomer(): Optional<ExpressCustomerReference> =
         expressCustomer.getOptional("expressCustomer")
 
     /**
@@ -433,7 +436,7 @@ private constructor(
      */
     @JsonProperty("assignedTo")
     @ExcludeMissing
-    fun _assignedTo(): JsonField<AssignedTo> = assignedTo
+    fun _assignedTo(): JsonField<UserReference> = assignedTo
 
     /**
      * Returns the raw JSON value of [clinicalHistory].
@@ -461,7 +464,7 @@ private constructor(
      */
     @JsonProperty("createdByApiKey")
     @ExcludeMissing
-    fun _createdByApiKey(): JsonField<CreatedByApiKey> = createdByApiKey
+    fun _createdByApiKey(): JsonField<ApiKeyReference> = createdByApiKey
 
     /**
      * Returns the raw JSON value of [createdByUser].
@@ -470,7 +473,7 @@ private constructor(
      */
     @JsonProperty("createdByUser")
     @ExcludeMissing
-    fun _createdByUser(): JsonField<CreatedByUser> = createdByUser
+    fun _createdByUser(): JsonField<UserReference> = createdByUser
 
     /**
      * Returns the raw JSON value of [expressCustomer].
@@ -479,7 +482,7 @@ private constructor(
      */
     @JsonProperty("expressCustomer")
     @ExcludeMissing
-    fun _expressCustomer(): JsonField<ExpressCustomer> = expressCustomer
+    fun _expressCustomer(): JsonField<ExpressCustomerReference> = expressCustomer
 
     /**
      * Returns the raw JSON value of [externalPatientId].
@@ -590,12 +593,12 @@ private constructor(
         private var studyInstanceUid: JsonField<String>? = null
         private var studyReportStatus: JsonField<StudyReportStatus>? = null
         private var updatedAt: JsonField<OffsetDateTime>? = null
-        private var assignedTo: JsonField<AssignedTo> = JsonMissing.of()
+        private var assignedTo: JsonField<UserReference> = JsonMissing.of()
         private var clinicalHistory: JsonField<String> = JsonMissing.of()
         private var clinicalIndication: JsonField<String> = JsonMissing.of()
-        private var createdByApiKey: JsonField<CreatedByApiKey> = JsonMissing.of()
-        private var createdByUser: JsonField<CreatedByUser> = JsonMissing.of()
-        private var expressCustomer: JsonField<ExpressCustomer> = JsonMissing.of()
+        private var createdByApiKey: JsonField<ApiKeyReference> = JsonMissing.of()
+        private var createdByUser: JsonField<UserReference> = JsonMissing.of()
+        private var expressCustomer: JsonField<ExpressCustomerReference> = JsonMissing.of()
         private var externalPatientId: JsonField<String> = JsonMissing.of()
         private var metadata: JsonField<Metadata> = JsonMissing.of()
         private var modality: JsonField<String> = JsonMissing.of()
@@ -787,20 +790,22 @@ private constructor(
          */
         fun updatedAt(updatedAt: JsonField<OffsetDateTime>) = apply { this.updatedAt = updatedAt }
 
-        /** Reference to the assigned radiologist, null if unassigned */
-        fun assignedTo(assignedTo: AssignedTo?) = assignedTo(JsonField.ofNullable(assignedTo))
+        /** A reference to a user with basic identifying information */
+        fun assignedTo(assignedTo: UserReference?) = assignedTo(JsonField.ofNullable(assignedTo))
 
         /** Alias for calling [Builder.assignedTo] with `assignedTo.orElse(null)`. */
-        fun assignedTo(assignedTo: Optional<AssignedTo>) = assignedTo(assignedTo.getOrNull())
+        fun assignedTo(assignedTo: Optional<UserReference>) = assignedTo(assignedTo.getOrNull())
 
         /**
          * Sets [Builder.assignedTo] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.assignedTo] with a well-typed [AssignedTo] value
+         * You should usually call [Builder.assignedTo] with a well-typed [UserReference] value
          * instead. This method is primarily for setting the field to an undocumented or not yet
          * supported value.
          */
-        fun assignedTo(assignedTo: JsonField<AssignedTo>) = apply { this.assignedTo = assignedTo }
+        fun assignedTo(assignedTo: JsonField<UserReference>) = apply {
+            this.assignedTo = assignedTo
+        }
 
         /** Relevant clinical history for the study */
         fun clinicalHistory(clinicalHistory: String?) =
@@ -842,60 +847,60 @@ private constructor(
             this.clinicalIndication = clinicalIndication
         }
 
-        /** Reference to the API key used to create this study */
-        fun createdByApiKey(createdByApiKey: CreatedByApiKey?) =
+        /** A reference to an API key with basic identifying information */
+        fun createdByApiKey(createdByApiKey: ApiKeyReference?) =
             createdByApiKey(JsonField.ofNullable(createdByApiKey))
 
         /** Alias for calling [Builder.createdByApiKey] with `createdByApiKey.orElse(null)`. */
-        fun createdByApiKey(createdByApiKey: Optional<CreatedByApiKey>) =
+        fun createdByApiKey(createdByApiKey: Optional<ApiKeyReference>) =
             createdByApiKey(createdByApiKey.getOrNull())
 
         /**
          * Sets [Builder.createdByApiKey] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.createdByApiKey] with a well-typed [CreatedByApiKey]
+         * You should usually call [Builder.createdByApiKey] with a well-typed [ApiKeyReference]
          * value instead. This method is primarily for setting the field to an undocumented or not
          * yet supported value.
          */
-        fun createdByApiKey(createdByApiKey: JsonField<CreatedByApiKey>) = apply {
+        fun createdByApiKey(createdByApiKey: JsonField<ApiKeyReference>) = apply {
             this.createdByApiKey = createdByApiKey
         }
 
-        /** Reference to the user who created this study via dashboard */
-        fun createdByUser(createdByUser: CreatedByUser?) =
+        /** A reference to a user with basic identifying information */
+        fun createdByUser(createdByUser: UserReference?) =
             createdByUser(JsonField.ofNullable(createdByUser))
 
         /** Alias for calling [Builder.createdByUser] with `createdByUser.orElse(null)`. */
-        fun createdByUser(createdByUser: Optional<CreatedByUser>) =
+        fun createdByUser(createdByUser: Optional<UserReference>) =
             createdByUser(createdByUser.getOrNull())
 
         /**
          * Sets [Builder.createdByUser] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.createdByUser] with a well-typed [CreatedByUser] value
+         * You should usually call [Builder.createdByUser] with a well-typed [UserReference] value
          * instead. This method is primarily for setting the field to an undocumented or not yet
          * supported value.
          */
-        fun createdByUser(createdByUser: JsonField<CreatedByUser>) = apply {
+        fun createdByUser(createdByUser: JsonField<UserReference>) = apply {
             this.createdByUser = createdByUser
         }
 
-        /** Reference to the Express customer this study belongs to */
-        fun expressCustomer(expressCustomer: ExpressCustomer?) =
+        /** A reference to an Express customer with basic identifying information */
+        fun expressCustomer(expressCustomer: ExpressCustomerReference?) =
             expressCustomer(JsonField.ofNullable(expressCustomer))
 
         /** Alias for calling [Builder.expressCustomer] with `expressCustomer.orElse(null)`. */
-        fun expressCustomer(expressCustomer: Optional<ExpressCustomer>) =
+        fun expressCustomer(expressCustomer: Optional<ExpressCustomerReference>) =
             expressCustomer(expressCustomer.getOrNull())
 
         /**
          * Sets [Builder.expressCustomer] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.expressCustomer] with a well-typed [ExpressCustomer]
-         * value instead. This method is primarily for setting the field to an undocumented or not
-         * yet supported value.
+         * You should usually call [Builder.expressCustomer] with a well-typed
+         * [ExpressCustomerReference] value instead. This method is primarily for setting the field
+         * to an undocumented or not yet supported value.
          */
-        fun expressCustomer(expressCustomer: JsonField<ExpressCustomer>) = apply {
+        fun expressCustomer(expressCustomer: JsonField<ExpressCustomerReference>) = apply {
             this.expressCustomer = expressCustomer
         }
 
@@ -1196,1297 +1201,6 @@ private constructor(
             (reportIds.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
             (technologistNotes.asKnown().getOrNull()?.size ?: 0) +
             (if (technologistTechnique.asKnown().isPresent) 1 else 0)
-
-    /** Reference to the assigned radiologist, null if unassigned */
-    class AssignedTo
-    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
-    private constructor(
-        private val email: JsonField<String>,
-        private val userId: JsonField<String>,
-        private val firstName: JsonField<String>,
-        private val lastName: JsonField<String>,
-        private val middleName: JsonField<String>,
-        private val suffix1: JsonField<String>,
-        private val suffix2: JsonField<String>,
-        private val additionalProperties: MutableMap<String, JsonValue>,
-    ) {
-
-        @JsonCreator
-        private constructor(
-            @JsonProperty("email") @ExcludeMissing email: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("userId") @ExcludeMissing userId: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("firstName")
-            @ExcludeMissing
-            firstName: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("lastName")
-            @ExcludeMissing
-            lastName: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("middleName")
-            @ExcludeMissing
-            middleName: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("suffix1") @ExcludeMissing suffix1: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("suffix2") @ExcludeMissing suffix2: JsonField<String> = JsonMissing.of(),
-        ) : this(email, userId, firstName, lastName, middleName, suffix1, suffix2, mutableMapOf())
-
-        /**
-         * User's email address
-         *
-         * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun email(): String = email.getRequired("email")
-
-        /**
-         * Unique user identifier. Format: usr_{32-hex-chars}
-         *
-         * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun userId(): String = userId.getRequired("userId")
-
-        /**
-         * User's first name
-         *
-         * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun firstName(): Optional<String> = firstName.getOptional("firstName")
-
-        /**
-         * User's last name
-         *
-         * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun lastName(): Optional<String> = lastName.getOptional("lastName")
-
-        /**
-         * User's middle name
-         *
-         * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun middleName(): Optional<String> = middleName.getOptional("middleName")
-
-        /**
-         * Name suffix (e.g., 'MD', 'Jr.')
-         *
-         * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun suffix1(): Optional<String> = suffix1.getOptional("suffix1")
-
-        /**
-         * Additional name suffix
-         *
-         * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun suffix2(): Optional<String> = suffix2.getOptional("suffix2")
-
-        /**
-         * Returns the raw JSON value of [email].
-         *
-         * Unlike [email], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("email") @ExcludeMissing fun _email(): JsonField<String> = email
-
-        /**
-         * Returns the raw JSON value of [userId].
-         *
-         * Unlike [userId], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("userId") @ExcludeMissing fun _userId(): JsonField<String> = userId
-
-        /**
-         * Returns the raw JSON value of [firstName].
-         *
-         * Unlike [firstName], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("firstName") @ExcludeMissing fun _firstName(): JsonField<String> = firstName
-
-        /**
-         * Returns the raw JSON value of [lastName].
-         *
-         * Unlike [lastName], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("lastName") @ExcludeMissing fun _lastName(): JsonField<String> = lastName
-
-        /**
-         * Returns the raw JSON value of [middleName].
-         *
-         * Unlike [middleName], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("middleName")
-        @ExcludeMissing
-        fun _middleName(): JsonField<String> = middleName
-
-        /**
-         * Returns the raw JSON value of [suffix1].
-         *
-         * Unlike [suffix1], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("suffix1") @ExcludeMissing fun _suffix1(): JsonField<String> = suffix1
-
-        /**
-         * Returns the raw JSON value of [suffix2].
-         *
-         * Unlike [suffix2], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("suffix2") @ExcludeMissing fun _suffix2(): JsonField<String> = suffix2
-
-        @JsonAnySetter
-        private fun putAdditionalProperty(key: String, value: JsonValue) {
-            additionalProperties.put(key, value)
-        }
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> =
-            Collections.unmodifiableMap(additionalProperties)
-
-        fun toBuilder() = Builder().from(this)
-
-        companion object {
-
-            /**
-             * Returns a mutable builder for constructing an instance of [AssignedTo].
-             *
-             * The following fields are required:
-             * ```java
-             * .email()
-             * .userId()
-             * ```
-             */
-            @JvmStatic fun builder() = Builder()
-        }
-
-        /** A builder for [AssignedTo]. */
-        class Builder internal constructor() {
-
-            private var email: JsonField<String>? = null
-            private var userId: JsonField<String>? = null
-            private var firstName: JsonField<String> = JsonMissing.of()
-            private var lastName: JsonField<String> = JsonMissing.of()
-            private var middleName: JsonField<String> = JsonMissing.of()
-            private var suffix1: JsonField<String> = JsonMissing.of()
-            private var suffix2: JsonField<String> = JsonMissing.of()
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(assignedTo: AssignedTo) = apply {
-                email = assignedTo.email
-                userId = assignedTo.userId
-                firstName = assignedTo.firstName
-                lastName = assignedTo.lastName
-                middleName = assignedTo.middleName
-                suffix1 = assignedTo.suffix1
-                suffix2 = assignedTo.suffix2
-                additionalProperties = assignedTo.additionalProperties.toMutableMap()
-            }
-
-            /** User's email address */
-            fun email(email: String) = email(JsonField.of(email))
-
-            /**
-             * Sets [Builder.email] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.email] with a well-typed [String] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun email(email: JsonField<String>) = apply { this.email = email }
-
-            /** Unique user identifier. Format: usr_{32-hex-chars} */
-            fun userId(userId: String) = userId(JsonField.of(userId))
-
-            /**
-             * Sets [Builder.userId] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.userId] with a well-typed [String] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun userId(userId: JsonField<String>) = apply { this.userId = userId }
-
-            /** User's first name */
-            fun firstName(firstName: String) = firstName(JsonField.of(firstName))
-
-            /**
-             * Sets [Builder.firstName] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.firstName] with a well-typed [String] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun firstName(firstName: JsonField<String>) = apply { this.firstName = firstName }
-
-            /** User's last name */
-            fun lastName(lastName: String) = lastName(JsonField.of(lastName))
-
-            /**
-             * Sets [Builder.lastName] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.lastName] with a well-typed [String] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun lastName(lastName: JsonField<String>) = apply { this.lastName = lastName }
-
-            /** User's middle name */
-            fun middleName(middleName: String) = middleName(JsonField.of(middleName))
-
-            /**
-             * Sets [Builder.middleName] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.middleName] with a well-typed [String] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun middleName(middleName: JsonField<String>) = apply { this.middleName = middleName }
-
-            /** Name suffix (e.g., 'MD', 'Jr.') */
-            fun suffix1(suffix1: String) = suffix1(JsonField.of(suffix1))
-
-            /**
-             * Sets [Builder.suffix1] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.suffix1] with a well-typed [String] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun suffix1(suffix1: JsonField<String>) = apply { this.suffix1 = suffix1 }
-
-            /** Additional name suffix */
-            fun suffix2(suffix2: String) = suffix2(JsonField.of(suffix2))
-
-            /**
-             * Sets [Builder.suffix2] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.suffix2] with a well-typed [String] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun suffix2(suffix2: JsonField<String>) = apply { this.suffix2 = suffix2 }
-
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
-
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
-
-            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
-
-            /**
-             * Returns an immutable instance of [AssignedTo].
-             *
-             * Further updates to this [Builder] will not mutate the returned instance.
-             *
-             * The following fields are required:
-             * ```java
-             * .email()
-             * .userId()
-             * ```
-             *
-             * @throws IllegalStateException if any required field is unset.
-             */
-            fun build(): AssignedTo =
-                AssignedTo(
-                    checkRequired("email", email),
-                    checkRequired("userId", userId),
-                    firstName,
-                    lastName,
-                    middleName,
-                    suffix1,
-                    suffix2,
-                    additionalProperties.toMutableMap(),
-                )
-        }
-
-        private var validated: Boolean = false
-
-        /**
-         * Validates that the types of all values in this object match their expected types
-         * recursively.
-         *
-         * This method is _not_ forwards compatible with new types from the API for existing fields.
-         *
-         * @throws AvaraInvalidDataException if any value type in this object doesn't match its
-         *   expected type.
-         */
-        fun validate(): AssignedTo = apply {
-            if (validated) {
-                return@apply
-            }
-
-            email()
-            userId()
-            firstName()
-            lastName()
-            middleName()
-            suffix1()
-            suffix2()
-            validated = true
-        }
-
-        fun isValid(): Boolean =
-            try {
-                validate()
-                true
-            } catch (e: AvaraInvalidDataException) {
-                false
-            }
-
-        /**
-         * Returns a score indicating how many valid values are contained in this object
-         * recursively.
-         *
-         * Used for best match union deserialization.
-         */
-        @JvmSynthetic
-        internal fun validity(): Int =
-            (if (email.asKnown().isPresent) 1 else 0) +
-                (if (userId.asKnown().isPresent) 1 else 0) +
-                (if (firstName.asKnown().isPresent) 1 else 0) +
-                (if (lastName.asKnown().isPresent) 1 else 0) +
-                (if (middleName.asKnown().isPresent) 1 else 0) +
-                (if (suffix1.asKnown().isPresent) 1 else 0) +
-                (if (suffix2.asKnown().isPresent) 1 else 0)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is AssignedTo &&
-                email == other.email &&
-                userId == other.userId &&
-                firstName == other.firstName &&
-                lastName == other.lastName &&
-                middleName == other.middleName &&
-                suffix1 == other.suffix1 &&
-                suffix2 == other.suffix2 &&
-                additionalProperties == other.additionalProperties
-        }
-
-        private val hashCode: Int by lazy {
-            Objects.hash(
-                email,
-                userId,
-                firstName,
-                lastName,
-                middleName,
-                suffix1,
-                suffix2,
-                additionalProperties,
-            )
-        }
-
-        override fun hashCode(): Int = hashCode
-
-        override fun toString() =
-            "AssignedTo{email=$email, userId=$userId, firstName=$firstName, lastName=$lastName, middleName=$middleName, suffix1=$suffix1, suffix2=$suffix2, additionalProperties=$additionalProperties}"
-    }
-
-    /** Reference to the API key used to create this study */
-    class CreatedByApiKey
-    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
-    private constructor(
-        private val apiKeyId: JsonField<String>,
-        private val description: JsonField<String>,
-        private val isViewerEnabled: JsonField<Boolean>,
-        private val additionalProperties: MutableMap<String, JsonValue>,
-    ) {
-
-        @JsonCreator
-        private constructor(
-            @JsonProperty("apiKeyId")
-            @ExcludeMissing
-            apiKeyId: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("description")
-            @ExcludeMissing
-            description: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("isViewerEnabled")
-            @ExcludeMissing
-            isViewerEnabled: JsonField<Boolean> = JsonMissing.of(),
-        ) : this(apiKeyId, description, isViewerEnabled, mutableMapOf())
-
-        /**
-         * Unique API key identifier (UUIDv4 format)
-         *
-         * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun apiKeyId(): String = apiKeyId.getRequired("apiKeyId")
-
-        /**
-         * Human-readable description of the API key
-         *
-         * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun description(): String = description.getRequired("description")
-
-        /**
-         * Whether this API key has access to the Viewer product
-         *
-         * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun isViewerEnabled(): Optional<Boolean> = isViewerEnabled.getOptional("isViewerEnabled")
-
-        /**
-         * Returns the raw JSON value of [apiKeyId].
-         *
-         * Unlike [apiKeyId], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("apiKeyId") @ExcludeMissing fun _apiKeyId(): JsonField<String> = apiKeyId
-
-        /**
-         * Returns the raw JSON value of [description].
-         *
-         * Unlike [description], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("description")
-        @ExcludeMissing
-        fun _description(): JsonField<String> = description
-
-        /**
-         * Returns the raw JSON value of [isViewerEnabled].
-         *
-         * Unlike [isViewerEnabled], this method doesn't throw if the JSON field has an unexpected
-         * type.
-         */
-        @JsonProperty("isViewerEnabled")
-        @ExcludeMissing
-        fun _isViewerEnabled(): JsonField<Boolean> = isViewerEnabled
-
-        @JsonAnySetter
-        private fun putAdditionalProperty(key: String, value: JsonValue) {
-            additionalProperties.put(key, value)
-        }
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> =
-            Collections.unmodifiableMap(additionalProperties)
-
-        fun toBuilder() = Builder().from(this)
-
-        companion object {
-
-            /**
-             * Returns a mutable builder for constructing an instance of [CreatedByApiKey].
-             *
-             * The following fields are required:
-             * ```java
-             * .apiKeyId()
-             * .description()
-             * ```
-             */
-            @JvmStatic fun builder() = Builder()
-        }
-
-        /** A builder for [CreatedByApiKey]. */
-        class Builder internal constructor() {
-
-            private var apiKeyId: JsonField<String>? = null
-            private var description: JsonField<String>? = null
-            private var isViewerEnabled: JsonField<Boolean> = JsonMissing.of()
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(createdByApiKey: CreatedByApiKey) = apply {
-                apiKeyId = createdByApiKey.apiKeyId
-                description = createdByApiKey.description
-                isViewerEnabled = createdByApiKey.isViewerEnabled
-                additionalProperties = createdByApiKey.additionalProperties.toMutableMap()
-            }
-
-            /** Unique API key identifier (UUIDv4 format) */
-            fun apiKeyId(apiKeyId: String) = apiKeyId(JsonField.of(apiKeyId))
-
-            /**
-             * Sets [Builder.apiKeyId] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.apiKeyId] with a well-typed [String] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun apiKeyId(apiKeyId: JsonField<String>) = apply { this.apiKeyId = apiKeyId }
-
-            /** Human-readable description of the API key */
-            fun description(description: String) = description(JsonField.of(description))
-
-            /**
-             * Sets [Builder.description] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.description] with a well-typed [String] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun description(description: JsonField<String>) = apply {
-                this.description = description
-            }
-
-            /** Whether this API key has access to the Viewer product */
-            fun isViewerEnabled(isViewerEnabled: Boolean) =
-                isViewerEnabled(JsonField.of(isViewerEnabled))
-
-            /**
-             * Sets [Builder.isViewerEnabled] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.isViewerEnabled] with a well-typed [Boolean] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun isViewerEnabled(isViewerEnabled: JsonField<Boolean>) = apply {
-                this.isViewerEnabled = isViewerEnabled
-            }
-
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
-
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
-
-            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
-
-            /**
-             * Returns an immutable instance of [CreatedByApiKey].
-             *
-             * Further updates to this [Builder] will not mutate the returned instance.
-             *
-             * The following fields are required:
-             * ```java
-             * .apiKeyId()
-             * .description()
-             * ```
-             *
-             * @throws IllegalStateException if any required field is unset.
-             */
-            fun build(): CreatedByApiKey =
-                CreatedByApiKey(
-                    checkRequired("apiKeyId", apiKeyId),
-                    checkRequired("description", description),
-                    isViewerEnabled,
-                    additionalProperties.toMutableMap(),
-                )
-        }
-
-        private var validated: Boolean = false
-
-        /**
-         * Validates that the types of all values in this object match their expected types
-         * recursively.
-         *
-         * This method is _not_ forwards compatible with new types from the API for existing fields.
-         *
-         * @throws AvaraInvalidDataException if any value type in this object doesn't match its
-         *   expected type.
-         */
-        fun validate(): CreatedByApiKey = apply {
-            if (validated) {
-                return@apply
-            }
-
-            apiKeyId()
-            description()
-            isViewerEnabled()
-            validated = true
-        }
-
-        fun isValid(): Boolean =
-            try {
-                validate()
-                true
-            } catch (e: AvaraInvalidDataException) {
-                false
-            }
-
-        /**
-         * Returns a score indicating how many valid values are contained in this object
-         * recursively.
-         *
-         * Used for best match union deserialization.
-         */
-        @JvmSynthetic
-        internal fun validity(): Int =
-            (if (apiKeyId.asKnown().isPresent) 1 else 0) +
-                (if (description.asKnown().isPresent) 1 else 0) +
-                (if (isViewerEnabled.asKnown().isPresent) 1 else 0)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is CreatedByApiKey &&
-                apiKeyId == other.apiKeyId &&
-                description == other.description &&
-                isViewerEnabled == other.isViewerEnabled &&
-                additionalProperties == other.additionalProperties
-        }
-
-        private val hashCode: Int by lazy {
-            Objects.hash(apiKeyId, description, isViewerEnabled, additionalProperties)
-        }
-
-        override fun hashCode(): Int = hashCode
-
-        override fun toString() =
-            "CreatedByApiKey{apiKeyId=$apiKeyId, description=$description, isViewerEnabled=$isViewerEnabled, additionalProperties=$additionalProperties}"
-    }
-
-    /** Reference to the user who created this study via dashboard */
-    class CreatedByUser
-    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
-    private constructor(
-        private val email: JsonField<String>,
-        private val userId: JsonField<String>,
-        private val firstName: JsonField<String>,
-        private val lastName: JsonField<String>,
-        private val middleName: JsonField<String>,
-        private val suffix1: JsonField<String>,
-        private val suffix2: JsonField<String>,
-        private val additionalProperties: MutableMap<String, JsonValue>,
-    ) {
-
-        @JsonCreator
-        private constructor(
-            @JsonProperty("email") @ExcludeMissing email: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("userId") @ExcludeMissing userId: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("firstName")
-            @ExcludeMissing
-            firstName: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("lastName")
-            @ExcludeMissing
-            lastName: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("middleName")
-            @ExcludeMissing
-            middleName: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("suffix1") @ExcludeMissing suffix1: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("suffix2") @ExcludeMissing suffix2: JsonField<String> = JsonMissing.of(),
-        ) : this(email, userId, firstName, lastName, middleName, suffix1, suffix2, mutableMapOf())
-
-        /**
-         * User's email address
-         *
-         * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun email(): String = email.getRequired("email")
-
-        /**
-         * Unique user identifier. Format: usr_{32-hex-chars}
-         *
-         * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun userId(): String = userId.getRequired("userId")
-
-        /**
-         * User's first name
-         *
-         * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun firstName(): Optional<String> = firstName.getOptional("firstName")
-
-        /**
-         * User's last name
-         *
-         * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun lastName(): Optional<String> = lastName.getOptional("lastName")
-
-        /**
-         * User's middle name
-         *
-         * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun middleName(): Optional<String> = middleName.getOptional("middleName")
-
-        /**
-         * Name suffix (e.g., 'MD', 'Jr.')
-         *
-         * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun suffix1(): Optional<String> = suffix1.getOptional("suffix1")
-
-        /**
-         * Additional name suffix
-         *
-         * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun suffix2(): Optional<String> = suffix2.getOptional("suffix2")
-
-        /**
-         * Returns the raw JSON value of [email].
-         *
-         * Unlike [email], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("email") @ExcludeMissing fun _email(): JsonField<String> = email
-
-        /**
-         * Returns the raw JSON value of [userId].
-         *
-         * Unlike [userId], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("userId") @ExcludeMissing fun _userId(): JsonField<String> = userId
-
-        /**
-         * Returns the raw JSON value of [firstName].
-         *
-         * Unlike [firstName], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("firstName") @ExcludeMissing fun _firstName(): JsonField<String> = firstName
-
-        /**
-         * Returns the raw JSON value of [lastName].
-         *
-         * Unlike [lastName], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("lastName") @ExcludeMissing fun _lastName(): JsonField<String> = lastName
-
-        /**
-         * Returns the raw JSON value of [middleName].
-         *
-         * Unlike [middleName], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("middleName")
-        @ExcludeMissing
-        fun _middleName(): JsonField<String> = middleName
-
-        /**
-         * Returns the raw JSON value of [suffix1].
-         *
-         * Unlike [suffix1], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("suffix1") @ExcludeMissing fun _suffix1(): JsonField<String> = suffix1
-
-        /**
-         * Returns the raw JSON value of [suffix2].
-         *
-         * Unlike [suffix2], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("suffix2") @ExcludeMissing fun _suffix2(): JsonField<String> = suffix2
-
-        @JsonAnySetter
-        private fun putAdditionalProperty(key: String, value: JsonValue) {
-            additionalProperties.put(key, value)
-        }
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> =
-            Collections.unmodifiableMap(additionalProperties)
-
-        fun toBuilder() = Builder().from(this)
-
-        companion object {
-
-            /**
-             * Returns a mutable builder for constructing an instance of [CreatedByUser].
-             *
-             * The following fields are required:
-             * ```java
-             * .email()
-             * .userId()
-             * ```
-             */
-            @JvmStatic fun builder() = Builder()
-        }
-
-        /** A builder for [CreatedByUser]. */
-        class Builder internal constructor() {
-
-            private var email: JsonField<String>? = null
-            private var userId: JsonField<String>? = null
-            private var firstName: JsonField<String> = JsonMissing.of()
-            private var lastName: JsonField<String> = JsonMissing.of()
-            private var middleName: JsonField<String> = JsonMissing.of()
-            private var suffix1: JsonField<String> = JsonMissing.of()
-            private var suffix2: JsonField<String> = JsonMissing.of()
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(createdByUser: CreatedByUser) = apply {
-                email = createdByUser.email
-                userId = createdByUser.userId
-                firstName = createdByUser.firstName
-                lastName = createdByUser.lastName
-                middleName = createdByUser.middleName
-                suffix1 = createdByUser.suffix1
-                suffix2 = createdByUser.suffix2
-                additionalProperties = createdByUser.additionalProperties.toMutableMap()
-            }
-
-            /** User's email address */
-            fun email(email: String) = email(JsonField.of(email))
-
-            /**
-             * Sets [Builder.email] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.email] with a well-typed [String] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun email(email: JsonField<String>) = apply { this.email = email }
-
-            /** Unique user identifier. Format: usr_{32-hex-chars} */
-            fun userId(userId: String) = userId(JsonField.of(userId))
-
-            /**
-             * Sets [Builder.userId] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.userId] with a well-typed [String] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun userId(userId: JsonField<String>) = apply { this.userId = userId }
-
-            /** User's first name */
-            fun firstName(firstName: String) = firstName(JsonField.of(firstName))
-
-            /**
-             * Sets [Builder.firstName] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.firstName] with a well-typed [String] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun firstName(firstName: JsonField<String>) = apply { this.firstName = firstName }
-
-            /** User's last name */
-            fun lastName(lastName: String) = lastName(JsonField.of(lastName))
-
-            /**
-             * Sets [Builder.lastName] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.lastName] with a well-typed [String] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun lastName(lastName: JsonField<String>) = apply { this.lastName = lastName }
-
-            /** User's middle name */
-            fun middleName(middleName: String) = middleName(JsonField.of(middleName))
-
-            /**
-             * Sets [Builder.middleName] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.middleName] with a well-typed [String] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun middleName(middleName: JsonField<String>) = apply { this.middleName = middleName }
-
-            /** Name suffix (e.g., 'MD', 'Jr.') */
-            fun suffix1(suffix1: String) = suffix1(JsonField.of(suffix1))
-
-            /**
-             * Sets [Builder.suffix1] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.suffix1] with a well-typed [String] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun suffix1(suffix1: JsonField<String>) = apply { this.suffix1 = suffix1 }
-
-            /** Additional name suffix */
-            fun suffix2(suffix2: String) = suffix2(JsonField.of(suffix2))
-
-            /**
-             * Sets [Builder.suffix2] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.suffix2] with a well-typed [String] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun suffix2(suffix2: JsonField<String>) = apply { this.suffix2 = suffix2 }
-
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
-
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
-
-            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
-
-            /**
-             * Returns an immutable instance of [CreatedByUser].
-             *
-             * Further updates to this [Builder] will not mutate the returned instance.
-             *
-             * The following fields are required:
-             * ```java
-             * .email()
-             * .userId()
-             * ```
-             *
-             * @throws IllegalStateException if any required field is unset.
-             */
-            fun build(): CreatedByUser =
-                CreatedByUser(
-                    checkRequired("email", email),
-                    checkRequired("userId", userId),
-                    firstName,
-                    lastName,
-                    middleName,
-                    suffix1,
-                    suffix2,
-                    additionalProperties.toMutableMap(),
-                )
-        }
-
-        private var validated: Boolean = false
-
-        /**
-         * Validates that the types of all values in this object match their expected types
-         * recursively.
-         *
-         * This method is _not_ forwards compatible with new types from the API for existing fields.
-         *
-         * @throws AvaraInvalidDataException if any value type in this object doesn't match its
-         *   expected type.
-         */
-        fun validate(): CreatedByUser = apply {
-            if (validated) {
-                return@apply
-            }
-
-            email()
-            userId()
-            firstName()
-            lastName()
-            middleName()
-            suffix1()
-            suffix2()
-            validated = true
-        }
-
-        fun isValid(): Boolean =
-            try {
-                validate()
-                true
-            } catch (e: AvaraInvalidDataException) {
-                false
-            }
-
-        /**
-         * Returns a score indicating how many valid values are contained in this object
-         * recursively.
-         *
-         * Used for best match union deserialization.
-         */
-        @JvmSynthetic
-        internal fun validity(): Int =
-            (if (email.asKnown().isPresent) 1 else 0) +
-                (if (userId.asKnown().isPresent) 1 else 0) +
-                (if (firstName.asKnown().isPresent) 1 else 0) +
-                (if (lastName.asKnown().isPresent) 1 else 0) +
-                (if (middleName.asKnown().isPresent) 1 else 0) +
-                (if (suffix1.asKnown().isPresent) 1 else 0) +
-                (if (suffix2.asKnown().isPresent) 1 else 0)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is CreatedByUser &&
-                email == other.email &&
-                userId == other.userId &&
-                firstName == other.firstName &&
-                lastName == other.lastName &&
-                middleName == other.middleName &&
-                suffix1 == other.suffix1 &&
-                suffix2 == other.suffix2 &&
-                additionalProperties == other.additionalProperties
-        }
-
-        private val hashCode: Int by lazy {
-            Objects.hash(
-                email,
-                userId,
-                firstName,
-                lastName,
-                middleName,
-                suffix1,
-                suffix2,
-                additionalProperties,
-            )
-        }
-
-        override fun hashCode(): Int = hashCode
-
-        override fun toString() =
-            "CreatedByUser{email=$email, userId=$userId, firstName=$firstName, lastName=$lastName, middleName=$middleName, suffix1=$suffix1, suffix2=$suffix2, additionalProperties=$additionalProperties}"
-    }
-
-    /** Reference to the Express customer this study belongs to */
-    class ExpressCustomer
-    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
-    private constructor(
-        private val expressCustomerId: JsonField<String>,
-        private val expressCustomerName: JsonField<String>,
-        private val additionalProperties: MutableMap<String, JsonValue>,
-    ) {
-
-        @JsonCreator
-        private constructor(
-            @JsonProperty("expressCustomerId")
-            @ExcludeMissing
-            expressCustomerId: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("expressCustomerName")
-            @ExcludeMissing
-            expressCustomerName: JsonField<String> = JsonMissing.of(),
-        ) : this(expressCustomerId, expressCustomerName, mutableMapOf())
-
-        /**
-         * Unique Express customer identifier. Format: cus_{32-hex-chars}
-         *
-         * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun expressCustomerId(): String = expressCustomerId.getRequired("expressCustomerId")
-
-        /**
-         * Name of the Express customer
-         *
-         * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun expressCustomerName(): String = expressCustomerName.getRequired("expressCustomerName")
-
-        /**
-         * Returns the raw JSON value of [expressCustomerId].
-         *
-         * Unlike [expressCustomerId], this method doesn't throw if the JSON field has an unexpected
-         * type.
-         */
-        @JsonProperty("expressCustomerId")
-        @ExcludeMissing
-        fun _expressCustomerId(): JsonField<String> = expressCustomerId
-
-        /**
-         * Returns the raw JSON value of [expressCustomerName].
-         *
-         * Unlike [expressCustomerName], this method doesn't throw if the JSON field has an
-         * unexpected type.
-         */
-        @JsonProperty("expressCustomerName")
-        @ExcludeMissing
-        fun _expressCustomerName(): JsonField<String> = expressCustomerName
-
-        @JsonAnySetter
-        private fun putAdditionalProperty(key: String, value: JsonValue) {
-            additionalProperties.put(key, value)
-        }
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> =
-            Collections.unmodifiableMap(additionalProperties)
-
-        fun toBuilder() = Builder().from(this)
-
-        companion object {
-
-            /**
-             * Returns a mutable builder for constructing an instance of [ExpressCustomer].
-             *
-             * The following fields are required:
-             * ```java
-             * .expressCustomerId()
-             * .expressCustomerName()
-             * ```
-             */
-            @JvmStatic fun builder() = Builder()
-        }
-
-        /** A builder for [ExpressCustomer]. */
-        class Builder internal constructor() {
-
-            private var expressCustomerId: JsonField<String>? = null
-            private var expressCustomerName: JsonField<String>? = null
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(expressCustomer: ExpressCustomer) = apply {
-                expressCustomerId = expressCustomer.expressCustomerId
-                expressCustomerName = expressCustomer.expressCustomerName
-                additionalProperties = expressCustomer.additionalProperties.toMutableMap()
-            }
-
-            /** Unique Express customer identifier. Format: cus_{32-hex-chars} */
-            fun expressCustomerId(expressCustomerId: String) =
-                expressCustomerId(JsonField.of(expressCustomerId))
-
-            /**
-             * Sets [Builder.expressCustomerId] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.expressCustomerId] with a well-typed [String] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun expressCustomerId(expressCustomerId: JsonField<String>) = apply {
-                this.expressCustomerId = expressCustomerId
-            }
-
-            /** Name of the Express customer */
-            fun expressCustomerName(expressCustomerName: String) =
-                expressCustomerName(JsonField.of(expressCustomerName))
-
-            /**
-             * Sets [Builder.expressCustomerName] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.expressCustomerName] with a well-typed [String]
-             * value instead. This method is primarily for setting the field to an undocumented or
-             * not yet supported value.
-             */
-            fun expressCustomerName(expressCustomerName: JsonField<String>) = apply {
-                this.expressCustomerName = expressCustomerName
-            }
-
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
-
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
-
-            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
-
-            /**
-             * Returns an immutable instance of [ExpressCustomer].
-             *
-             * Further updates to this [Builder] will not mutate the returned instance.
-             *
-             * The following fields are required:
-             * ```java
-             * .expressCustomerId()
-             * .expressCustomerName()
-             * ```
-             *
-             * @throws IllegalStateException if any required field is unset.
-             */
-            fun build(): ExpressCustomer =
-                ExpressCustomer(
-                    checkRequired("expressCustomerId", expressCustomerId),
-                    checkRequired("expressCustomerName", expressCustomerName),
-                    additionalProperties.toMutableMap(),
-                )
-        }
-
-        private var validated: Boolean = false
-
-        /**
-         * Validates that the types of all values in this object match their expected types
-         * recursively.
-         *
-         * This method is _not_ forwards compatible with new types from the API for existing fields.
-         *
-         * @throws AvaraInvalidDataException if any value type in this object doesn't match its
-         *   expected type.
-         */
-        fun validate(): ExpressCustomer = apply {
-            if (validated) {
-                return@apply
-            }
-
-            expressCustomerId()
-            expressCustomerName()
-            validated = true
-        }
-
-        fun isValid(): Boolean =
-            try {
-                validate()
-                true
-            } catch (e: AvaraInvalidDataException) {
-                false
-            }
-
-        /**
-         * Returns a score indicating how many valid values are contained in this object
-         * recursively.
-         *
-         * Used for best match union deserialization.
-         */
-        @JvmSynthetic
-        internal fun validity(): Int =
-            (if (expressCustomerId.asKnown().isPresent) 1 else 0) +
-                (if (expressCustomerName.asKnown().isPresent) 1 else 0)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is ExpressCustomer &&
-                expressCustomerId == other.expressCustomerId &&
-                expressCustomerName == other.expressCustomerName &&
-                additionalProperties == other.additionalProperties
-        }
-
-        private val hashCode: Int by lazy {
-            Objects.hash(expressCustomerId, expressCustomerName, additionalProperties)
-        }
-
-        override fun hashCode(): Int = hashCode
-
-        override fun toString() =
-            "ExpressCustomer{expressCustomerId=$expressCustomerId, expressCustomerName=$expressCustomerName, additionalProperties=$additionalProperties}"
-    }
 
     /**
      * Custom key-value metadata for the study. Maximum 50 pairs, keys up to 100 chars, values up to

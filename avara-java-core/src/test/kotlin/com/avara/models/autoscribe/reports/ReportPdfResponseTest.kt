@@ -115,7 +115,7 @@ internal class ReportPdfResponseTest {
         val listReports =
             ReportPdfResponse.ListReportsPdfResponse.builder()
                 .addReport(
-                    ReportPdfResponse.ListReportsPdfResponse.Report.builder()
+                    ReportPdfItem.builder()
                         .presignedUrl(
                             "https://storage.avarasoftware.com/reports/rep_1234.pdf?token=abc123"
                         )
@@ -167,7 +167,7 @@ internal class ReportPdfResponseTest {
             ReportPdfResponse.ofListReports(
                 ReportPdfResponse.ListReportsPdfResponse.builder()
                     .addReport(
-                        ReportPdfResponse.ListReportsPdfResponse.Report.builder()
+                        ReportPdfItem.builder()
                             .presignedUrl(
                                 "https://storage.avarasoftware.com/reports/rep_1234.pdf?token=abc123"
                             )
