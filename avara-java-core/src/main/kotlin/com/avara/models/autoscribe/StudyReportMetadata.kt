@@ -28,11 +28,11 @@ private constructor(
     private val height: JsonField<Height>,
     private val mrn: JsonField<String>,
     private val patientName: JsonField<String>,
+    private val procedure: JsonField<String>,
     private val referringPhysicianName: JsonField<String>,
-    private val scanDate: JsonField<String>,
-    private val scanTime: JsonField<String>,
-    private val scanType: JsonField<String>,
     private val sex: JsonField<Sex>,
+    private val studyDate: JsonField<String>,
+    private val studyTime: JsonField<String>,
     private val weight: JsonField<Weight>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
@@ -51,13 +51,13 @@ private constructor(
         @JsonProperty("patientName")
         @ExcludeMissing
         patientName: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("procedure") @ExcludeMissing procedure: JsonField<String> = JsonMissing.of(),
         @JsonProperty("referringPhysicianName")
         @ExcludeMissing
         referringPhysicianName: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("scanDate") @ExcludeMissing scanDate: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("scanTime") @ExcludeMissing scanTime: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("scanType") @ExcludeMissing scanType: JsonField<String> = JsonMissing.of(),
         @JsonProperty("sex") @ExcludeMissing sex: JsonField<Sex> = JsonMissing.of(),
+        @JsonProperty("studyDate") @ExcludeMissing studyDate: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("studyTime") @ExcludeMissing studyTime: JsonField<String> = JsonMissing.of(),
         @JsonProperty("weight") @ExcludeMissing weight: JsonField<Weight> = JsonMissing.of(),
     ) : this(
         age,
@@ -66,17 +66,17 @@ private constructor(
         height,
         mrn,
         patientName,
+        procedure,
         referringPhysicianName,
-        scanDate,
-        scanTime,
-        scanType,
         sex,
+        studyDate,
+        studyTime,
         weight,
         mutableMapOf(),
     )
 
     /**
-     * Patient's age at time of scan (e.g., '34.5 years', '2 months')
+     * Patient's age at study date (e.g., '34.5 years', '2 months')
      *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
@@ -124,6 +124,15 @@ private constructor(
     fun patientName(): Optional<String> = patientName.getOptional("patientName")
 
     /**
+     * Procedure or study type (e.g., 'MRI Brain with Contrast'). Maps to database scan_type and
+     * dictation report_header.scan_type.
+     *
+     * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun procedure(): Optional<String> = procedure.getOptional("procedure")
+
+    /**
      * Name of the physician who referred the patient for this scan
      *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -133,36 +142,28 @@ private constructor(
         referringPhysicianName.getOptional("referringPhysicianName")
 
     /**
-     * Date the scan was performed. Format: YYYY-MM-DD (e.g., '2024-01-15')
-     *
-     * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
-    fun scanDate(): Optional<String> = scanDate.getOptional("scanDate")
-
-    /**
-     * Time the scan was performed. Format: HH:MM (e.g., '14:30')
-     *
-     * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
-    fun scanTime(): Optional<String> = scanTime.getOptional("scanTime")
-
-    /**
-     * Type of scan or imaging modality (e.g., 'MRI', 'CT', 'X-Ray', 'Ultrasound')
-     *
-     * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
-    fun scanType(): Optional<String> = scanType.getOptional("scanType")
-
-    /**
      * Patient's biological sex. Options: 'male', 'female', 'other'
      *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
     fun sex(): Optional<Sex> = sex.getOptional("sex")
+
+    /**
+     * Study date (YYYY-MM-DD). Maps to database scan_date and dictation report_header.scan_date.
+     *
+     * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun studyDate(): Optional<String> = studyDate.getOptional("studyDate")
+
+    /**
+     * Study time (HH:MM). Maps to database scan_time and dictation report_header.scan_time.
+     *
+     * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun studyTime(): Optional<String> = studyTime.getOptional("studyTime")
 
     /**
      * Patient's weight with unit (e.g., {value: 150, unit: 'lbs'} or {value: 68, unit: 'kg'})
@@ -217,6 +218,13 @@ private constructor(
     @JsonProperty("patientName") @ExcludeMissing fun _patientName(): JsonField<String> = patientName
 
     /**
+     * Returns the raw JSON value of [procedure].
+     *
+     * Unlike [procedure], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("procedure") @ExcludeMissing fun _procedure(): JsonField<String> = procedure
+
+    /**
      * Returns the raw JSON value of [referringPhysicianName].
      *
      * Unlike [referringPhysicianName], this method doesn't throw if the JSON field has an
@@ -227,32 +235,25 @@ private constructor(
     fun _referringPhysicianName(): JsonField<String> = referringPhysicianName
 
     /**
-     * Returns the raw JSON value of [scanDate].
-     *
-     * Unlike [scanDate], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("scanDate") @ExcludeMissing fun _scanDate(): JsonField<String> = scanDate
-
-    /**
-     * Returns the raw JSON value of [scanTime].
-     *
-     * Unlike [scanTime], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("scanTime") @ExcludeMissing fun _scanTime(): JsonField<String> = scanTime
-
-    /**
-     * Returns the raw JSON value of [scanType].
-     *
-     * Unlike [scanType], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("scanType") @ExcludeMissing fun _scanType(): JsonField<String> = scanType
-
-    /**
      * Returns the raw JSON value of [sex].
      *
      * Unlike [sex], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("sex") @ExcludeMissing fun _sex(): JsonField<Sex> = sex
+
+    /**
+     * Returns the raw JSON value of [studyDate].
+     *
+     * Unlike [studyDate], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("studyDate") @ExcludeMissing fun _studyDate(): JsonField<String> = studyDate
+
+    /**
+     * Returns the raw JSON value of [studyTime].
+     *
+     * Unlike [studyTime], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("studyTime") @ExcludeMissing fun _studyTime(): JsonField<String> = studyTime
 
     /**
      * Returns the raw JSON value of [weight].
@@ -288,11 +289,11 @@ private constructor(
         private var height: JsonField<Height> = JsonMissing.of()
         private var mrn: JsonField<String> = JsonMissing.of()
         private var patientName: JsonField<String> = JsonMissing.of()
+        private var procedure: JsonField<String> = JsonMissing.of()
         private var referringPhysicianName: JsonField<String> = JsonMissing.of()
-        private var scanDate: JsonField<String> = JsonMissing.of()
-        private var scanTime: JsonField<String> = JsonMissing.of()
-        private var scanType: JsonField<String> = JsonMissing.of()
         private var sex: JsonField<Sex> = JsonMissing.of()
+        private var studyDate: JsonField<String> = JsonMissing.of()
+        private var studyTime: JsonField<String> = JsonMissing.of()
         private var weight: JsonField<Weight> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -304,16 +305,16 @@ private constructor(
             height = studyReportMetadata.height
             mrn = studyReportMetadata.mrn
             patientName = studyReportMetadata.patientName
+            procedure = studyReportMetadata.procedure
             referringPhysicianName = studyReportMetadata.referringPhysicianName
-            scanDate = studyReportMetadata.scanDate
-            scanTime = studyReportMetadata.scanTime
-            scanType = studyReportMetadata.scanType
             sex = studyReportMetadata.sex
+            studyDate = studyReportMetadata.studyDate
+            studyTime = studyReportMetadata.studyTime
             weight = studyReportMetadata.weight
             additionalProperties = studyReportMetadata.additionalProperties.toMutableMap()
         }
 
-        /** Patient's age at time of scan (e.g., '34.5 years', '2 months') */
+        /** Patient's age at study date (e.g., '34.5 years', '2 months') */
         fun age(age: String) = age(JsonField.of(age))
 
         /**
@@ -387,6 +388,21 @@ private constructor(
          */
         fun patientName(patientName: JsonField<String>) = apply { this.patientName = patientName }
 
+        /**
+         * Procedure or study type (e.g., 'MRI Brain with Contrast'). Maps to database scan_type and
+         * dictation report_header.scan_type.
+         */
+        fun procedure(procedure: String) = procedure(JsonField.of(procedure))
+
+        /**
+         * Sets [Builder.procedure] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.procedure] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun procedure(procedure: JsonField<String>) = apply { this.procedure = procedure }
+
         /** Name of the physician who referred the patient for this scan */
         fun referringPhysicianName(referringPhysicianName: String) =
             referringPhysicianName(JsonField.of(referringPhysicianName))
@@ -402,39 +418,6 @@ private constructor(
             this.referringPhysicianName = referringPhysicianName
         }
 
-        /** Date the scan was performed. Format: YYYY-MM-DD (e.g., '2024-01-15') */
-        fun scanDate(scanDate: String) = scanDate(JsonField.of(scanDate))
-
-        /**
-         * Sets [Builder.scanDate] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.scanDate] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun scanDate(scanDate: JsonField<String>) = apply { this.scanDate = scanDate }
-
-        /** Time the scan was performed. Format: HH:MM (e.g., '14:30') */
-        fun scanTime(scanTime: String) = scanTime(JsonField.of(scanTime))
-
-        /**
-         * Sets [Builder.scanTime] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.scanTime] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun scanTime(scanTime: JsonField<String>) = apply { this.scanTime = scanTime }
-
-        /** Type of scan or imaging modality (e.g., 'MRI', 'CT', 'X-Ray', 'Ultrasound') */
-        fun scanType(scanType: String) = scanType(JsonField.of(scanType))
-
-        /**
-         * Sets [Builder.scanType] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.scanType] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun scanType(scanType: JsonField<String>) = apply { this.scanType = scanType }
-
         /** Patient's biological sex. Options: 'male', 'female', 'other' */
         fun sex(sex: Sex) = sex(JsonField.of(sex))
 
@@ -445,6 +428,33 @@ private constructor(
          * is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun sex(sex: JsonField<Sex>) = apply { this.sex = sex }
+
+        /**
+         * Study date (YYYY-MM-DD). Maps to database scan_date and dictation
+         * report_header.scan_date.
+         */
+        fun studyDate(studyDate: String) = studyDate(JsonField.of(studyDate))
+
+        /**
+         * Sets [Builder.studyDate] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.studyDate] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun studyDate(studyDate: JsonField<String>) = apply { this.studyDate = studyDate }
+
+        /** Study time (HH:MM). Maps to database scan_time and dictation report_header.scan_time. */
+        fun studyTime(studyTime: String) = studyTime(JsonField.of(studyTime))
+
+        /**
+         * Sets [Builder.studyTime] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.studyTime] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun studyTime(studyTime: JsonField<String>) = apply { this.studyTime = studyTime }
 
         /**
          * Patient's weight with unit (e.g., {value: 150, unit: 'lbs'} or {value: 68, unit: 'kg'})
@@ -491,11 +501,11 @@ private constructor(
                 height,
                 mrn,
                 patientName,
+                procedure,
                 referringPhysicianName,
-                scanDate,
-                scanTime,
-                scanType,
                 sex,
+                studyDate,
+                studyTime,
                 weight,
                 additionalProperties.toMutableMap(),
             )
@@ -522,11 +532,11 @@ private constructor(
         height().ifPresent { it.validate() }
         mrn()
         patientName()
+        procedure()
         referringPhysicianName()
-        scanDate()
-        scanTime()
-        scanType()
         sex().ifPresent { it.validate() }
+        studyDate()
+        studyTime()
         weight().ifPresent { it.validate() }
         validated = true
     }
@@ -552,11 +562,11 @@ private constructor(
             (height.asKnown().getOrNull()?.validity() ?: 0) +
             (if (mrn.asKnown().isPresent) 1 else 0) +
             (if (patientName.asKnown().isPresent) 1 else 0) +
+            (if (procedure.asKnown().isPresent) 1 else 0) +
             (if (referringPhysicianName.asKnown().isPresent) 1 else 0) +
-            (if (scanDate.asKnown().isPresent) 1 else 0) +
-            (if (scanTime.asKnown().isPresent) 1 else 0) +
-            (if (scanType.asKnown().isPresent) 1 else 0) +
             (sex.asKnown().getOrNull()?.validity() ?: 0) +
+            (if (studyDate.asKnown().isPresent) 1 else 0) +
+            (if (studyTime.asKnown().isPresent) 1 else 0) +
             (weight.asKnown().getOrNull()?.validity() ?: 0)
 
     /**
@@ -1391,11 +1401,11 @@ private constructor(
             height == other.height &&
             mrn == other.mrn &&
             patientName == other.patientName &&
+            procedure == other.procedure &&
             referringPhysicianName == other.referringPhysicianName &&
-            scanDate == other.scanDate &&
-            scanTime == other.scanTime &&
-            scanType == other.scanType &&
             sex == other.sex &&
+            studyDate == other.studyDate &&
+            studyTime == other.studyTime &&
             weight == other.weight &&
             additionalProperties == other.additionalProperties
     }
@@ -1408,11 +1418,11 @@ private constructor(
             height,
             mrn,
             patientName,
+            procedure,
             referringPhysicianName,
-            scanDate,
-            scanTime,
-            scanType,
             sex,
+            studyDate,
+            studyTime,
             weight,
             additionalProperties,
         )
@@ -1421,5 +1431,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "StudyReportMetadata{age=$age, dateOfBirth=$dateOfBirth, facilityName=$facilityName, height=$height, mrn=$mrn, patientName=$patientName, referringPhysicianName=$referringPhysicianName, scanDate=$scanDate, scanTime=$scanTime, scanType=$scanType, sex=$sex, weight=$weight, additionalProperties=$additionalProperties}"
+        "StudyReportMetadata{age=$age, dateOfBirth=$dateOfBirth, facilityName=$facilityName, height=$height, mrn=$mrn, patientName=$patientName, procedure=$procedure, referringPhysicianName=$referringPhysicianName, sex=$sex, studyDate=$studyDate, studyTime=$studyTime, weight=$weight, additionalProperties=$additionalProperties}"
 }

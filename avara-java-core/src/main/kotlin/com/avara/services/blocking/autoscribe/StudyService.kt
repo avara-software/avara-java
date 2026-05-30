@@ -42,8 +42,9 @@ interface StudyService {
 
     /**
      * Creates a new study in the AutoScribe system with DICOM metadata and report generation
-     * information. The study can include patient demographics, scan details, and references to
-     * prior studies/reports for context.
+     * information. The study can include patient demographics, scan details, clinical context
+     * (indication, history, technologist technique/notes), an imaging modality, an external patient
+     * identifier for linking studies, and external prior reports for comparison context.
      */
     fun create(params: StudyCreateParams): StudyCreateResponse =
         create(params, RequestOptions.none())
