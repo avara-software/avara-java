@@ -295,7 +295,7 @@ private constructor(
     fun externalPatientId(): Optional<String> = externalPatientId.getOptional("externalPatientId")
 
     /**
-     * Whether the primary report was marked as critical at sign-out
+     * Whether the primary report was marked as critical at sign-off
      *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
@@ -946,7 +946,7 @@ private constructor(
             this.externalPatientId = externalPatientId
         }
 
-        /** Whether the primary report was marked as critical at sign-out */
+        /** Whether the primary report was marked as critical at sign-off */
         fun isCritical(isCritical: Boolean) = isCritical(JsonField.of(isCritical))
 
         /**

@@ -42,7 +42,7 @@ private constructor(
     ) : this(isCritical, presignedUrl, reportId, studyId, plainText, mutableMapOf())
 
     /**
-     * Whether the report was marked critical at sign-out.
+     * Whether the report was marked critical at sign-off.
      *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is unexpectedly
      *   missing or null (e.g. if the server responded with an unexpected value).
@@ -166,7 +166,7 @@ private constructor(
             additionalProperties = reportDeliveredEventData.additionalProperties.toMutableMap()
         }
 
-        /** Whether the report was marked critical at sign-out. */
+        /** Whether the report was marked critical at sign-off. */
         fun isCritical(isCritical: Boolean) = isCritical(JsonField.of(isCritical))
 
         /**
