@@ -22,6 +22,7 @@ internal class ReportPdfResponseTest {
     fun ofSingle() {
         val single =
             ReportPdfResponse.SingleReportPdfResponse.builder()
+                .isCritical(false)
                 .presignedUrl("https://storage.avarasoftware.com/reports/rep_1234.pdf?token=abc123")
                 .reportId("rep_1234567890abcdef1234567890abcdef")
                 .snapshotMetadata(
@@ -66,6 +67,7 @@ internal class ReportPdfResponseTest {
         val reportPdfResponse =
             ReportPdfResponse.ofSingle(
                 ReportPdfResponse.SingleReportPdfResponse.builder()
+                    .isCritical(false)
                     .presignedUrl(
                         "https://storage.avarasoftware.com/reports/rep_1234.pdf?token=abc123"
                     )
@@ -116,6 +118,7 @@ internal class ReportPdfResponseTest {
             ReportPdfResponse.ListReportsPdfResponse.builder()
                 .addReport(
                     ReportPdfItem.builder()
+                        .isCritical(false)
                         .presignedUrl(
                             "https://storage.avarasoftware.com/reports/rep_1234.pdf?token=abc123"
                         )
@@ -168,6 +171,7 @@ internal class ReportPdfResponseTest {
                 ReportPdfResponse.ListReportsPdfResponse.builder()
                     .addReport(
                         ReportPdfItem.builder()
+                            .isCritical(false)
                             .presignedUrl(
                                 "https://storage.avarasoftware.com/reports/rep_1234.pdf?token=abc123"
                             )

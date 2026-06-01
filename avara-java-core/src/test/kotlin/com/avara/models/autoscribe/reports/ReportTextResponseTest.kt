@@ -22,6 +22,7 @@ internal class ReportTextResponseTest {
     fun ofSingle() {
         val single =
             ReportTextResponse.SingleReportTextResponse.builder()
+                .isCritical(false)
                 .reportId("rep_1234567890abcdef1234567890abcdef")
                 .snapshotMetadata(
                     StudyReportMetadata.builder()
@@ -68,6 +69,7 @@ internal class ReportTextResponseTest {
         val reportTextResponse =
             ReportTextResponse.ofSingle(
                 ReportTextResponse.SingleReportTextResponse.builder()
+                    .isCritical(false)
                     .reportId("rep_1234567890abcdef1234567890abcdef")
                     .snapshotMetadata(
                         StudyReportMetadata.builder()
@@ -118,6 +120,7 @@ internal class ReportTextResponseTest {
             ReportTextResponse.ListReportsTextResponse.builder()
                 .addReport(
                     ReportTextItem.builder()
+                        .isCritical(false)
                         .reportId("rep_1234567890abcdef1234567890abcdef")
                         .snapshotMetadata(
                             StudyReportMetadata.builder()
@@ -170,6 +173,7 @@ internal class ReportTextResponseTest {
                 ReportTextResponse.ListReportsTextResponse.builder()
                     .addReport(
                         ReportTextItem.builder()
+                            .isCritical(false)
                             .reportId("rep_1234567890abcdef1234567890abcdef")
                             .snapshotMetadata(
                                 StudyReportMetadata.builder()

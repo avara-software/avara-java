@@ -65,6 +65,7 @@ internal class UnwrapWebhookEventTest {
                 .id("whe_1234567890abcdef1234567890abcdef")
                 .data(
                     ReportDeliveredEventData.builder()
+                        .isCritical(false)
                         .presignedUrl(
                             "https://storage.avarasoftware.com/reports/rep_1234.pdf?token=xyz789"
                         )
@@ -92,6 +93,7 @@ internal class UnwrapWebhookEventTest {
                     .id("whe_1234567890abcdef1234567890abcdef")
                     .data(
                         ReportDeliveredEventData.builder()
+                            .isCritical(false)
                             .presignedUrl(
                                 "https://storage.avarasoftware.com/reports/rep_1234.pdf?token=xyz789"
                             )

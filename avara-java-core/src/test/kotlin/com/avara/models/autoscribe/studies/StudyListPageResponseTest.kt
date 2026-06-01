@@ -101,6 +101,7 @@ internal class StudyListPageResponseTest {
                                 .build()
                         )
                         .externalPatientId("externalPatientId")
+                        .isCritical(true)
                         .metadata(
                             StudyListResponse.Metadata.builder()
                                 .putAdditionalProperty("department", JsonValue.from("radiology"))
@@ -119,6 +120,7 @@ internal class StudyListPageResponseTest {
                         )
                         .addReportId(
                             ReportIdWithStatus.builder()
+                                .isCritical(null)
                                 .reportId("rep_1234567890abcdef1234567890abcdef")
                                 .status(ReportStatus.IN_PROGRESS)
                                 .build()
@@ -207,6 +209,7 @@ internal class StudyListPageResponseTest {
                             .build()
                     )
                     .externalPatientId("externalPatientId")
+                    .isCritical(true)
                     .metadata(
                         StudyListResponse.Metadata.builder()
                             .putAdditionalProperty("department", JsonValue.from("radiology"))
@@ -225,6 +228,7 @@ internal class StudyListPageResponseTest {
                     )
                     .addReportId(
                         ReportIdWithStatus.builder()
+                            .isCritical(null)
                             .reportId("rep_1234567890abcdef1234567890abcdef")
                             .status(ReportStatus.IN_PROGRESS)
                             .build()
@@ -317,6 +321,7 @@ internal class StudyListPageResponseTest {
                                 .build()
                         )
                         .externalPatientId("externalPatientId")
+                        .isCritical(true)
                         .metadata(
                             StudyListResponse.Metadata.builder()
                                 .putAdditionalProperty("department", JsonValue.from("radiology"))
@@ -335,6 +340,7 @@ internal class StudyListPageResponseTest {
                         )
                         .addReportId(
                             ReportIdWithStatus.builder()
+                                .isCritical(null)
                                 .reportId("rep_1234567890abcdef1234567890abcdef")
                                 .status(ReportStatus.IN_PROGRESS)
                                 .build()

@@ -14,10 +14,12 @@ internal class ReportIdWithStatusTest {
     fun create() {
         val reportIdWithStatus =
             ReportIdWithStatus.builder()
+                .isCritical(false)
                 .reportId("rep_1234567890abcdef1234567890abcdef")
                 .status(ReportStatus.COMPLETED)
                 .build()
 
+        assertThat(reportIdWithStatus.isCritical()).contains(false)
         assertThat(reportIdWithStatus.reportId()).isEqualTo("rep_1234567890abcdef1234567890abcdef")
         assertThat(reportIdWithStatus.status()).isEqualTo(ReportStatus.COMPLETED)
     }
@@ -27,6 +29,7 @@ internal class ReportIdWithStatusTest {
         val jsonMapper = jsonMapper()
         val reportIdWithStatus =
             ReportIdWithStatus.builder()
+                .isCritical(false)
                 .reportId("rep_1234567890abcdef1234567890abcdef")
                 .status(ReportStatus.COMPLETED)
                 .build()

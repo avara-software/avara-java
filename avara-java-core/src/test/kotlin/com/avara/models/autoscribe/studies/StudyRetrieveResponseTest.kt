@@ -99,6 +99,7 @@ internal class StudyRetrieveResponseTest {
                         .build()
                 )
                 .externalPatientId("externalPatientId")
+                .isCritical(true)
                 .metadata(
                     StudyRetrieveResponse.Metadata.builder()
                         .putAdditionalProperty("department", JsonValue.from("radiology"))
@@ -117,6 +118,7 @@ internal class StudyRetrieveResponseTest {
                 )
                 .addReportId(
                     ReportIdWithStatus.builder()
+                        .isCritical(null)
                         .reportId("rep_1234567890abcdef1234567890abcdef")
                         .status(ReportStatus.IN_PROGRESS)
                         .build()
@@ -205,6 +207,7 @@ internal class StudyRetrieveResponseTest {
                     .build()
             )
         assertThat(studyRetrieveResponse.externalPatientId()).contains("externalPatientId")
+        assertThat(studyRetrieveResponse.isCritical()).contains(true)
         assertThat(studyRetrieveResponse.metadata())
             .contains(
                 StudyRetrieveResponse.Metadata.builder()
@@ -226,6 +229,7 @@ internal class StudyRetrieveResponseTest {
         assertThat(studyRetrieveResponse.reportIds().getOrNull())
             .containsExactly(
                 ReportIdWithStatus.builder()
+                    .isCritical(null)
                     .reportId("rep_1234567890abcdef1234567890abcdef")
                     .status(ReportStatus.IN_PROGRESS)
                     .build()
@@ -312,6 +316,7 @@ internal class StudyRetrieveResponseTest {
                         .build()
                 )
                 .externalPatientId("externalPatientId")
+                .isCritical(true)
                 .metadata(
                     StudyRetrieveResponse.Metadata.builder()
                         .putAdditionalProperty("department", JsonValue.from("radiology"))
@@ -330,6 +335,7 @@ internal class StudyRetrieveResponseTest {
                 )
                 .addReportId(
                     ReportIdWithStatus.builder()
+                        .isCritical(null)
                         .reportId("rep_1234567890abcdef1234567890abcdef")
                         .status(ReportStatus.IN_PROGRESS)
                         .build()

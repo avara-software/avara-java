@@ -17,6 +17,7 @@ internal class ReportPdfItemTest {
     fun create() {
         val reportPdfItem =
             ReportPdfItem.builder()
+                .isCritical(false)
                 .presignedUrl("https://storage.avarasoftware.com/reports/rep_1234.pdf?token=abc123")
                 .reportId("rep_1234567890abcdef1234567890abcdef")
                 .snapshotMetadata(
@@ -49,6 +50,7 @@ internal class ReportPdfItemTest {
                 .studyInstanceUid("1.2.840.113619.2.55.3.604688119.868.1234567890.123")
                 .build()
 
+        assertThat(reportPdfItem.isCritical()).contains(false)
         assertThat(reportPdfItem.presignedUrl())
             .isEqualTo("https://storage.avarasoftware.com/reports/rep_1234.pdf?token=abc123")
         assertThat(reportPdfItem.reportId()).isEqualTo("rep_1234567890abcdef1234567890abcdef")
@@ -86,6 +88,7 @@ internal class ReportPdfItemTest {
         val jsonMapper = jsonMapper()
         val reportPdfItem =
             ReportPdfItem.builder()
+                .isCritical(false)
                 .presignedUrl("https://storage.avarasoftware.com/reports/rep_1234.pdf?token=abc123")
                 .reportId("rep_1234567890abcdef1234567890abcdef")
                 .snapshotMetadata(

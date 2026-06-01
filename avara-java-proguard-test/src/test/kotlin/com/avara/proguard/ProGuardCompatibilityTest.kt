@@ -138,6 +138,7 @@ internal class ProGuardCompatibilityTest {
         val reportPdfResponse =
             ReportPdfResponse.ofSingle(
                 ReportPdfResponse.SingleReportPdfResponse.builder()
+                    .isCritical(false)
                     .presignedUrl(
                         "https://storage.avarasoftware.com/reports/rep_1234.pdf?token=abc123"
                     )
