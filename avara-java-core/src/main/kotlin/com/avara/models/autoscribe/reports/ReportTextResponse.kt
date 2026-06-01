@@ -296,7 +296,7 @@ private constructor(
         )
 
         /**
-         * Whether the report was marked critical at sign-out. null when the report is not yet
+         * Whether the report was marked critical at sign-off. null when the report is not yet
          * completed; true/false once completed.
          *
          * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -448,7 +448,7 @@ private constructor(
             }
 
             /**
-             * Whether the report was marked critical at sign-out. null when the report is not yet
+             * Whether the report was marked critical at sign-off. null when the report is not yet
              * completed; true/false once completed.
              */
             fun isCritical(isCritical: Boolean?) = isCritical(JsonField.ofNullable(isCritical))
