@@ -26,6 +26,7 @@ class Report
 private constructor(
     private val createdAt: JsonField<OffsetDateTime>,
     private val isAddendum: JsonField<Boolean>,
+    private val isCritical: JsonField<Boolean>,
     private val reportId: JsonField<String>,
     private val signedAt: JsonField<OffsetDateTime>,
     private val snapshotMetadata: JsonField<StudyReportMetadata>,
@@ -45,6 +46,9 @@ private constructor(
         @JsonProperty("isAddendum")
         @ExcludeMissing
         isAddendum: JsonField<Boolean> = JsonMissing.of(),
+        @JsonProperty("isCritical")
+        @ExcludeMissing
+        isCritical: JsonField<Boolean> = JsonMissing.of(),
         @JsonProperty("reportId") @ExcludeMissing reportId: JsonField<String> = JsonMissing.of(),
         @JsonProperty("signedAt")
         @ExcludeMissing
@@ -64,6 +68,7 @@ private constructor(
     ) : this(
         createdAt,
         isAddendum,
+        isCritical,
         reportId,
         signedAt,
         snapshotMetadata,
@@ -90,6 +95,15 @@ private constructor(
      *   missing or null (e.g. if the server responded with an unexpected value).
      */
     fun isAddendum(): Boolean = isAddendum.getRequired("isAddendum")
+
+    /**
+     * Whether the report was marked critical at sign-out. null when the report is not yet
+     * completed; true/false once completed.
+     *
+     * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun isCritical(): Optional<Boolean> = isCritical.getOptional("isCritical")
 
     /**
      * Unique report identifier. Format: rep_{32-hex-chars}
@@ -171,6 +185,13 @@ private constructor(
      * Unlike [isAddendum], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("isAddendum") @ExcludeMissing fun _isAddendum(): JsonField<Boolean> = isAddendum
+
+    /**
+     * Returns the raw JSON value of [isCritical].
+     *
+     * Unlike [isCritical], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("isCritical") @ExcludeMissing fun _isCritical(): JsonField<Boolean> = isCritical
 
     /**
      * Returns the raw JSON value of [reportId].
@@ -256,6 +277,7 @@ private constructor(
          * ```java
          * .createdAt()
          * .isAddendum()
+         * .isCritical()
          * .reportId()
          * .signedAt()
          * .snapshotMetadata()
@@ -273,6 +295,7 @@ private constructor(
 
         private var createdAt: JsonField<OffsetDateTime>? = null
         private var isAddendum: JsonField<Boolean>? = null
+        private var isCritical: JsonField<Boolean>? = null
         private var reportId: JsonField<String>? = null
         private var signedAt: JsonField<OffsetDateTime>? = null
         private var snapshotMetadata: JsonField<StudyReportMetadata>? = null
@@ -287,6 +310,7 @@ private constructor(
         internal fun from(report: Report) = apply {
             createdAt = report.createdAt
             isAddendum = report.isAddendum
+            isCritical = report.isCritical
             reportId = report.reportId
             signedAt = report.signedAt
             snapshotMetadata = report.snapshotMetadata
@@ -324,6 +348,31 @@ private constructor(
          * value.
          */
         fun isAddendum(isAddendum: JsonField<Boolean>) = apply { this.isAddendum = isAddendum }
+
+        /**
+         * Whether the report was marked critical at sign-out. null when the report is not yet
+         * completed; true/false once completed.
+         */
+        fun isCritical(isCritical: Boolean?) = isCritical(JsonField.ofNullable(isCritical))
+
+        /**
+         * Alias for [Builder.isCritical].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
+         */
+        fun isCritical(isCritical: Boolean) = isCritical(isCritical as Boolean?)
+
+        /** Alias for calling [Builder.isCritical] with `isCritical.orElse(null)`. */
+        fun isCritical(isCritical: Optional<Boolean>) = isCritical(isCritical.getOrNull())
+
+        /**
+         * Sets [Builder.isCritical] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.isCritical] with a well-typed [Boolean] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun isCritical(isCritical: JsonField<Boolean>) = apply { this.isCritical = isCritical }
 
         /** Unique report identifier. Format: rep_{32-hex-chars} */
         fun reportId(reportId: String) = reportId(JsonField.of(reportId))
@@ -461,6 +510,7 @@ private constructor(
          * ```java
          * .createdAt()
          * .isAddendum()
+         * .isCritical()
          * .reportId()
          * .signedAt()
          * .snapshotMetadata()
@@ -476,6 +526,7 @@ private constructor(
             Report(
                 checkRequired("createdAt", createdAt),
                 checkRequired("isAddendum", isAddendum),
+                checkRequired("isCritical", isCritical),
                 checkRequired("reportId", reportId),
                 checkRequired("signedAt", signedAt),
                 checkRequired("snapshotMetadata", snapshotMetadata),
@@ -505,6 +556,7 @@ private constructor(
 
         createdAt()
         isAddendum()
+        isCritical()
         reportId()
         signedAt()
         snapshotMetadata().validate()
@@ -533,6 +585,7 @@ private constructor(
     internal fun validity(): Int =
         (if (createdAt.asKnown().isPresent) 1 else 0) +
             (if (isAddendum.asKnown().isPresent) 1 else 0) +
+            (if (isCritical.asKnown().isPresent) 1 else 0) +
             (if (reportId.asKnown().isPresent) 1 else 0) +
             (if (signedAt.asKnown().isPresent) 1 else 0) +
             (snapshotMetadata.asKnown().getOrNull()?.validity() ?: 0) +
@@ -550,6 +603,7 @@ private constructor(
         return other is Report &&
             createdAt == other.createdAt &&
             isAddendum == other.isAddendum &&
+            isCritical == other.isCritical &&
             reportId == other.reportId &&
             signedAt == other.signedAt &&
             snapshotMetadata == other.snapshotMetadata &&
@@ -565,6 +619,7 @@ private constructor(
         Objects.hash(
             createdAt,
             isAddendum,
+            isCritical,
             reportId,
             signedAt,
             snapshotMetadata,
@@ -580,5 +635,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "Report{createdAt=$createdAt, isAddendum=$isAddendum, reportId=$reportId, signedAt=$signedAt, snapshotMetadata=$snapshotMetadata, status=$status, studyId=$studyId, updatedAt=$updatedAt, userId=$userId, reportPlainText=$reportPlainText, additionalProperties=$additionalProperties}"
+        "Report{createdAt=$createdAt, isAddendum=$isAddendum, isCritical=$isCritical, reportId=$reportId, signedAt=$signedAt, snapshotMetadata=$snapshotMetadata, status=$status, studyId=$studyId, updatedAt=$updatedAt, userId=$userId, reportPlainText=$reportPlainText, additionalProperties=$additionalProperties}"
 }

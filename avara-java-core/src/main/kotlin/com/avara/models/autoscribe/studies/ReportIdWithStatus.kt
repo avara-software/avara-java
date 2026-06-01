@@ -15,12 +15,14 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Collections
 import java.util.Objects
+import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /** A report ID paired with its current status */
 class ReportIdWithStatus
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
+    private val isCritical: JsonField<Boolean>,
     private val reportId: JsonField<String>,
     private val status: JsonField<ReportStatus>,
     private val additionalProperties: MutableMap<String, JsonValue>,
@@ -28,9 +30,21 @@ private constructor(
 
     @JsonCreator
     private constructor(
+        @JsonProperty("isCritical")
+        @ExcludeMissing
+        isCritical: JsonField<Boolean> = JsonMissing.of(),
         @JsonProperty("reportId") @ExcludeMissing reportId: JsonField<String> = JsonMissing.of(),
         @JsonProperty("status") @ExcludeMissing status: JsonField<ReportStatus> = JsonMissing.of(),
-    ) : this(reportId, status, mutableMapOf())
+    ) : this(isCritical, reportId, status, mutableMapOf())
+
+    /**
+     * Whether the report was marked critical at sign-off. null when the report is not yet
+     * completed; true/false once completed.
+     *
+     * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun isCritical(): Optional<Boolean> = isCritical.getOptional("isCritical")
 
     /**
      * Unique report identifier. Format: rep_{32-hex-chars}
@@ -48,6 +62,13 @@ private constructor(
      *   missing or null (e.g. if the server responded with an unexpected value).
      */
     fun status(): ReportStatus = status.getRequired("status")
+
+    /**
+     * Returns the raw JSON value of [isCritical].
+     *
+     * Unlike [isCritical], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("isCritical") @ExcludeMissing fun _isCritical(): JsonField<Boolean> = isCritical
 
     /**
      * Returns the raw JSON value of [reportId].
@@ -82,6 +103,7 @@ private constructor(
          *
          * The following fields are required:
          * ```java
+         * .isCritical()
          * .reportId()
          * .status()
          * ```
@@ -92,16 +114,43 @@ private constructor(
     /** A builder for [ReportIdWithStatus]. */
     class Builder internal constructor() {
 
+        private var isCritical: JsonField<Boolean>? = null
         private var reportId: JsonField<String>? = null
         private var status: JsonField<ReportStatus>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(reportIdWithStatus: ReportIdWithStatus) = apply {
+            isCritical = reportIdWithStatus.isCritical
             reportId = reportIdWithStatus.reportId
             status = reportIdWithStatus.status
             additionalProperties = reportIdWithStatus.additionalProperties.toMutableMap()
         }
+
+        /**
+         * Whether the report was marked critical at sign-off. null when the report is not yet
+         * completed; true/false once completed.
+         */
+        fun isCritical(isCritical: Boolean?) = isCritical(JsonField.ofNullable(isCritical))
+
+        /**
+         * Alias for [Builder.isCritical].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
+         */
+        fun isCritical(isCritical: Boolean) = isCritical(isCritical as Boolean?)
+
+        /** Alias for calling [Builder.isCritical] with `isCritical.orElse(null)`. */
+        fun isCritical(isCritical: Optional<Boolean>) = isCritical(isCritical.getOrNull())
+
+        /**
+         * Sets [Builder.isCritical] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.isCritical] with a well-typed [Boolean] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun isCritical(isCritical: JsonField<Boolean>) = apply { this.isCritical = isCritical }
 
         /** Unique report identifier. Format: rep_{32-hex-chars} */
         fun reportId(reportId: String) = reportId(JsonField.of(reportId))
@@ -155,6 +204,7 @@ private constructor(
          *
          * The following fields are required:
          * ```java
+         * .isCritical()
          * .reportId()
          * .status()
          * ```
@@ -163,6 +213,7 @@ private constructor(
          */
         fun build(): ReportIdWithStatus =
             ReportIdWithStatus(
+                checkRequired("isCritical", isCritical),
                 checkRequired("reportId", reportId),
                 checkRequired("status", status),
                 additionalProperties.toMutableMap(),
@@ -184,6 +235,7 @@ private constructor(
             return@apply
         }
 
+        isCritical()
         reportId()
         status().validate()
         validated = true
@@ -204,7 +256,8 @@ private constructor(
      */
     @JvmSynthetic
     internal fun validity(): Int =
-        (if (reportId.asKnown().isPresent) 1 else 0) +
+        (if (isCritical.asKnown().isPresent) 1 else 0) +
+            (if (reportId.asKnown().isPresent) 1 else 0) +
             (status.asKnown().getOrNull()?.validity() ?: 0)
 
     override fun equals(other: Any?): Boolean {
@@ -213,15 +266,18 @@ private constructor(
         }
 
         return other is ReportIdWithStatus &&
+            isCritical == other.isCritical &&
             reportId == other.reportId &&
             status == other.status &&
             additionalProperties == other.additionalProperties
     }
 
-    private val hashCode: Int by lazy { Objects.hash(reportId, status, additionalProperties) }
+    private val hashCode: Int by lazy {
+        Objects.hash(isCritical, reportId, status, additionalProperties)
+    }
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "ReportIdWithStatus{reportId=$reportId, status=$status, additionalProperties=$additionalProperties}"
+        "ReportIdWithStatus{isCritical=$isCritical, reportId=$reportId, status=$status, additionalProperties=$additionalProperties}"
 }

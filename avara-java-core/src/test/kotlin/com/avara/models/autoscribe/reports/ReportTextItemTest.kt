@@ -17,6 +17,7 @@ internal class ReportTextItemTest {
     fun create() {
         val reportTextItem =
             ReportTextItem.builder()
+                .isCritical(false)
                 .reportId("rep_1234567890abcdef1234567890abcdef")
                 .snapshotMetadata(
                     StudyReportMetadata.builder()
@@ -51,6 +52,7 @@ internal class ReportTextItemTest {
                 )
                 .build()
 
+        assertThat(reportTextItem.isCritical()).contains(false)
         assertThat(reportTextItem.reportId()).isEqualTo("rep_1234567890abcdef1234567890abcdef")
         assertThat(reportTextItem.snapshotMetadata())
             .isEqualTo(
@@ -90,6 +92,7 @@ internal class ReportTextItemTest {
         val jsonMapper = jsonMapper()
         val reportTextItem =
             ReportTextItem.builder()
+                .isCritical(false)
                 .reportId("rep_1234567890abcdef1234567890abcdef")
                 .snapshotMetadata(
                     StudyReportMetadata.builder()

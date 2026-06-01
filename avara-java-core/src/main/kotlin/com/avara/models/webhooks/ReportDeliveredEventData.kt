@@ -20,6 +20,7 @@ import java.util.Optional
 class ReportDeliveredEventData
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
+    private val isCritical: JsonField<Boolean>,
     private val presignedUrl: JsonField<String>,
     private val reportId: JsonField<String>,
     private val studyId: JsonField<String>,
@@ -29,13 +30,24 @@ private constructor(
 
     @JsonCreator
     private constructor(
+        @JsonProperty("isCritical")
+        @ExcludeMissing
+        isCritical: JsonField<Boolean> = JsonMissing.of(),
         @JsonProperty("presignedUrl")
         @ExcludeMissing
         presignedUrl: JsonField<String> = JsonMissing.of(),
         @JsonProperty("reportId") @ExcludeMissing reportId: JsonField<String> = JsonMissing.of(),
         @JsonProperty("studyId") @ExcludeMissing studyId: JsonField<String> = JsonMissing.of(),
         @JsonProperty("plainText") @ExcludeMissing plainText: JsonField<String> = JsonMissing.of(),
-    ) : this(presignedUrl, reportId, studyId, plainText, mutableMapOf())
+    ) : this(isCritical, presignedUrl, reportId, studyId, plainText, mutableMapOf())
+
+    /**
+     * Whether the report was marked critical at sign-out.
+     *
+     * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun isCritical(): Boolean = isCritical.getRequired("isCritical")
 
     /**
      * Presigned URL for PDF download. Time-limited, typically valid for 1 hour.
@@ -68,6 +80,13 @@ private constructor(
      *   server responded with an unexpected value).
      */
     fun plainText(): Optional<String> = plainText.getOptional("plainText")
+
+    /**
+     * Returns the raw JSON value of [isCritical].
+     *
+     * Unlike [isCritical], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("isCritical") @ExcludeMissing fun _isCritical(): JsonField<Boolean> = isCritical
 
     /**
      * Returns the raw JSON value of [presignedUrl].
@@ -118,6 +137,7 @@ private constructor(
          *
          * The following fields are required:
          * ```java
+         * .isCritical()
          * .presignedUrl()
          * .reportId()
          * .studyId()
@@ -129,6 +149,7 @@ private constructor(
     /** A builder for [ReportDeliveredEventData]. */
     class Builder internal constructor() {
 
+        private var isCritical: JsonField<Boolean>? = null
         private var presignedUrl: JsonField<String>? = null
         private var reportId: JsonField<String>? = null
         private var studyId: JsonField<String>? = null
@@ -137,12 +158,25 @@ private constructor(
 
         @JvmSynthetic
         internal fun from(reportDeliveredEventData: ReportDeliveredEventData) = apply {
+            isCritical = reportDeliveredEventData.isCritical
             presignedUrl = reportDeliveredEventData.presignedUrl
             reportId = reportDeliveredEventData.reportId
             studyId = reportDeliveredEventData.studyId
             plainText = reportDeliveredEventData.plainText
             additionalProperties = reportDeliveredEventData.additionalProperties.toMutableMap()
         }
+
+        /** Whether the report was marked critical at sign-out. */
+        fun isCritical(isCritical: Boolean) = isCritical(JsonField.of(isCritical))
+
+        /**
+         * Sets [Builder.isCritical] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.isCritical] with a well-typed [Boolean] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun isCritical(isCritical: JsonField<Boolean>) = apply { this.isCritical = isCritical }
 
         /** Presigned URL for PDF download. Time-limited, typically valid for 1 hour. */
         fun presignedUrl(presignedUrl: String) = presignedUrl(JsonField.of(presignedUrl))
@@ -218,6 +252,7 @@ private constructor(
          *
          * The following fields are required:
          * ```java
+         * .isCritical()
          * .presignedUrl()
          * .reportId()
          * .studyId()
@@ -227,6 +262,7 @@ private constructor(
          */
         fun build(): ReportDeliveredEventData =
             ReportDeliveredEventData(
+                checkRequired("isCritical", isCritical),
                 checkRequired("presignedUrl", presignedUrl),
                 checkRequired("reportId", reportId),
                 checkRequired("studyId", studyId),
@@ -250,6 +286,7 @@ private constructor(
             return@apply
         }
 
+        isCritical()
         presignedUrl()
         reportId()
         studyId()
@@ -272,7 +309,8 @@ private constructor(
      */
     @JvmSynthetic
     internal fun validity(): Int =
-        (if (presignedUrl.asKnown().isPresent) 1 else 0) +
+        (if (isCritical.asKnown().isPresent) 1 else 0) +
+            (if (presignedUrl.asKnown().isPresent) 1 else 0) +
             (if (reportId.asKnown().isPresent) 1 else 0) +
             (if (studyId.asKnown().isPresent) 1 else 0) +
             (if (plainText.asKnown().isPresent) 1 else 0)
@@ -283,6 +321,7 @@ private constructor(
         }
 
         return other is ReportDeliveredEventData &&
+            isCritical == other.isCritical &&
             presignedUrl == other.presignedUrl &&
             reportId == other.reportId &&
             studyId == other.studyId &&
@@ -291,11 +330,11 @@ private constructor(
     }
 
     private val hashCode: Int by lazy {
-        Objects.hash(presignedUrl, reportId, studyId, plainText, additionalProperties)
+        Objects.hash(isCritical, presignedUrl, reportId, studyId, plainText, additionalProperties)
     }
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "ReportDeliveredEventData{presignedUrl=$presignedUrl, reportId=$reportId, studyId=$studyId, plainText=$plainText, additionalProperties=$additionalProperties}"
+        "ReportDeliveredEventData{isCritical=$isCritical, presignedUrl=$presignedUrl, reportId=$reportId, studyId=$studyId, plainText=$plainText, additionalProperties=$additionalProperties}"
 }

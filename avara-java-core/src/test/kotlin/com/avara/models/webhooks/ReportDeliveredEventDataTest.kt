@@ -13,12 +13,14 @@ internal class ReportDeliveredEventDataTest {
     fun create() {
         val reportDeliveredEventData =
             ReportDeliveredEventData.builder()
+                .isCritical(false)
                 .presignedUrl("https://storage.avarasoftware.com/reports/rep_1234.pdf?token=xyz789")
                 .reportId("rep_1234567890abcdef1234567890abcdef")
                 .studyId("stu_1234567890abcdef1234567890abcdef")
                 .plainText("FINDINGS: Normal brain MRI. No acute intracranial abnormality...")
                 .build()
 
+        assertThat(reportDeliveredEventData.isCritical()).isEqualTo(false)
         assertThat(reportDeliveredEventData.presignedUrl())
             .isEqualTo("https://storage.avarasoftware.com/reports/rep_1234.pdf?token=xyz789")
         assertThat(reportDeliveredEventData.reportId())
@@ -34,6 +36,7 @@ internal class ReportDeliveredEventDataTest {
         val jsonMapper = jsonMapper()
         val reportDeliveredEventData =
             ReportDeliveredEventData.builder()
+                .isCritical(false)
                 .presignedUrl("https://storage.avarasoftware.com/reports/rep_1234.pdf?token=xyz789")
                 .reportId("rep_1234567890abcdef1234567890abcdef")
                 .studyId("stu_1234567890abcdef1234567890abcdef")

@@ -258,6 +258,7 @@ private constructor(
     class SingleReportPdfResponse
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
+        private val isCritical: JsonField<Boolean>,
         private val presignedUrl: JsonField<String>,
         private val reportId: JsonField<String>,
         private val snapshotMetadata: JsonField<StudyReportMetadata>,
@@ -268,6 +269,9 @@ private constructor(
 
         @JsonCreator
         private constructor(
+            @JsonProperty("isCritical")
+            @ExcludeMissing
+            isCritical: JsonField<Boolean> = JsonMissing.of(),
             @JsonProperty("presignedUrl")
             @ExcludeMissing
             presignedUrl: JsonField<String> = JsonMissing.of(),
@@ -282,6 +286,7 @@ private constructor(
             @ExcludeMissing
             studyInstanceUid: JsonField<String> = JsonMissing.of(),
         ) : this(
+            isCritical,
             presignedUrl,
             reportId,
             snapshotMetadata,
@@ -289,6 +294,15 @@ private constructor(
             studyInstanceUid,
             mutableMapOf(),
         )
+
+        /**
+         * Whether the report was marked critical at sign-out. null when the report is not yet
+         * completed; true/false once completed.
+         *
+         * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun isCritical(): Optional<Boolean> = isCritical.getOptional("isCritical")
 
         /**
          * Time-limited presigned URL to download the PDF (expires after 1 hour)
@@ -331,6 +345,15 @@ private constructor(
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
         fun studyInstanceUid(): String = studyInstanceUid.getRequired("studyInstanceUid")
+
+        /**
+         * Returns the raw JSON value of [isCritical].
+         *
+         * Unlike [isCritical], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("isCritical")
+        @ExcludeMissing
+        fun _isCritical(): JsonField<Boolean> = isCritical
 
         /**
          * Returns the raw JSON value of [presignedUrl].
@@ -395,6 +418,7 @@ private constructor(
              *
              * The following fields are required:
              * ```java
+             * .isCritical()
              * .presignedUrl()
              * .reportId()
              * .snapshotMetadata()
@@ -408,6 +432,7 @@ private constructor(
         /** A builder for [SingleReportPdfResponse]. */
         class Builder internal constructor() {
 
+            private var isCritical: JsonField<Boolean>? = null
             private var presignedUrl: JsonField<String>? = null
             private var reportId: JsonField<String>? = null
             private var snapshotMetadata: JsonField<StudyReportMetadata>? = null
@@ -417,6 +442,7 @@ private constructor(
 
             @JvmSynthetic
             internal fun from(singleReportPdfResponse: SingleReportPdfResponse) = apply {
+                isCritical = singleReportPdfResponse.isCritical
                 presignedUrl = singleReportPdfResponse.presignedUrl
                 reportId = singleReportPdfResponse.reportId
                 snapshotMetadata = singleReportPdfResponse.snapshotMetadata
@@ -424,6 +450,31 @@ private constructor(
                 studyInstanceUid = singleReportPdfResponse.studyInstanceUid
                 additionalProperties = singleReportPdfResponse.additionalProperties.toMutableMap()
             }
+
+            /**
+             * Whether the report was marked critical at sign-out. null when the report is not yet
+             * completed; true/false once completed.
+             */
+            fun isCritical(isCritical: Boolean?) = isCritical(JsonField.ofNullable(isCritical))
+
+            /**
+             * Alias for [Builder.isCritical].
+             *
+             * This unboxed primitive overload exists for backwards compatibility.
+             */
+            fun isCritical(isCritical: Boolean) = isCritical(isCritical as Boolean?)
+
+            /** Alias for calling [Builder.isCritical] with `isCritical.orElse(null)`. */
+            fun isCritical(isCritical: Optional<Boolean>) = isCritical(isCritical.getOrNull())
+
+            /**
+             * Sets [Builder.isCritical] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.isCritical] with a well-typed [Boolean] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun isCritical(isCritical: JsonField<Boolean>) = apply { this.isCritical = isCritical }
 
             /** Time-limited presigned URL to download the PDF (expires after 1 hour) */
             fun presignedUrl(presignedUrl: String) = presignedUrl(JsonField.of(presignedUrl))
@@ -522,6 +573,7 @@ private constructor(
              *
              * The following fields are required:
              * ```java
+             * .isCritical()
              * .presignedUrl()
              * .reportId()
              * .snapshotMetadata()
@@ -533,6 +585,7 @@ private constructor(
              */
             fun build(): SingleReportPdfResponse =
                 SingleReportPdfResponse(
+                    checkRequired("isCritical", isCritical),
                     checkRequired("presignedUrl", presignedUrl),
                     checkRequired("reportId", reportId),
                     checkRequired("snapshotMetadata", snapshotMetadata),
@@ -558,6 +611,7 @@ private constructor(
                 return@apply
             }
 
+            isCritical()
             presignedUrl()
             reportId()
             snapshotMetadata().validate()
@@ -582,7 +636,8 @@ private constructor(
          */
         @JvmSynthetic
         internal fun validity(): Int =
-            (if (presignedUrl.asKnown().isPresent) 1 else 0) +
+            (if (isCritical.asKnown().isPresent) 1 else 0) +
+                (if (presignedUrl.asKnown().isPresent) 1 else 0) +
                 (if (reportId.asKnown().isPresent) 1 else 0) +
                 (snapshotMetadata.asKnown().getOrNull()?.validity() ?: 0) +
                 (if (studyId.asKnown().isPresent) 1 else 0) +
@@ -594,6 +649,7 @@ private constructor(
             }
 
             return other is SingleReportPdfResponse &&
+                isCritical == other.isCritical &&
                 presignedUrl == other.presignedUrl &&
                 reportId == other.reportId &&
                 snapshotMetadata == other.snapshotMetadata &&
@@ -604,6 +660,7 @@ private constructor(
 
         private val hashCode: Int by lazy {
             Objects.hash(
+                isCritical,
                 presignedUrl,
                 reportId,
                 snapshotMetadata,
@@ -616,7 +673,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "SingleReportPdfResponse{presignedUrl=$presignedUrl, reportId=$reportId, snapshotMetadata=$snapshotMetadata, studyId=$studyId, studyInstanceUid=$studyInstanceUid, additionalProperties=$additionalProperties}"
+            "SingleReportPdfResponse{isCritical=$isCritical, presignedUrl=$presignedUrl, reportId=$reportId, snapshotMetadata=$snapshotMetadata, studyId=$studyId, studyInstanceUid=$studyInstanceUid, additionalProperties=$additionalProperties}"
     }
 
     /** Response containing a list of reports with their PDF download URLs */

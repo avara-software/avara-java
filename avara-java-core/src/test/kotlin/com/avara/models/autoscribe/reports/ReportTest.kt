@@ -21,6 +21,7 @@ internal class ReportTest {
             Report.builder()
                 .createdAt(OffsetDateTime.parse("2024-03-15T14:30:00Z"))
                 .isAddendum(false)
+                .isCritical(false)
                 .reportId("rep_1234567890abcdef1234567890abcdef")
                 .signedAt(OffsetDateTime.parse("2024-03-15T16:00:00Z"))
                 .snapshotMetadata(
@@ -60,6 +61,7 @@ internal class ReportTest {
 
         assertThat(report.createdAt()).contains(OffsetDateTime.parse("2024-03-15T14:30:00Z"))
         assertThat(report.isAddendum()).isEqualTo(false)
+        assertThat(report.isCritical()).contains(false)
         assertThat(report.reportId()).isEqualTo("rep_1234567890abcdef1234567890abcdef")
         assertThat(report.signedAt()).contains(OffsetDateTime.parse("2024-03-15T16:00:00Z"))
         assertThat(report.snapshotMetadata())
@@ -103,6 +105,7 @@ internal class ReportTest {
             Report.builder()
                 .createdAt(OffsetDateTime.parse("2024-03-15T14:30:00Z"))
                 .isAddendum(false)
+                .isCritical(false)
                 .reportId("rep_1234567890abcdef1234567890abcdef")
                 .signedAt(OffsetDateTime.parse("2024-03-15T16:00:00Z"))
                 .snapshotMetadata(

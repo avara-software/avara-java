@@ -47,6 +47,7 @@ private constructor(
     private val createdByUser: JsonField<UserReference>,
     private val expressCustomer: JsonField<ExpressCustomerReference>,
     private val externalPatientId: JsonField<String>,
+    private val isCritical: JsonField<Boolean>,
     private val metadata: JsonField<Metadata>,
     private val modality: JsonField<String>,
     private val priorReports: JsonField<List<PriorReport>>,
@@ -105,6 +106,9 @@ private constructor(
         @JsonProperty("externalPatientId")
         @ExcludeMissing
         externalPatientId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("isCritical")
+        @ExcludeMissing
+        isCritical: JsonField<Boolean> = JsonMissing.of(),
         @JsonProperty("metadata") @ExcludeMissing metadata: JsonField<Metadata> = JsonMissing.of(),
         @JsonProperty("modality") @ExcludeMissing modality: JsonField<String> = JsonMissing.of(),
         @JsonProperty("priorReports")
@@ -137,6 +141,7 @@ private constructor(
         createdByUser,
         expressCustomer,
         externalPatientId,
+        isCritical,
         metadata,
         modality,
         priorReports,
@@ -288,6 +293,14 @@ private constructor(
      *   server responded with an unexpected value).
      */
     fun externalPatientId(): Optional<String> = externalPatientId.getOptional("externalPatientId")
+
+    /**
+     * Whether the primary report was marked as critical at sign-out
+     *
+     * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun isCritical(): Optional<Boolean> = isCritical.getOptional("isCritical")
 
     /**
      * Custom key-value metadata for the study. Maximum 50 pairs, keys up to 100 chars, values up to
@@ -495,6 +508,13 @@ private constructor(
     fun _externalPatientId(): JsonField<String> = externalPatientId
 
     /**
+     * Returns the raw JSON value of [isCritical].
+     *
+     * Unlike [isCritical], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("isCritical") @ExcludeMissing fun _isCritical(): JsonField<Boolean> = isCritical
+
+    /**
      * Returns the raw JSON value of [metadata].
      *
      * Unlike [metadata], this method doesn't throw if the JSON field has an unexpected type.
@@ -600,6 +620,7 @@ private constructor(
         private var createdByUser: JsonField<UserReference> = JsonMissing.of()
         private var expressCustomer: JsonField<ExpressCustomerReference> = JsonMissing.of()
         private var externalPatientId: JsonField<String> = JsonMissing.of()
+        private var isCritical: JsonField<Boolean> = JsonMissing.of()
         private var metadata: JsonField<Metadata> = JsonMissing.of()
         private var modality: JsonField<String> = JsonMissing.of()
         private var priorReports: JsonField<MutableList<PriorReport>>? = null
@@ -627,6 +648,7 @@ private constructor(
             createdByUser = studyRetrieveByUidResponse.createdByUser
             expressCustomer = studyRetrieveByUidResponse.expressCustomer
             externalPatientId = studyRetrieveByUidResponse.externalPatientId
+            isCritical = studyRetrieveByUidResponse.isCritical
             metadata = studyRetrieveByUidResponse.metadata
             modality = studyRetrieveByUidResponse.modality
             priorReports = studyRetrieveByUidResponse.priorReports.map { it.toMutableList() }
@@ -924,6 +946,18 @@ private constructor(
             this.externalPatientId = externalPatientId
         }
 
+        /** Whether the primary report was marked as critical at sign-out */
+        fun isCritical(isCritical: Boolean) = isCritical(JsonField.of(isCritical))
+
+        /**
+         * Sets [Builder.isCritical] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.isCritical] with a well-typed [Boolean] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun isCritical(isCritical: JsonField<Boolean>) = apply { this.isCritical = isCritical }
+
         /**
          * Custom key-value metadata for the study. Maximum 50 pairs, keys up to 100 chars, values
          * up to 1000 chars
@@ -1113,6 +1147,7 @@ private constructor(
                 createdByUser,
                 expressCustomer,
                 externalPatientId,
+                isCritical,
                 metadata,
                 modality,
                 (priorReports ?: JsonMissing.of()).map { it.toImmutable() },
@@ -1155,6 +1190,7 @@ private constructor(
         createdByUser().ifPresent { it.validate() }
         expressCustomer().ifPresent { it.validate() }
         externalPatientId()
+        isCritical()
         metadata().ifPresent { it.validate() }
         modality()
         priorReports().ifPresent { it.forEach { it.validate() } }
@@ -1196,6 +1232,7 @@ private constructor(
             (createdByUser.asKnown().getOrNull()?.validity() ?: 0) +
             (expressCustomer.asKnown().getOrNull()?.validity() ?: 0) +
             (if (externalPatientId.asKnown().isPresent) 1 else 0) +
+            (if (isCritical.asKnown().isPresent) 1 else 0) +
             (metadata.asKnown().getOrNull()?.validity() ?: 0) +
             (if (modality.asKnown().isPresent) 1 else 0) +
             (priorReports.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
@@ -1338,6 +1375,7 @@ private constructor(
             createdByUser == other.createdByUser &&
             expressCustomer == other.expressCustomer &&
             externalPatientId == other.externalPatientId &&
+            isCritical == other.isCritical &&
             metadata == other.metadata &&
             modality == other.modality &&
             priorReports == other.priorReports &&
@@ -1366,6 +1404,7 @@ private constructor(
             createdByUser,
             expressCustomer,
             externalPatientId,
+            isCritical,
             metadata,
             modality,
             priorReports,
@@ -1379,5 +1418,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "StudyRetrieveByUidResponse{cancelledAt=$cancelledAt, createdAt=$createdAt, isCancelled=$isCancelled, reportMetadata=$reportMetadata, severity=$severity, studyDescription=$studyDescription, studyId=$studyId, studyInstanceUid=$studyInstanceUid, studyReportStatus=$studyReportStatus, updatedAt=$updatedAt, assignedTo=$assignedTo, clinicalHistory=$clinicalHistory, clinicalIndication=$clinicalIndication, createdByApiKey=$createdByApiKey, createdByUser=$createdByUser, expressCustomer=$expressCustomer, externalPatientId=$externalPatientId, metadata=$metadata, modality=$modality, priorReports=$priorReports, reportIds=$reportIds, technologistNotes=$technologistNotes, technologistTechnique=$technologistTechnique, additionalProperties=$additionalProperties}"
+        "StudyRetrieveByUidResponse{cancelledAt=$cancelledAt, createdAt=$createdAt, isCancelled=$isCancelled, reportMetadata=$reportMetadata, severity=$severity, studyDescription=$studyDescription, studyId=$studyId, studyInstanceUid=$studyInstanceUid, studyReportStatus=$studyReportStatus, updatedAt=$updatedAt, assignedTo=$assignedTo, clinicalHistory=$clinicalHistory, clinicalIndication=$clinicalIndication, createdByApiKey=$createdByApiKey, createdByUser=$createdByUser, expressCustomer=$expressCustomer, externalPatientId=$externalPatientId, isCritical=$isCritical, metadata=$metadata, modality=$modality, priorReports=$priorReports, reportIds=$reportIds, technologistNotes=$technologistNotes, technologistTechnique=$technologistTechnique, additionalProperties=$additionalProperties}"
 }

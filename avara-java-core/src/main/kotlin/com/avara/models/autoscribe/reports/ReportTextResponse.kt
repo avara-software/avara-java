@@ -258,6 +258,7 @@ private constructor(
     class SingleReportTextResponse
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
+        private val isCritical: JsonField<Boolean>,
         private val reportId: JsonField<String>,
         private val snapshotMetadata: JsonField<StudyReportMetadata>,
         private val studyId: JsonField<String>,
@@ -268,6 +269,9 @@ private constructor(
 
         @JsonCreator
         private constructor(
+            @JsonProperty("isCritical")
+            @ExcludeMissing
+            isCritical: JsonField<Boolean> = JsonMissing.of(),
             @JsonProperty("reportId")
             @ExcludeMissing
             reportId: JsonField<String> = JsonMissing.of(),
@@ -281,7 +285,24 @@ private constructor(
             @JsonProperty("plainText")
             @ExcludeMissing
             plainText: JsonField<String> = JsonMissing.of(),
-        ) : this(reportId, snapshotMetadata, studyId, studyInstanceUid, plainText, mutableMapOf())
+        ) : this(
+            isCritical,
+            reportId,
+            snapshotMetadata,
+            studyId,
+            studyInstanceUid,
+            plainText,
+            mutableMapOf(),
+        )
+
+        /**
+         * Whether the report was marked critical at sign-out. null when the report is not yet
+         * completed; true/false once completed.
+         *
+         * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun isCritical(): Optional<Boolean> = isCritical.getOptional("isCritical")
 
         /**
          * Unique report identifier. Format: rep_{32-hex-chars}
@@ -324,6 +345,15 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun plainText(): Optional<String> = plainText.getOptional("plainText")
+
+        /**
+         * Returns the raw JSON value of [isCritical].
+         *
+         * Unlike [isCritical], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("isCritical")
+        @ExcludeMissing
+        fun _isCritical(): JsonField<Boolean> = isCritical
 
         /**
          * Returns the raw JSON value of [reportId].
@@ -385,6 +415,7 @@ private constructor(
              *
              * The following fields are required:
              * ```java
+             * .isCritical()
              * .reportId()
              * .snapshotMetadata()
              * .studyId()
@@ -397,6 +428,7 @@ private constructor(
         /** A builder for [SingleReportTextResponse]. */
         class Builder internal constructor() {
 
+            private var isCritical: JsonField<Boolean>? = null
             private var reportId: JsonField<String>? = null
             private var snapshotMetadata: JsonField<StudyReportMetadata>? = null
             private var studyId: JsonField<String>? = null
@@ -406,6 +438,7 @@ private constructor(
 
             @JvmSynthetic
             internal fun from(singleReportTextResponse: SingleReportTextResponse) = apply {
+                isCritical = singleReportTextResponse.isCritical
                 reportId = singleReportTextResponse.reportId
                 snapshotMetadata = singleReportTextResponse.snapshotMetadata
                 studyId = singleReportTextResponse.studyId
@@ -413,6 +446,31 @@ private constructor(
                 plainText = singleReportTextResponse.plainText
                 additionalProperties = singleReportTextResponse.additionalProperties.toMutableMap()
             }
+
+            /**
+             * Whether the report was marked critical at sign-out. null when the report is not yet
+             * completed; true/false once completed.
+             */
+            fun isCritical(isCritical: Boolean?) = isCritical(JsonField.ofNullable(isCritical))
+
+            /**
+             * Alias for [Builder.isCritical].
+             *
+             * This unboxed primitive overload exists for backwards compatibility.
+             */
+            fun isCritical(isCritical: Boolean) = isCritical(isCritical as Boolean?)
+
+            /** Alias for calling [Builder.isCritical] with `isCritical.orElse(null)`. */
+            fun isCritical(isCritical: Optional<Boolean>) = isCritical(isCritical.getOrNull())
+
+            /**
+             * Sets [Builder.isCritical] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.isCritical] with a well-typed [Boolean] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun isCritical(isCritical: JsonField<Boolean>) = apply { this.isCritical = isCritical }
 
             /** Unique report identifier. Format: rep_{32-hex-chars} */
             fun reportId(reportId: String) = reportId(JsonField.of(reportId))
@@ -509,6 +567,7 @@ private constructor(
              *
              * The following fields are required:
              * ```java
+             * .isCritical()
              * .reportId()
              * .snapshotMetadata()
              * .studyId()
@@ -519,6 +578,7 @@ private constructor(
              */
             fun build(): SingleReportTextResponse =
                 SingleReportTextResponse(
+                    checkRequired("isCritical", isCritical),
                     checkRequired("reportId", reportId),
                     checkRequired("snapshotMetadata", snapshotMetadata),
                     checkRequired("studyId", studyId),
@@ -544,6 +604,7 @@ private constructor(
                 return@apply
             }
 
+            isCritical()
             reportId()
             snapshotMetadata().validate()
             studyId()
@@ -568,7 +629,8 @@ private constructor(
          */
         @JvmSynthetic
         internal fun validity(): Int =
-            (if (reportId.asKnown().isPresent) 1 else 0) +
+            (if (isCritical.asKnown().isPresent) 1 else 0) +
+                (if (reportId.asKnown().isPresent) 1 else 0) +
                 (snapshotMetadata.asKnown().getOrNull()?.validity() ?: 0) +
                 (if (studyId.asKnown().isPresent) 1 else 0) +
                 (if (studyInstanceUid.asKnown().isPresent) 1 else 0) +
@@ -580,6 +642,7 @@ private constructor(
             }
 
             return other is SingleReportTextResponse &&
+                isCritical == other.isCritical &&
                 reportId == other.reportId &&
                 snapshotMetadata == other.snapshotMetadata &&
                 studyId == other.studyId &&
@@ -590,6 +653,7 @@ private constructor(
 
         private val hashCode: Int by lazy {
             Objects.hash(
+                isCritical,
                 reportId,
                 snapshotMetadata,
                 studyId,
@@ -602,7 +666,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "SingleReportTextResponse{reportId=$reportId, snapshotMetadata=$snapshotMetadata, studyId=$studyId, studyInstanceUid=$studyInstanceUid, plainText=$plainText, additionalProperties=$additionalProperties}"
+            "SingleReportTextResponse{isCritical=$isCritical, reportId=$reportId, snapshotMetadata=$snapshotMetadata, studyId=$studyId, studyInstanceUid=$studyInstanceUid, plainText=$plainText, additionalProperties=$additionalProperties}"
     }
 
     /** Response containing a list of reports with their plain text */
