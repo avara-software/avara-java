@@ -122,10 +122,10 @@ internal class UnsafeUnwrapWebhookEventTest {
     @Test
     fun ofSecondaryCaptureAccessRequested() {
         val secondaryCaptureAccessRequested =
-            SecondaryCaptureAccessRequestedWebhookEvent.builder()
+            SecondaryCaptureAccessRequestedEvent.builder()
                 .id("whe_1234567890abcdef1234567890abcdef")
                 .data(
-                    SecondaryCaptureAccessRequestedWebhookEvent.Data.builder()
+                    SecondaryCaptureAccessRequestedEventData.builder()
                         .studyId("stu_1234567890abcdef1234567890abcdef")
                         .studyInstanceUid("1.2.840.113619.2.55.3.1234567890")
                         .seriesInstanceUid("1.2.840.113619.2.55.3.1234567890.1")
@@ -150,10 +150,10 @@ internal class UnsafeUnwrapWebhookEventTest {
         val jsonMapper = jsonMapper()
         val unsafeUnwrapWebhookEvent =
             UnsafeUnwrapWebhookEvent.ofSecondaryCaptureAccessRequested(
-                SecondaryCaptureAccessRequestedWebhookEvent.builder()
+                SecondaryCaptureAccessRequestedEvent.builder()
                     .id("whe_1234567890abcdef1234567890abcdef")
                     .data(
-                        SecondaryCaptureAccessRequestedWebhookEvent.Data.builder()
+                        SecondaryCaptureAccessRequestedEventData.builder()
                             .studyId("stu_1234567890abcdef1234567890abcdef")
                             .studyInstanceUid("1.2.840.113619.2.55.3.1234567890")
                             .seriesInstanceUid("1.2.840.113619.2.55.3.1234567890.1")

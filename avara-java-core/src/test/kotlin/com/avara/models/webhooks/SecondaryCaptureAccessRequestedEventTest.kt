@@ -7,15 +7,15 @@ import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-internal class SecondaryCaptureAccessRequestedWebhookEventTest {
+internal class SecondaryCaptureAccessRequestedEventTest {
 
     @Test
     fun create() {
-        val secondaryCaptureAccessRequestedWebhookEvent =
-            SecondaryCaptureAccessRequestedWebhookEvent.builder()
+        val secondaryCaptureAccessRequestedEvent =
+            SecondaryCaptureAccessRequestedEvent.builder()
                 .id("whe_1234567890abcdef1234567890abcdef")
                 .data(
-                    SecondaryCaptureAccessRequestedWebhookEvent.Data.builder()
+                    SecondaryCaptureAccessRequestedEventData.builder()
                         .studyId("stu_1234567890abcdef1234567890abcdef")
                         .studyInstanceUid("1.2.840.113619.2.55.3.1234567890")
                         .seriesInstanceUid("1.2.840.113619.2.55.3.1234567890.1")
@@ -24,11 +24,11 @@ internal class SecondaryCaptureAccessRequestedWebhookEventTest {
                 )
                 .build()
 
-        assertThat(secondaryCaptureAccessRequestedWebhookEvent.id())
+        assertThat(secondaryCaptureAccessRequestedEvent.id())
             .isEqualTo("whe_1234567890abcdef1234567890abcdef")
-        assertThat(secondaryCaptureAccessRequestedWebhookEvent.data())
+        assertThat(secondaryCaptureAccessRequestedEvent.data())
             .isEqualTo(
-                SecondaryCaptureAccessRequestedWebhookEvent.Data.builder()
+                SecondaryCaptureAccessRequestedEventData.builder()
                     .studyId("stu_1234567890abcdef1234567890abcdef")
                     .studyInstanceUid("1.2.840.113619.2.55.3.1234567890")
                     .seriesInstanceUid("1.2.840.113619.2.55.3.1234567890.1")
@@ -40,11 +40,11 @@ internal class SecondaryCaptureAccessRequestedWebhookEventTest {
     @Test
     fun roundtrip() {
         val jsonMapper = jsonMapper()
-        val secondaryCaptureAccessRequestedWebhookEvent =
-            SecondaryCaptureAccessRequestedWebhookEvent.builder()
+        val secondaryCaptureAccessRequestedEvent =
+            SecondaryCaptureAccessRequestedEvent.builder()
                 .id("whe_1234567890abcdef1234567890abcdef")
                 .data(
-                    SecondaryCaptureAccessRequestedWebhookEvent.Data.builder()
+                    SecondaryCaptureAccessRequestedEventData.builder()
                         .studyId("stu_1234567890abcdef1234567890abcdef")
                         .studyInstanceUid("1.2.840.113619.2.55.3.1234567890")
                         .seriesInstanceUid("1.2.840.113619.2.55.3.1234567890.1")
@@ -53,13 +53,13 @@ internal class SecondaryCaptureAccessRequestedWebhookEventTest {
                 )
                 .build()
 
-        val roundtrippedSecondaryCaptureAccessRequestedWebhookEvent =
+        val roundtrippedSecondaryCaptureAccessRequestedEvent =
             jsonMapper.readValue(
-                jsonMapper.writeValueAsString(secondaryCaptureAccessRequestedWebhookEvent),
-                jacksonTypeRef<SecondaryCaptureAccessRequestedWebhookEvent>(),
+                jsonMapper.writeValueAsString(secondaryCaptureAccessRequestedEvent),
+                jacksonTypeRef<SecondaryCaptureAccessRequestedEvent>(),
             )
 
-        assertThat(roundtrippedSecondaryCaptureAccessRequestedWebhookEvent)
-            .isEqualTo(secondaryCaptureAccessRequestedWebhookEvent)
+        assertThat(roundtrippedSecondaryCaptureAccessRequestedEvent)
+            .isEqualTo(secondaryCaptureAccessRequestedEvent)
     }
 }
