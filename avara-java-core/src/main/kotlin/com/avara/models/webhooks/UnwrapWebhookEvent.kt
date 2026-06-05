@@ -28,8 +28,7 @@ class UnwrapWebhookEvent
 private constructor(
     private val studyAccessRequested: StudyAccessRequestedEvent? = null,
     private val reportDelivered: ReportDeliveredEvent? = null,
-    private val secondaryCaptureAccessRequested: SecondaryCaptureAccessRequestedWebhookEvent? =
-        null,
+    private val secondaryCaptureAccessRequested: SecondaryCaptureAccessRequestedEvent? = null,
     private val _json: JsonValue? = null,
 ) {
 
@@ -50,7 +49,7 @@ private constructor(
      * Webhook event sent when Avara needs presigned UPLOAD URLs for a secondary capture DICOM. This
      * is a synchronous webhook - you must respond with the upload URLs within the request timeout.
      */
-    fun secondaryCaptureAccessRequested(): Optional<SecondaryCaptureAccessRequestedWebhookEvent> =
+    fun secondaryCaptureAccessRequested(): Optional<SecondaryCaptureAccessRequestedEvent> =
         Optional.ofNullable(secondaryCaptureAccessRequested)
 
     fun isStudyAccessRequested(): Boolean = studyAccessRequested != null
@@ -76,7 +75,7 @@ private constructor(
      * Webhook event sent when Avara needs presigned UPLOAD URLs for a secondary capture DICOM. This
      * is a synchronous webhook - you must respond with the upload URLs within the request timeout.
      */
-    fun asSecondaryCaptureAccessRequested(): SecondaryCaptureAccessRequestedWebhookEvent =
+    fun asSecondaryCaptureAccessRequested(): SecondaryCaptureAccessRequestedEvent =
         secondaryCaptureAccessRequested.getOrThrow("secondaryCaptureAccessRequested")
 
     fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
@@ -147,7 +146,7 @@ private constructor(
                 }
 
                 override fun visitSecondaryCaptureAccessRequested(
-                    secondaryCaptureAccessRequested: SecondaryCaptureAccessRequestedWebhookEvent
+                    secondaryCaptureAccessRequested: SecondaryCaptureAccessRequestedEvent
                 ) {
                     secondaryCaptureAccessRequested.validate()
                 }
@@ -181,7 +180,7 @@ private constructor(
                     reportDelivered.validity()
 
                 override fun visitSecondaryCaptureAccessRequested(
-                    secondaryCaptureAccessRequested: SecondaryCaptureAccessRequestedWebhookEvent
+                    secondaryCaptureAccessRequested: SecondaryCaptureAccessRequestedEvent
                 ) = secondaryCaptureAccessRequested.validity()
 
                 override fun unknown(json: JsonValue?) = 0
@@ -238,7 +237,7 @@ private constructor(
          */
         @JvmStatic
         fun ofSecondaryCaptureAccessRequested(
-            secondaryCaptureAccessRequested: SecondaryCaptureAccessRequestedWebhookEvent
+            secondaryCaptureAccessRequested: SecondaryCaptureAccessRequestedEvent
         ) = UnwrapWebhookEvent(secondaryCaptureAccessRequested = secondaryCaptureAccessRequested)
     }
 
@@ -266,7 +265,7 @@ private constructor(
          * timeout.
          */
         fun visitSecondaryCaptureAccessRequested(
-            secondaryCaptureAccessRequested: SecondaryCaptureAccessRequestedWebhookEvent
+            secondaryCaptureAccessRequested: SecondaryCaptureAccessRequestedEvent
         ): T
 
         /**
@@ -304,7 +303,7 @@ private constructor(
                 "secondary_capture.access_requested" -> {
                     return tryDeserialize(
                             node,
-                            jacksonTypeRef<SecondaryCaptureAccessRequestedWebhookEvent>(),
+                            jacksonTypeRef<SecondaryCaptureAccessRequestedEvent>(),
                         )
                         ?.let {
                             UnwrapWebhookEvent(secondaryCaptureAccessRequested = it, _json = json)
