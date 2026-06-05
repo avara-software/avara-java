@@ -31,6 +31,7 @@ internal class UnwrapWebhookEventTest {
 
         assertThat(unwrapWebhookEvent.studyAccessRequested()).contains(studyAccessRequested)
         assertThat(unwrapWebhookEvent.reportDelivered()).isEmpty
+        assertThat(unwrapWebhookEvent.secondaryCaptureAccessRequested()).isEmpty
     }
 
     @Test
@@ -82,6 +83,7 @@ internal class UnwrapWebhookEventTest {
 
         assertThat(unwrapWebhookEvent.studyAccessRequested()).isEmpty
         assertThat(unwrapWebhookEvent.reportDelivered()).contains(reportDelivered)
+        assertThat(unwrapWebhookEvent.secondaryCaptureAccessRequested()).isEmpty
     }
 
     @Test
@@ -102,6 +104,57 @@ internal class UnwrapWebhookEventTest {
                             .plainText(
                                 "FINDINGS: Normal brain MRI. No acute intracranial abnormality..."
                             )
+                            .build()
+                    )
+                    .build()
+            )
+
+        val roundtrippedUnwrapWebhookEvent =
+            jsonMapper.readValue(
+                jsonMapper.writeValueAsString(unwrapWebhookEvent),
+                jacksonTypeRef<UnwrapWebhookEvent>(),
+            )
+
+        assertThat(roundtrippedUnwrapWebhookEvent).isEqualTo(unwrapWebhookEvent)
+    }
+
+    @Test
+    fun ofSecondaryCaptureAccessRequested() {
+        val secondaryCaptureAccessRequested =
+            SecondaryCaptureAccessRequestedEvent.builder()
+                .id("whe_1234567890abcdef1234567890abcdef")
+                .data(
+                    SecondaryCaptureAccessRequestedEventData.builder()
+                        .studyId("stu_1234567890abcdef1234567890abcdef")
+                        .studyInstanceUid("1.2.840.113619.2.55.3.1234567890")
+                        .seriesInstanceUid("1.2.840.113619.2.55.3.1234567890.1")
+                        .sopInstanceUid("1.2.840.113619.2.55.3.1234567890.1.1")
+                        .build()
+                )
+                .build()
+
+        val unwrapWebhookEvent =
+            UnwrapWebhookEvent.ofSecondaryCaptureAccessRequested(secondaryCaptureAccessRequested)
+
+        assertThat(unwrapWebhookEvent.studyAccessRequested()).isEmpty
+        assertThat(unwrapWebhookEvent.reportDelivered()).isEmpty
+        assertThat(unwrapWebhookEvent.secondaryCaptureAccessRequested())
+            .contains(secondaryCaptureAccessRequested)
+    }
+
+    @Test
+    fun ofSecondaryCaptureAccessRequestedRoundtrip() {
+        val jsonMapper = jsonMapper()
+        val unwrapWebhookEvent =
+            UnwrapWebhookEvent.ofSecondaryCaptureAccessRequested(
+                SecondaryCaptureAccessRequestedEvent.builder()
+                    .id("whe_1234567890abcdef1234567890abcdef")
+                    .data(
+                        SecondaryCaptureAccessRequestedEventData.builder()
+                            .studyId("stu_1234567890abcdef1234567890abcdef")
+                            .studyInstanceUid("1.2.840.113619.2.55.3.1234567890")
+                            .seriesInstanceUid("1.2.840.113619.2.55.3.1234567890.1")
+                            .sopInstanceUid("1.2.840.113619.2.55.3.1234567890.1.1")
                             .build()
                     )
                     .build()
