@@ -28,6 +28,7 @@ class UnsafeUnwrapWebhookEvent
 private constructor(
     private val studyAccessRequested: StudyAccessRequestedEvent? = null,
     private val reportDelivered: ReportDeliveredEvent? = null,
+    private val secondaryCaptureAccessRequested: SecondaryCaptureAccessRequestedEvent? = null,
     private val _json: JsonValue? = null,
 ) {
 
@@ -44,9 +45,18 @@ private constructor(
      */
     fun reportDelivered(): Optional<ReportDeliveredEvent> = Optional.ofNullable(reportDelivered)
 
+    /**
+     * Webhook event sent when Avara needs presigned UPLOAD URLs for a secondary capture DICOM. This
+     * is a synchronous webhook - you must respond with the upload URLs within the request timeout.
+     */
+    fun secondaryCaptureAccessRequested(): Optional<SecondaryCaptureAccessRequestedEvent> =
+        Optional.ofNullable(secondaryCaptureAccessRequested)
+
     fun isStudyAccessRequested(): Boolean = studyAccessRequested != null
 
     fun isReportDelivered(): Boolean = reportDelivered != null
+
+    fun isSecondaryCaptureAccessRequested(): Boolean = secondaryCaptureAccessRequested != null
 
     /**
      * Webhook event sent when Avara needs presigned URLs for DICOM images. This is a synchronous
@@ -60,6 +70,13 @@ private constructor(
      * with a simple acknowledgment.
      */
     fun asReportDelivered(): ReportDeliveredEvent = reportDelivered.getOrThrow("reportDelivered")
+
+    /**
+     * Webhook event sent when Avara needs presigned UPLOAD URLs for a secondary capture DICOM. This
+     * is a synchronous webhook - you must respond with the upload URLs within the request timeout.
+     */
+    fun asSecondaryCaptureAccessRequested(): SecondaryCaptureAccessRequestedEvent =
+        secondaryCaptureAccessRequested.getOrThrow("secondaryCaptureAccessRequested")
 
     fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
 
@@ -96,6 +113,8 @@ private constructor(
         when {
             studyAccessRequested != null -> visitor.visitStudyAccessRequested(studyAccessRequested)
             reportDelivered != null -> visitor.visitReportDelivered(reportDelivered)
+            secondaryCaptureAccessRequested != null ->
+                visitor.visitSecondaryCaptureAccessRequested(secondaryCaptureAccessRequested)
             else -> visitor.unknown(_json)
         }
 
@@ -124,6 +143,12 @@ private constructor(
 
                 override fun visitReportDelivered(reportDelivered: ReportDeliveredEvent) {
                     reportDelivered.validate()
+                }
+
+                override fun visitSecondaryCaptureAccessRequested(
+                    secondaryCaptureAccessRequested: SecondaryCaptureAccessRequestedEvent
+                ) {
+                    secondaryCaptureAccessRequested.validate()
                 }
             }
         )
@@ -154,6 +179,10 @@ private constructor(
                 override fun visitReportDelivered(reportDelivered: ReportDeliveredEvent) =
                     reportDelivered.validity()
 
+                override fun visitSecondaryCaptureAccessRequested(
+                    secondaryCaptureAccessRequested: SecondaryCaptureAccessRequestedEvent
+                ) = secondaryCaptureAccessRequested.validity()
+
                 override fun unknown(json: JsonValue?) = 0
             }
         )
@@ -165,16 +194,20 @@ private constructor(
 
         return other is UnsafeUnwrapWebhookEvent &&
             studyAccessRequested == other.studyAccessRequested &&
-            reportDelivered == other.reportDelivered
+            reportDelivered == other.reportDelivered &&
+            secondaryCaptureAccessRequested == other.secondaryCaptureAccessRequested
     }
 
-    override fun hashCode(): Int = Objects.hash(studyAccessRequested, reportDelivered)
+    override fun hashCode(): Int =
+        Objects.hash(studyAccessRequested, reportDelivered, secondaryCaptureAccessRequested)
 
     override fun toString(): String =
         when {
             studyAccessRequested != null ->
                 "UnsafeUnwrapWebhookEvent{studyAccessRequested=$studyAccessRequested}"
             reportDelivered != null -> "UnsafeUnwrapWebhookEvent{reportDelivered=$reportDelivered}"
+            secondaryCaptureAccessRequested != null ->
+                "UnsafeUnwrapWebhookEvent{secondaryCaptureAccessRequested=$secondaryCaptureAccessRequested}"
             _json != null -> "UnsafeUnwrapWebhookEvent{_unknown=$_json}"
             else -> throw IllegalStateException("Invalid UnsafeUnwrapWebhookEvent")
         }
@@ -196,6 +229,19 @@ private constructor(
         @JvmStatic
         fun ofReportDelivered(reportDelivered: ReportDeliveredEvent) =
             UnsafeUnwrapWebhookEvent(reportDelivered = reportDelivered)
+
+        /**
+         * Webhook event sent when Avara needs presigned UPLOAD URLs for a secondary capture DICOM.
+         * This is a synchronous webhook - you must respond with the upload URLs within the request
+         * timeout.
+         */
+        @JvmStatic
+        fun ofSecondaryCaptureAccessRequested(
+            secondaryCaptureAccessRequested: SecondaryCaptureAccessRequestedEvent
+        ) =
+            UnsafeUnwrapWebhookEvent(
+                secondaryCaptureAccessRequested = secondaryCaptureAccessRequested
+            )
     }
 
     /**
@@ -215,6 +261,15 @@ private constructor(
          * respond with a simple acknowledgment.
          */
         fun visitReportDelivered(reportDelivered: ReportDeliveredEvent): T
+
+        /**
+         * Webhook event sent when Avara needs presigned UPLOAD URLs for a secondary capture DICOM.
+         * This is a synchronous webhook - you must respond with the upload URLs within the request
+         * timeout.
+         */
+        fun visitSecondaryCaptureAccessRequested(
+            secondaryCaptureAccessRequested: SecondaryCaptureAccessRequestedEvent
+        ): T
 
         /**
          * Maps an unknown variant of [UnsafeUnwrapWebhookEvent] to a value of type [T].
@@ -249,6 +304,18 @@ private constructor(
                         UnsafeUnwrapWebhookEvent(reportDelivered = it, _json = json)
                     } ?: UnsafeUnwrapWebhookEvent(_json = json)
                 }
+                "secondary_capture.access_requested" -> {
+                    return tryDeserialize(
+                            node,
+                            jacksonTypeRef<SecondaryCaptureAccessRequestedEvent>(),
+                        )
+                        ?.let {
+                            UnsafeUnwrapWebhookEvent(
+                                secondaryCaptureAccessRequested = it,
+                                _json = json,
+                            )
+                        } ?: UnsafeUnwrapWebhookEvent(_json = json)
+                }
             }
 
             return UnsafeUnwrapWebhookEvent(_json = json)
@@ -267,6 +334,8 @@ private constructor(
                 value.studyAccessRequested != null ->
                     generator.writeObject(value.studyAccessRequested)
                 value.reportDelivered != null -> generator.writeObject(value.reportDelivered)
+                value.secondaryCaptureAccessRequested != null ->
+                    generator.writeObject(value.secondaryCaptureAccessRequested)
                 value._json != null -> generator.writeObject(value._json)
                 else -> throw IllegalStateException("Invalid UnsafeUnwrapWebhookEvent")
             }
