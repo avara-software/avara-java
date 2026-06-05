@@ -19,13 +19,17 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/** Response expected by Avara for study access webhook. Provide presigned URLs for DICOM images. */
+/**
+ * Response expected by Avara for study access webhook. Provide presigned URLs for DICOM images and
+ * optionally for non-DICOM media.
+ */
 class StudyAccessRequestedResponse
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val authorized: JsonField<Boolean>,
     private val urls: JsonField<List<String>>,
     private val error: JsonField<String>,
+    private val mediaUrls: JsonField<List<StudyAccessRequestedMediaUrl>>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
@@ -36,7 +40,10 @@ private constructor(
         authorized: JsonField<Boolean> = JsonMissing.of(),
         @JsonProperty("urls") @ExcludeMissing urls: JsonField<List<String>> = JsonMissing.of(),
         @JsonProperty("error") @ExcludeMissing error: JsonField<String> = JsonMissing.of(),
-    ) : this(authorized, urls, error, mutableMapOf())
+        @JsonProperty("mediaUrls")
+        @ExcludeMissing
+        mediaUrls: JsonField<List<StudyAccessRequestedMediaUrl>> = JsonMissing.of(),
+    ) : this(authorized, urls, error, mediaUrls, mutableMapOf())
 
     /**
      * Whether access is authorized for this study
@@ -63,6 +70,15 @@ private constructor(
     fun error(): Optional<String> = error.getOptional("error")
 
     /**
+     * Optional presigned URLs for non-DICOM media (images, PDFs, videos) associated with the study.
+     *
+     * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun mediaUrls(): Optional<List<StudyAccessRequestedMediaUrl>> =
+        mediaUrls.getOptional("mediaUrls")
+
+    /**
      * Returns the raw JSON value of [authorized].
      *
      * Unlike [authorized], this method doesn't throw if the JSON field has an unexpected type.
@@ -82,6 +98,15 @@ private constructor(
      * Unlike [error], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("error") @ExcludeMissing fun _error(): JsonField<String> = error
+
+    /**
+     * Returns the raw JSON value of [mediaUrls].
+     *
+     * Unlike [mediaUrls], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("mediaUrls")
+    @ExcludeMissing
+    fun _mediaUrls(): JsonField<List<StudyAccessRequestedMediaUrl>> = mediaUrls
 
     @JsonAnySetter
     private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -115,6 +140,7 @@ private constructor(
         private var authorized: JsonField<Boolean>? = null
         private var urls: JsonField<MutableList<String>>? = null
         private var error: JsonField<String> = JsonMissing.of()
+        private var mediaUrls: JsonField<MutableList<StudyAccessRequestedMediaUrl>>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
@@ -122,6 +148,7 @@ private constructor(
             authorized = studyAccessRequestedResponse.authorized
             urls = studyAccessRequestedResponse.urls.map { it.toMutableList() }
             error = studyAccessRequestedResponse.error
+            mediaUrls = studyAccessRequestedResponse.mediaUrls.map { it.toMutableList() }
             additionalProperties = studyAccessRequestedResponse.additionalProperties.toMutableMap()
         }
 
@@ -171,6 +198,36 @@ private constructor(
          */
         fun error(error: JsonField<String>) = apply { this.error = error }
 
+        /**
+         * Optional presigned URLs for non-DICOM media (images, PDFs, videos) associated with the
+         * study.
+         */
+        fun mediaUrls(mediaUrls: List<StudyAccessRequestedMediaUrl>) =
+            mediaUrls(JsonField.of(mediaUrls))
+
+        /**
+         * Sets [Builder.mediaUrls] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.mediaUrls] with a well-typed
+         * `List<StudyAccessRequestedMediaUrl>` value instead. This method is primarily for setting
+         * the field to an undocumented or not yet supported value.
+         */
+        fun mediaUrls(mediaUrls: JsonField<List<StudyAccessRequestedMediaUrl>>) = apply {
+            this.mediaUrls = mediaUrls.map { it.toMutableList() }
+        }
+
+        /**
+         * Adds a single [StudyAccessRequestedMediaUrl] to [mediaUrls].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
+        fun addMediaUrl(mediaUrl: StudyAccessRequestedMediaUrl) = apply {
+            mediaUrls =
+                (mediaUrls ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("mediaUrls", it).add(mediaUrl)
+                }
+        }
+
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
             putAllAdditionalProperties(additionalProperties)
@@ -208,6 +265,7 @@ private constructor(
                 checkRequired("authorized", authorized),
                 checkRequired("urls", urls).map { it.toImmutable() },
                 error,
+                (mediaUrls ?: JsonMissing.of()).map { it.toImmutable() },
                 additionalProperties.toMutableMap(),
             )
     }
@@ -230,6 +288,7 @@ private constructor(
         authorized()
         urls()
         error()
+        mediaUrls().ifPresent { it.forEach { it.validate() } }
         validated = true
     }
 
@@ -250,7 +309,8 @@ private constructor(
     internal fun validity(): Int =
         (if (authorized.asKnown().isPresent) 1 else 0) +
             (urls.asKnown().getOrNull()?.size ?: 0) +
-            (if (error.asKnown().isPresent) 1 else 0)
+            (if (error.asKnown().isPresent) 1 else 0) +
+            (mediaUrls.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
@@ -261,15 +321,16 @@ private constructor(
             authorized == other.authorized &&
             urls == other.urls &&
             error == other.error &&
+            mediaUrls == other.mediaUrls &&
             additionalProperties == other.additionalProperties
     }
 
     private val hashCode: Int by lazy {
-        Objects.hash(authorized, urls, error, additionalProperties)
+        Objects.hash(authorized, urls, error, mediaUrls, additionalProperties)
     }
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "StudyAccessRequestedResponse{authorized=$authorized, urls=$urls, error=$error, additionalProperties=$additionalProperties}"
+        "StudyAccessRequestedResponse{authorized=$authorized, urls=$urls, error=$error, mediaUrls=$mediaUrls, additionalProperties=$additionalProperties}"
 }
