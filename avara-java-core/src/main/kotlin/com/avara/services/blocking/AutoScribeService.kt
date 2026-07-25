@@ -3,6 +3,7 @@
 package com.avara.services.blocking
 
 import com.avara.core.ClientOptions
+import com.avara.services.blocking.autoscribe.ClinicalReferenceService
 import com.avara.services.blocking.autoscribe.ReportService
 import com.avara.services.blocking.autoscribe.StudyService
 import com.avara.services.blocking.autoscribe.UserService
@@ -22,6 +23,8 @@ interface AutoScribeService {
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): AutoScribeService
 
+    fun clinicalReferences(): ClinicalReferenceService
+
     fun studies(): StudyService
 
     fun users(): UserService
@@ -39,6 +42,8 @@ interface AutoScribeService {
         fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
         ): AutoScribeService.WithRawResponse
+
+        fun clinicalReferences(): ClinicalReferenceService.WithRawResponse
 
         fun studies(): StudyService.WithRawResponse
 

@@ -249,43 +249,43 @@ To iterate through all results across all pages, use the `autoPager()` method, w
 When using the synchronous client, the method returns an [`Iterable`](https://docs.oracle.com/javase/8/docs/api/java/lang/Iterable.html)
 
 ```java
-import com.avara.models.autoscribe.studies.StudyListPage;
-import com.avara.models.autoscribe.studies.StudyListResponse;
+import com.avara.models.autoscribe.clinicalreferences.ClinicalReference;
+import com.avara.models.autoscribe.clinicalreferences.ClinicalReferenceListPage;
 
-StudyListPage page = client.autoScribe().studies().list();
+ClinicalReferenceListPage page = client.autoScribe().clinicalReferences().list();
 
 // Process as an Iterable
-for (StudyListResponse study : page.autoPager()) {
-    System.out.println(study);
+for (ClinicalReference clinicalReference : page.autoPager()) {
+    System.out.println(clinicalReference);
 }
 
 // Process as a Stream
 page.autoPager()
     .stream()
     .limit(50)
-    .forEach(study -> System.out.println(study));
+    .forEach(clinicalReference -> System.out.println(clinicalReference));
 ```
 
 When using the asynchronous client, the method returns an [`AsyncStreamResponse`](avara-java-core/src/main/kotlin/com/avara/core/http/AsyncStreamResponse.kt):
 
 ```java
 import com.avara.core.http.AsyncStreamResponse;
-import com.avara.models.autoscribe.studies.StudyListPageAsync;
-import com.avara.models.autoscribe.studies.StudyListResponse;
+import com.avara.models.autoscribe.clinicalreferences.ClinicalReference;
+import com.avara.models.autoscribe.clinicalreferences.ClinicalReferenceListPageAsync;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
-CompletableFuture<StudyListPageAsync> pageFuture = client.async().autoScribe().studies().list();
+CompletableFuture<ClinicalReferenceListPageAsync> pageFuture = client.async().autoScribe().clinicalReferences().list();
 
-pageFuture.thenRun(page -> page.autoPager().subscribe(study -> {
-    System.out.println(study);
+pageFuture.thenRun(page -> page.autoPager().subscribe(clinicalReference -> {
+    System.out.println(clinicalReference);
 }));
 
 // If you need to handle errors or completion of the stream
 pageFuture.thenRun(page -> page.autoPager().subscribe(new AsyncStreamResponse.Handler<>() {
     @Override
-    public void onNext(StudyListResponse study) {
-        System.out.println(study);
+    public void onNext(ClinicalReference clinicalReference) {
+        System.out.println(clinicalReference);
     }
 
     @Override
@@ -301,8 +301,8 @@ pageFuture.thenRun(page -> page.autoPager().subscribe(new AsyncStreamResponse.Ha
 
 // Or use futures
 pageFuture.thenRun(page -> page.autoPager()
-    .subscribe(study -> {
-        System.out.println(study);
+    .subscribe(clinicalReference -> {
+        System.out.println(clinicalReference);
     })
     .onCompleteFuture()
     .whenComplete((unused, error) -> {
@@ -321,13 +321,13 @@ To access individual page items and manually request the next page, use the `ite
 `hasNextPage()`, and `nextPage()` methods:
 
 ```java
-import com.avara.models.autoscribe.studies.StudyListPage;
-import com.avara.models.autoscribe.studies.StudyListResponse;
+import com.avara.models.autoscribe.clinicalreferences.ClinicalReference;
+import com.avara.models.autoscribe.clinicalreferences.ClinicalReferenceListPage;
 
-StudyListPage page = client.autoScribe().studies().list();
+ClinicalReferenceListPage page = client.autoScribe().clinicalReferences().list();
 while (true) {
-    for (StudyListResponse study : page.items()) {
-        System.out.println(study);
+    for (ClinicalReference clinicalReference : page.items()) {
+        System.out.println(clinicalReference);
     }
 
     if (!page.hasNextPage()) {

@@ -3,6 +3,8 @@
 package com.avara.services.blocking
 
 import com.avara.core.ClientOptions
+import com.avara.services.blocking.autoscribe.ClinicalReferenceService
+import com.avara.services.blocking.autoscribe.ClinicalReferenceServiceImpl
 import com.avara.services.blocking.autoscribe.ReportService
 import com.avara.services.blocking.autoscribe.ReportServiceImpl
 import com.avara.services.blocking.autoscribe.StudyService
@@ -18,6 +20,10 @@ class AutoScribeServiceImpl internal constructor(private val clientOptions: Clie
         WithRawResponseImpl(clientOptions)
     }
 
+    private val clinicalReferences: ClinicalReferenceService by lazy {
+        ClinicalReferenceServiceImpl(clientOptions)
+    }
+
     private val studies: StudyService by lazy { StudyServiceImpl(clientOptions) }
 
     private val users: UserService by lazy { UserServiceImpl(clientOptions) }
@@ -29,6 +35,8 @@ class AutoScribeServiceImpl internal constructor(private val clientOptions: Clie
     override fun withOptions(modifier: Consumer<ClientOptions.Builder>): AutoScribeService =
         AutoScribeServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
+    override fun clinicalReferences(): ClinicalReferenceService = clinicalReferences
+
     override fun studies(): StudyService = studies
 
     override fun users(): UserService = users
@@ -37,6 +45,10 @@ class AutoScribeServiceImpl internal constructor(private val clientOptions: Clie
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         AutoScribeService.WithRawResponse {
+
+        private val clinicalReferences: ClinicalReferenceService.WithRawResponse by lazy {
+            ClinicalReferenceServiceImpl.WithRawResponseImpl(clientOptions)
+        }
 
         private val studies: StudyService.WithRawResponse by lazy {
             StudyServiceImpl.WithRawResponseImpl(clientOptions)
@@ -56,6 +68,9 @@ class AutoScribeServiceImpl internal constructor(private val clientOptions: Clie
             AutoScribeServiceImpl.WithRawResponseImpl(
                 clientOptions.toBuilder().apply(modifier::accept).build()
             )
+
+        override fun clinicalReferences(): ClinicalReferenceService.WithRawResponse =
+            clinicalReferences
 
         override fun studies(): StudyService.WithRawResponse = studies
 

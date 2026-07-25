@@ -1,0 +1,292 @@
+// File generated from our OpenAPI spec by Stainless.
+
+package com.avara.models.autoscribe.clinicalreferences
+
+import com.avara.core.Params
+import com.avara.core.http.Headers
+import com.avara.core.http.QueryParams
+import com.avara.models.autoscribe.ClinicalReferenceType
+import java.util.Objects
+import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
+
+/** Lists clinical references with cursor-based pagination and optional filters. */
+class ClinicalReferenceListParams
+private constructor(
+    private val cursor: String?,
+    private val expressCustomerId: String?,
+    private val isActive: Boolean?,
+    private val limit: Double?,
+    private val type: ClinicalReferenceType?,
+    private val additionalHeaders: Headers,
+    private val additionalQueryParams: QueryParams,
+) : Params {
+
+    /** Base64 encoded cursor from previous response */
+    fun cursor(): Optional<String> = Optional.ofNullable(cursor)
+
+    /** Filter by Express customer ID. Omit for no filter; pass null for clinic-wide references */
+    fun expressCustomerId(): Optional<String> = Optional.ofNullable(expressCustomerId)
+
+    /**
+     * Filter by active status. Defaults to true (active references only). Pass false to list
+     * inactive references.
+     */
+    fun isActive(): Optional<Boolean> = Optional.ofNullable(isActive)
+
+    /** Number of results to return (1-100) */
+    fun limit(): Optional<Double> = Optional.ofNullable(limit)
+
+    /** Filter by clinical reference type */
+    fun type(): Optional<ClinicalReferenceType> = Optional.ofNullable(type)
+
+    /** Additional headers to send with the request. */
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    /** Additional query param to send with the request. */
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun toBuilder() = Builder().from(this)
+
+    companion object {
+
+        @JvmStatic fun none(): ClinicalReferenceListParams = builder().build()
+
+        /**
+         * Returns a mutable builder for constructing an instance of [ClinicalReferenceListParams].
+         */
+        @JvmStatic fun builder() = Builder()
+    }
+
+    /** A builder for [ClinicalReferenceListParams]. */
+    class Builder internal constructor() {
+
+        private var cursor: String? = null
+        private var expressCustomerId: String? = null
+        private var isActive: Boolean? = null
+        private var limit: Double? = null
+        private var type: ClinicalReferenceType? = null
+        private var additionalHeaders: Headers.Builder = Headers.builder()
+        private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
+
+        @JvmSynthetic
+        internal fun from(clinicalReferenceListParams: ClinicalReferenceListParams) = apply {
+            cursor = clinicalReferenceListParams.cursor
+            expressCustomerId = clinicalReferenceListParams.expressCustomerId
+            isActive = clinicalReferenceListParams.isActive
+            limit = clinicalReferenceListParams.limit
+            type = clinicalReferenceListParams.type
+            additionalHeaders = clinicalReferenceListParams.additionalHeaders.toBuilder()
+            additionalQueryParams = clinicalReferenceListParams.additionalQueryParams.toBuilder()
+        }
+
+        /** Base64 encoded cursor from previous response */
+        fun cursor(cursor: String?) = apply { this.cursor = cursor }
+
+        /** Alias for calling [Builder.cursor] with `cursor.orElse(null)`. */
+        fun cursor(cursor: Optional<String>) = cursor(cursor.getOrNull())
+
+        /**
+         * Filter by Express customer ID. Omit for no filter; pass null for clinic-wide references
+         */
+        fun expressCustomerId(expressCustomerId: String?) = apply {
+            this.expressCustomerId = expressCustomerId
+        }
+
+        /** Alias for calling [Builder.expressCustomerId] with `expressCustomerId.orElse(null)`. */
+        fun expressCustomerId(expressCustomerId: Optional<String>) =
+            expressCustomerId(expressCustomerId.getOrNull())
+
+        /**
+         * Filter by active status. Defaults to true (active references only). Pass false to list
+         * inactive references.
+         */
+        fun isActive(isActive: Boolean?) = apply { this.isActive = isActive }
+
+        /**
+         * Alias for [Builder.isActive].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
+         */
+        fun isActive(isActive: Boolean) = isActive(isActive as Boolean?)
+
+        /** Alias for calling [Builder.isActive] with `isActive.orElse(null)`. */
+        fun isActive(isActive: Optional<Boolean>) = isActive(isActive.getOrNull())
+
+        /** Number of results to return (1-100) */
+        fun limit(limit: Double?) = apply { this.limit = limit }
+
+        /**
+         * Alias for [Builder.limit].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
+         */
+        fun limit(limit: Double) = limit(limit as Double?)
+
+        /** Alias for calling [Builder.limit] with `limit.orElse(null)`. */
+        fun limit(limit: Optional<Double>) = limit(limit.getOrNull())
+
+        /** Filter by clinical reference type */
+        fun type(type: ClinicalReferenceType?) = apply { this.type = type }
+
+        /** Alias for calling [Builder.type] with `type.orElse(null)`. */
+        fun type(type: Optional<ClinicalReferenceType>) = type(type.getOrNull())
+
+        fun additionalHeaders(additionalHeaders: Headers) = apply {
+            this.additionalHeaders.clear()
+            putAllAdditionalHeaders(additionalHeaders)
+        }
+
+        fun additionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
+            this.additionalHeaders.clear()
+            putAllAdditionalHeaders(additionalHeaders)
+        }
+
+        fun putAdditionalHeader(name: String, value: String) = apply {
+            additionalHeaders.put(name, value)
+        }
+
+        fun putAdditionalHeaders(name: String, values: Iterable<String>) = apply {
+            additionalHeaders.put(name, values)
+        }
+
+        fun putAllAdditionalHeaders(additionalHeaders: Headers) = apply {
+            this.additionalHeaders.putAll(additionalHeaders)
+        }
+
+        fun putAllAdditionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
+            this.additionalHeaders.putAll(additionalHeaders)
+        }
+
+        fun replaceAdditionalHeaders(name: String, value: String) = apply {
+            additionalHeaders.replace(name, value)
+        }
+
+        fun replaceAdditionalHeaders(name: String, values: Iterable<String>) = apply {
+            additionalHeaders.replace(name, values)
+        }
+
+        fun replaceAllAdditionalHeaders(additionalHeaders: Headers) = apply {
+            this.additionalHeaders.replaceAll(additionalHeaders)
+        }
+
+        fun replaceAllAdditionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
+            this.additionalHeaders.replaceAll(additionalHeaders)
+        }
+
+        fun removeAdditionalHeaders(name: String) = apply { additionalHeaders.remove(name) }
+
+        fun removeAllAdditionalHeaders(names: Set<String>) = apply {
+            additionalHeaders.removeAll(names)
+        }
+
+        fun additionalQueryParams(additionalQueryParams: QueryParams) = apply {
+            this.additionalQueryParams.clear()
+            putAllAdditionalQueryParams(additionalQueryParams)
+        }
+
+        fun additionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) = apply {
+            this.additionalQueryParams.clear()
+            putAllAdditionalQueryParams(additionalQueryParams)
+        }
+
+        fun putAdditionalQueryParam(key: String, value: String) = apply {
+            additionalQueryParams.put(key, value)
+        }
+
+        fun putAdditionalQueryParams(key: String, values: Iterable<String>) = apply {
+            additionalQueryParams.put(key, values)
+        }
+
+        fun putAllAdditionalQueryParams(additionalQueryParams: QueryParams) = apply {
+            this.additionalQueryParams.putAll(additionalQueryParams)
+        }
+
+        fun putAllAdditionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) =
+            apply {
+                this.additionalQueryParams.putAll(additionalQueryParams)
+            }
+
+        fun replaceAdditionalQueryParams(key: String, value: String) = apply {
+            additionalQueryParams.replace(key, value)
+        }
+
+        fun replaceAdditionalQueryParams(key: String, values: Iterable<String>) = apply {
+            additionalQueryParams.replace(key, values)
+        }
+
+        fun replaceAllAdditionalQueryParams(additionalQueryParams: QueryParams) = apply {
+            this.additionalQueryParams.replaceAll(additionalQueryParams)
+        }
+
+        fun replaceAllAdditionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) =
+            apply {
+                this.additionalQueryParams.replaceAll(additionalQueryParams)
+            }
+
+        fun removeAdditionalQueryParams(key: String) = apply { additionalQueryParams.remove(key) }
+
+        fun removeAllAdditionalQueryParams(keys: Set<String>) = apply {
+            additionalQueryParams.removeAll(keys)
+        }
+
+        /**
+         * Returns an immutable instance of [ClinicalReferenceListParams].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
+        fun build(): ClinicalReferenceListParams =
+            ClinicalReferenceListParams(
+                cursor,
+                expressCustomerId,
+                isActive,
+                limit,
+                type,
+                additionalHeaders.build(),
+                additionalQueryParams.build(),
+            )
+    }
+
+    override fun _headers(): Headers = additionalHeaders
+
+    override fun _queryParams(): QueryParams =
+        QueryParams.builder()
+            .apply {
+                cursor?.let { put("cursor", it) }
+                expressCustomerId?.let { put("expressCustomerId", it) }
+                isActive?.let { put("isActive", it.toString()) }
+                limit?.let { put("limit", it.toString()) }
+                type?.let { put("type", it.toString()) }
+                putAll(additionalQueryParams)
+            }
+            .build()
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return other is ClinicalReferenceListParams &&
+            cursor == other.cursor &&
+            expressCustomerId == other.expressCustomerId &&
+            isActive == other.isActive &&
+            limit == other.limit &&
+            type == other.type &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
+    }
+
+    override fun hashCode(): Int =
+        Objects.hash(
+            cursor,
+            expressCustomerId,
+            isActive,
+            limit,
+            type,
+            additionalHeaders,
+            additionalQueryParams,
+        )
+
+    override fun toString() =
+        "ClinicalReferenceListParams{cursor=$cursor, expressCustomerId=$expressCustomerId, isActive=$isActive, limit=$limit, type=$type, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+}
