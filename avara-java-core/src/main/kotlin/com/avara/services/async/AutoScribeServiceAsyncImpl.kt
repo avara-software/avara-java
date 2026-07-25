@@ -3,6 +3,8 @@
 package com.avara.services.async
 
 import com.avara.core.ClientOptions
+import com.avara.services.async.autoscribe.ClinicalReferenceServiceAsync
+import com.avara.services.async.autoscribe.ClinicalReferenceServiceAsyncImpl
 import com.avara.services.async.autoscribe.ReportServiceAsync
 import com.avara.services.async.autoscribe.ReportServiceAsyncImpl
 import com.avara.services.async.autoscribe.StudyServiceAsync
@@ -18,6 +20,10 @@ class AutoScribeServiceAsyncImpl internal constructor(private val clientOptions:
         WithRawResponseImpl(clientOptions)
     }
 
+    private val clinicalReferences: ClinicalReferenceServiceAsync by lazy {
+        ClinicalReferenceServiceAsyncImpl(clientOptions)
+    }
+
     private val studies: StudyServiceAsync by lazy { StudyServiceAsyncImpl(clientOptions) }
 
     private val users: UserServiceAsync by lazy { UserServiceAsyncImpl(clientOptions) }
@@ -29,6 +35,8 @@ class AutoScribeServiceAsyncImpl internal constructor(private val clientOptions:
     override fun withOptions(modifier: Consumer<ClientOptions.Builder>): AutoScribeServiceAsync =
         AutoScribeServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
+    override fun clinicalReferences(): ClinicalReferenceServiceAsync = clinicalReferences
+
     override fun studies(): StudyServiceAsync = studies
 
     override fun users(): UserServiceAsync = users
@@ -37,6 +45,10 @@ class AutoScribeServiceAsyncImpl internal constructor(private val clientOptions:
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         AutoScribeServiceAsync.WithRawResponse {
+
+        private val clinicalReferences: ClinicalReferenceServiceAsync.WithRawResponse by lazy {
+            ClinicalReferenceServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
 
         private val studies: StudyServiceAsync.WithRawResponse by lazy {
             StudyServiceAsyncImpl.WithRawResponseImpl(clientOptions)
@@ -56,6 +68,9 @@ class AutoScribeServiceAsyncImpl internal constructor(private val clientOptions:
             AutoScribeServiceAsyncImpl.WithRawResponseImpl(
                 clientOptions.toBuilder().apply(modifier::accept).build()
             )
+
+        override fun clinicalReferences(): ClinicalReferenceServiceAsync.WithRawResponse =
+            clinicalReferences
 
         override fun studies(): StudyServiceAsync.WithRawResponse = studies
 
