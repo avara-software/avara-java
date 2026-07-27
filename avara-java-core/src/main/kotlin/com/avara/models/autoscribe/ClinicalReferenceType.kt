@@ -30,7 +30,7 @@ class ClinicalReferenceType @JsonCreator private constructor(private val value: 
 
         @JvmField val STUDY_DESCRIPTION = of("study_description")
 
-        @JvmField val IMAGING_PROTOCOL = of("imaging_protocol")
+        @JvmField val PROCEDURE = of("procedure")
 
         @JvmStatic fun of(value: String) = ClinicalReferenceType(JsonField.of(value))
     }
@@ -40,7 +40,7 @@ class ClinicalReferenceType @JsonCreator private constructor(private val value: 
         FACILITY,
         REFERRING_PROVIDER,
         STUDY_DESCRIPTION,
-        IMAGING_PROTOCOL,
+        PROCEDURE,
     }
 
     /**
@@ -56,7 +56,7 @@ class ClinicalReferenceType @JsonCreator private constructor(private val value: 
         FACILITY,
         REFERRING_PROVIDER,
         STUDY_DESCRIPTION,
-        IMAGING_PROTOCOL,
+        PROCEDURE,
         /**
          * An enum member indicating that [ClinicalReferenceType] was instantiated with an unknown
          * value.
@@ -76,7 +76,7 @@ class ClinicalReferenceType @JsonCreator private constructor(private val value: 
             FACILITY -> Value.FACILITY
             REFERRING_PROVIDER -> Value.REFERRING_PROVIDER
             STUDY_DESCRIPTION -> Value.STUDY_DESCRIPTION
-            IMAGING_PROTOCOL -> Value.IMAGING_PROTOCOL
+            PROCEDURE -> Value.PROCEDURE
             else -> Value._UNKNOWN
         }
 
@@ -93,7 +93,7 @@ class ClinicalReferenceType @JsonCreator private constructor(private val value: 
             FACILITY -> Known.FACILITY
             REFERRING_PROVIDER -> Known.REFERRING_PROVIDER
             STUDY_DESCRIPTION -> Known.STUDY_DESCRIPTION
-            IMAGING_PROTOCOL -> Known.IMAGING_PROTOCOL
+            PROCEDURE -> Known.PROCEDURE
             else -> throw AvaraInvalidDataException("Unknown ClinicalReferenceType: $value")
         }
 
