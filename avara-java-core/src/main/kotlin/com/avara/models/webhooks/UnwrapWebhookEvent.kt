@@ -29,6 +29,9 @@ private constructor(
     private val studyAccessRequested: StudyAccessRequestedEvent? = null,
     private val reportDelivered: ReportDeliveredEvent? = null,
     private val secondaryCaptureAccessRequested: SecondaryCaptureAccessRequestedEvent? = null,
+    private val modalityWorklistRequested: ModalityWorklistRequestedEvent? = null,
+    private val patientStudyEnrichmentRequested: PatientStudyEnrichmentRequestedEvent? = null,
+    private val clinicalContextEnrichmentRequested: ClinicalContextEnrichmentRequestedEvent? = null,
     private val _json: JsonValue? = null,
 ) {
 
@@ -52,11 +55,39 @@ private constructor(
     fun secondaryCaptureAccessRequested(): Optional<SecondaryCaptureAccessRequestedEvent> =
         Optional.ofNullable(secondaryCaptureAccessRequested)
 
+    /**
+     * Webhook event sent when an on-prem modality issues a C-FIND MWL. This is a synchronous
+     * webhook - you must respond with authorized + items within the request timeout.
+     */
+    fun modalityWorklistRequested(): Optional<ModalityWorklistRequestedEvent> =
+        Optional.ofNullable(modalityWorklistRequested)
+
+    /**
+     * Soft synchronous webhook sent after Avara PACS seeds a study so the partner can enrich
+     * demographics and report headers. Failures / timeouts / invalid bodies are treated as empty
+     * enrichment.
+     */
+    fun patientStudyEnrichmentRequested(): Optional<PatientStudyEnrichmentRequestedEvent> =
+        Optional.ofNullable(patientStudyEnrichmentRequested)
+
+    /**
+     * Soft synchronous webhook sent when AutoScribe needs clinical context from the partner EHR.
+     * Failures / timeouts / invalid bodies are treated as empty enrichment.
+     */
+    fun clinicalContextEnrichmentRequested(): Optional<ClinicalContextEnrichmentRequestedEvent> =
+        Optional.ofNullable(clinicalContextEnrichmentRequested)
+
     fun isStudyAccessRequested(): Boolean = studyAccessRequested != null
 
     fun isReportDelivered(): Boolean = reportDelivered != null
 
     fun isSecondaryCaptureAccessRequested(): Boolean = secondaryCaptureAccessRequested != null
+
+    fun isModalityWorklistRequested(): Boolean = modalityWorklistRequested != null
+
+    fun isPatientStudyEnrichmentRequested(): Boolean = patientStudyEnrichmentRequested != null
+
+    fun isClinicalContextEnrichmentRequested(): Boolean = clinicalContextEnrichmentRequested != null
 
     /**
      * Webhook event sent when Avara needs presigned URLs for DICOM images. This is a synchronous
@@ -77,6 +108,28 @@ private constructor(
      */
     fun asSecondaryCaptureAccessRequested(): SecondaryCaptureAccessRequestedEvent =
         secondaryCaptureAccessRequested.getOrThrow("secondaryCaptureAccessRequested")
+
+    /**
+     * Webhook event sent when an on-prem modality issues a C-FIND MWL. This is a synchronous
+     * webhook - you must respond with authorized + items within the request timeout.
+     */
+    fun asModalityWorklistRequested(): ModalityWorklistRequestedEvent =
+        modalityWorklistRequested.getOrThrow("modalityWorklistRequested")
+
+    /**
+     * Soft synchronous webhook sent after Avara PACS seeds a study so the partner can enrich
+     * demographics and report headers. Failures / timeouts / invalid bodies are treated as empty
+     * enrichment.
+     */
+    fun asPatientStudyEnrichmentRequested(): PatientStudyEnrichmentRequestedEvent =
+        patientStudyEnrichmentRequested.getOrThrow("patientStudyEnrichmentRequested")
+
+    /**
+     * Soft synchronous webhook sent when AutoScribe needs clinical context from the partner EHR.
+     * Failures / timeouts / invalid bodies are treated as empty enrichment.
+     */
+    fun asClinicalContextEnrichmentRequested(): ClinicalContextEnrichmentRequestedEvent =
+        clinicalContextEnrichmentRequested.getOrThrow("clinicalContextEnrichmentRequested")
 
     fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
 
@@ -115,6 +168,12 @@ private constructor(
             reportDelivered != null -> visitor.visitReportDelivered(reportDelivered)
             secondaryCaptureAccessRequested != null ->
                 visitor.visitSecondaryCaptureAccessRequested(secondaryCaptureAccessRequested)
+            modalityWorklistRequested != null ->
+                visitor.visitModalityWorklistRequested(modalityWorklistRequested)
+            patientStudyEnrichmentRequested != null ->
+                visitor.visitPatientStudyEnrichmentRequested(patientStudyEnrichmentRequested)
+            clinicalContextEnrichmentRequested != null ->
+                visitor.visitClinicalContextEnrichmentRequested(clinicalContextEnrichmentRequested)
             else -> visitor.unknown(_json)
         }
 
@@ -150,6 +209,24 @@ private constructor(
                 ) {
                     secondaryCaptureAccessRequested.validate()
                 }
+
+                override fun visitModalityWorklistRequested(
+                    modalityWorklistRequested: ModalityWorklistRequestedEvent
+                ) {
+                    modalityWorklistRequested.validate()
+                }
+
+                override fun visitPatientStudyEnrichmentRequested(
+                    patientStudyEnrichmentRequested: PatientStudyEnrichmentRequestedEvent
+                ) {
+                    patientStudyEnrichmentRequested.validate()
+                }
+
+                override fun visitClinicalContextEnrichmentRequested(
+                    clinicalContextEnrichmentRequested: ClinicalContextEnrichmentRequestedEvent
+                ) {
+                    clinicalContextEnrichmentRequested.validate()
+                }
             }
         )
         validated = true
@@ -183,6 +260,18 @@ private constructor(
                     secondaryCaptureAccessRequested: SecondaryCaptureAccessRequestedEvent
                 ) = secondaryCaptureAccessRequested.validity()
 
+                override fun visitModalityWorklistRequested(
+                    modalityWorklistRequested: ModalityWorklistRequestedEvent
+                ) = modalityWorklistRequested.validity()
+
+                override fun visitPatientStudyEnrichmentRequested(
+                    patientStudyEnrichmentRequested: PatientStudyEnrichmentRequestedEvent
+                ) = patientStudyEnrichmentRequested.validity()
+
+                override fun visitClinicalContextEnrichmentRequested(
+                    clinicalContextEnrichmentRequested: ClinicalContextEnrichmentRequestedEvent
+                ) = clinicalContextEnrichmentRequested.validity()
+
                 override fun unknown(json: JsonValue?) = 0
             }
         )
@@ -195,11 +284,21 @@ private constructor(
         return other is UnwrapWebhookEvent &&
             studyAccessRequested == other.studyAccessRequested &&
             reportDelivered == other.reportDelivered &&
-            secondaryCaptureAccessRequested == other.secondaryCaptureAccessRequested
+            secondaryCaptureAccessRequested == other.secondaryCaptureAccessRequested &&
+            modalityWorklistRequested == other.modalityWorklistRequested &&
+            patientStudyEnrichmentRequested == other.patientStudyEnrichmentRequested &&
+            clinicalContextEnrichmentRequested == other.clinicalContextEnrichmentRequested
     }
 
     override fun hashCode(): Int =
-        Objects.hash(studyAccessRequested, reportDelivered, secondaryCaptureAccessRequested)
+        Objects.hash(
+            studyAccessRequested,
+            reportDelivered,
+            secondaryCaptureAccessRequested,
+            modalityWorklistRequested,
+            patientStudyEnrichmentRequested,
+            clinicalContextEnrichmentRequested,
+        )
 
     override fun toString(): String =
         when {
@@ -208,6 +307,12 @@ private constructor(
             reportDelivered != null -> "UnwrapWebhookEvent{reportDelivered=$reportDelivered}"
             secondaryCaptureAccessRequested != null ->
                 "UnwrapWebhookEvent{secondaryCaptureAccessRequested=$secondaryCaptureAccessRequested}"
+            modalityWorklistRequested != null ->
+                "UnwrapWebhookEvent{modalityWorklistRequested=$modalityWorklistRequested}"
+            patientStudyEnrichmentRequested != null ->
+                "UnwrapWebhookEvent{patientStudyEnrichmentRequested=$patientStudyEnrichmentRequested}"
+            clinicalContextEnrichmentRequested != null ->
+                "UnwrapWebhookEvent{clinicalContextEnrichmentRequested=$clinicalContextEnrichmentRequested}"
             _json != null -> "UnwrapWebhookEvent{_unknown=$_json}"
             else -> throw IllegalStateException("Invalid UnwrapWebhookEvent")
         }
@@ -239,6 +344,36 @@ private constructor(
         fun ofSecondaryCaptureAccessRequested(
             secondaryCaptureAccessRequested: SecondaryCaptureAccessRequestedEvent
         ) = UnwrapWebhookEvent(secondaryCaptureAccessRequested = secondaryCaptureAccessRequested)
+
+        /**
+         * Webhook event sent when an on-prem modality issues a C-FIND MWL. This is a synchronous
+         * webhook - you must respond with authorized + items within the request timeout.
+         */
+        @JvmStatic
+        fun ofModalityWorklistRequested(modalityWorklistRequested: ModalityWorklistRequestedEvent) =
+            UnwrapWebhookEvent(modalityWorklistRequested = modalityWorklistRequested)
+
+        /**
+         * Soft synchronous webhook sent after Avara PACS seeds a study so the partner can enrich
+         * demographics and report headers. Failures / timeouts / invalid bodies are treated as
+         * empty enrichment.
+         */
+        @JvmStatic
+        fun ofPatientStudyEnrichmentRequested(
+            patientStudyEnrichmentRequested: PatientStudyEnrichmentRequestedEvent
+        ) = UnwrapWebhookEvent(patientStudyEnrichmentRequested = patientStudyEnrichmentRequested)
+
+        /**
+         * Soft synchronous webhook sent when AutoScribe needs clinical context from the partner
+         * EHR. Failures / timeouts / invalid bodies are treated as empty enrichment.
+         */
+        @JvmStatic
+        fun ofClinicalContextEnrichmentRequested(
+            clinicalContextEnrichmentRequested: ClinicalContextEnrichmentRequestedEvent
+        ) =
+            UnwrapWebhookEvent(
+                clinicalContextEnrichmentRequested = clinicalContextEnrichmentRequested
+            )
     }
 
     /**
@@ -266,6 +401,31 @@ private constructor(
          */
         fun visitSecondaryCaptureAccessRequested(
             secondaryCaptureAccessRequested: SecondaryCaptureAccessRequestedEvent
+        ): T
+
+        /**
+         * Webhook event sent when an on-prem modality issues a C-FIND MWL. This is a synchronous
+         * webhook - you must respond with authorized + items within the request timeout.
+         */
+        fun visitModalityWorklistRequested(
+            modalityWorklistRequested: ModalityWorklistRequestedEvent
+        ): T
+
+        /**
+         * Soft synchronous webhook sent after Avara PACS seeds a study so the partner can enrich
+         * demographics and report headers. Failures / timeouts / invalid bodies are treated as
+         * empty enrichment.
+         */
+        fun visitPatientStudyEnrichmentRequested(
+            patientStudyEnrichmentRequested: PatientStudyEnrichmentRequestedEvent
+        ): T
+
+        /**
+         * Soft synchronous webhook sent when AutoScribe needs clinical context from the partner
+         * EHR. Failures / timeouts / invalid bodies are treated as empty enrichment.
+         */
+        fun visitClinicalContextEnrichmentRequested(
+            clinicalContextEnrichmentRequested: ClinicalContextEnrichmentRequestedEvent
         ): T
 
         /**
@@ -309,6 +469,32 @@ private constructor(
                             UnwrapWebhookEvent(secondaryCaptureAccessRequested = it, _json = json)
                         } ?: UnwrapWebhookEvent(_json = json)
                 }
+                "modality_worklist.requested" -> {
+                    return tryDeserialize(node, jacksonTypeRef<ModalityWorklistRequestedEvent>())
+                        ?.let { UnwrapWebhookEvent(modalityWorklistRequested = it, _json = json) }
+                        ?: UnwrapWebhookEvent(_json = json)
+                }
+                "patient_study.enrichment_requested" -> {
+                    return tryDeserialize(
+                            node,
+                            jacksonTypeRef<PatientStudyEnrichmentRequestedEvent>(),
+                        )
+                        ?.let {
+                            UnwrapWebhookEvent(patientStudyEnrichmentRequested = it, _json = json)
+                        } ?: UnwrapWebhookEvent(_json = json)
+                }
+                "clinical_context.enrichment_requested" -> {
+                    return tryDeserialize(
+                            node,
+                            jacksonTypeRef<ClinicalContextEnrichmentRequestedEvent>(),
+                        )
+                        ?.let {
+                            UnwrapWebhookEvent(
+                                clinicalContextEnrichmentRequested = it,
+                                _json = json,
+                            )
+                        } ?: UnwrapWebhookEvent(_json = json)
+                }
             }
 
             return UnwrapWebhookEvent(_json = json)
@@ -328,6 +514,12 @@ private constructor(
                 value.reportDelivered != null -> generator.writeObject(value.reportDelivered)
                 value.secondaryCaptureAccessRequested != null ->
                     generator.writeObject(value.secondaryCaptureAccessRequested)
+                value.modalityWorklistRequested != null ->
+                    generator.writeObject(value.modalityWorklistRequested)
+                value.patientStudyEnrichmentRequested != null ->
+                    generator.writeObject(value.patientStudyEnrichmentRequested)
+                value.clinicalContextEnrichmentRequested != null ->
+                    generator.writeObject(value.clinicalContextEnrichmentRequested)
                 value._json != null -> generator.writeObject(value._json)
                 else -> throw IllegalStateException("Invalid UnwrapWebhookEvent")
             }

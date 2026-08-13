@@ -22,6 +22,7 @@ class ApiKeyReference
 private constructor(
     private val apiKeyId: JsonField<String>,
     private val description: JsonField<String>,
+    private val isClinicalContextEnrichmentEnabled: JsonField<Boolean>,
     private val isViewerEnabled: JsonField<Boolean>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
@@ -32,10 +33,19 @@ private constructor(
         @JsonProperty("description")
         @ExcludeMissing
         description: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("isClinicalContextEnrichmentEnabled")
+        @ExcludeMissing
+        isClinicalContextEnrichmentEnabled: JsonField<Boolean> = JsonMissing.of(),
         @JsonProperty("isViewerEnabled")
         @ExcludeMissing
         isViewerEnabled: JsonField<Boolean> = JsonMissing.of(),
-    ) : this(apiKeyId, description, isViewerEnabled, mutableMapOf())
+    ) : this(
+        apiKeyId,
+        description,
+        isClinicalContextEnrichmentEnabled,
+        isViewerEnabled,
+        mutableMapOf(),
+    )
 
     /**
      * Unique API key identifier (UUIDv4 format)
@@ -52,6 +62,15 @@ private constructor(
      *   missing or null (e.g. if the server responded with an unexpected value).
      */
     fun description(): String = description.getRequired("description")
+
+    /**
+     * Whether this API key has a clinical-context enrichment webhook configured
+     *
+     * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun isClinicalContextEnrichmentEnabled(): Optional<Boolean> =
+        isClinicalContextEnrichmentEnabled.getOptional("isClinicalContextEnrichmentEnabled")
 
     /**
      * Whether this API key has access to the Viewer product
@@ -74,6 +93,17 @@ private constructor(
      * Unlike [description], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("description") @ExcludeMissing fun _description(): JsonField<String> = description
+
+    /**
+     * Returns the raw JSON value of [isClinicalContextEnrichmentEnabled].
+     *
+     * Unlike [isClinicalContextEnrichmentEnabled], this method doesn't throw if the JSON field has
+     * an unexpected type.
+     */
+    @JsonProperty("isClinicalContextEnrichmentEnabled")
+    @ExcludeMissing
+    fun _isClinicalContextEnrichmentEnabled(): JsonField<Boolean> =
+        isClinicalContextEnrichmentEnabled
 
     /**
      * Returns the raw JSON value of [isViewerEnabled].
@@ -115,6 +145,7 @@ private constructor(
 
         private var apiKeyId: JsonField<String>? = null
         private var description: JsonField<String>? = null
+        private var isClinicalContextEnrichmentEnabled: JsonField<Boolean> = JsonMissing.of()
         private var isViewerEnabled: JsonField<Boolean> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -122,6 +153,7 @@ private constructor(
         internal fun from(apiKeyReference: ApiKeyReference) = apply {
             apiKeyId = apiKeyReference.apiKeyId
             description = apiKeyReference.description
+            isClinicalContextEnrichmentEnabled = apiKeyReference.isClinicalContextEnrichmentEnabled
             isViewerEnabled = apiKeyReference.isViewerEnabled
             additionalProperties = apiKeyReference.additionalProperties.toMutableMap()
         }
@@ -148,6 +180,21 @@ private constructor(
          * value.
          */
         fun description(description: JsonField<String>) = apply { this.description = description }
+
+        /** Whether this API key has a clinical-context enrichment webhook configured */
+        fun isClinicalContextEnrichmentEnabled(isClinicalContextEnrichmentEnabled: Boolean) =
+            isClinicalContextEnrichmentEnabled(JsonField.of(isClinicalContextEnrichmentEnabled))
+
+        /**
+         * Sets [Builder.isClinicalContextEnrichmentEnabled] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.isClinicalContextEnrichmentEnabled] with a well-typed
+         * [Boolean] value instead. This method is primarily for setting the field to an
+         * undocumented or not yet supported value.
+         */
+        fun isClinicalContextEnrichmentEnabled(
+            isClinicalContextEnrichmentEnabled: JsonField<Boolean>
+        ) = apply { this.isClinicalContextEnrichmentEnabled = isClinicalContextEnrichmentEnabled }
 
         /** Whether this API key has access to the Viewer product */
         fun isViewerEnabled(isViewerEnabled: Boolean) =
@@ -200,6 +247,7 @@ private constructor(
             ApiKeyReference(
                 checkRequired("apiKeyId", apiKeyId),
                 checkRequired("description", description),
+                isClinicalContextEnrichmentEnabled,
                 isViewerEnabled,
                 additionalProperties.toMutableMap(),
             )
@@ -222,6 +270,7 @@ private constructor(
 
         apiKeyId()
         description()
+        isClinicalContextEnrichmentEnabled()
         isViewerEnabled()
         validated = true
     }
@@ -243,6 +292,7 @@ private constructor(
     internal fun validity(): Int =
         (if (apiKeyId.asKnown().isPresent) 1 else 0) +
             (if (description.asKnown().isPresent) 1 else 0) +
+            (if (isClinicalContextEnrichmentEnabled.asKnown().isPresent) 1 else 0) +
             (if (isViewerEnabled.asKnown().isPresent) 1 else 0)
 
     override fun equals(other: Any?): Boolean {
@@ -253,16 +303,23 @@ private constructor(
         return other is ApiKeyReference &&
             apiKeyId == other.apiKeyId &&
             description == other.description &&
+            isClinicalContextEnrichmentEnabled == other.isClinicalContextEnrichmentEnabled &&
             isViewerEnabled == other.isViewerEnabled &&
             additionalProperties == other.additionalProperties
     }
 
     private val hashCode: Int by lazy {
-        Objects.hash(apiKeyId, description, isViewerEnabled, additionalProperties)
+        Objects.hash(
+            apiKeyId,
+            description,
+            isClinicalContextEnrichmentEnabled,
+            isViewerEnabled,
+            additionalProperties,
+        )
     }
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "ApiKeyReference{apiKeyId=$apiKeyId, description=$description, isViewerEnabled=$isViewerEnabled, additionalProperties=$additionalProperties}"
+        "ApiKeyReference{apiKeyId=$apiKeyId, description=$description, isClinicalContextEnrichmentEnabled=$isClinicalContextEnrichmentEnabled, isViewerEnabled=$isViewerEnabled, additionalProperties=$additionalProperties}"
 }

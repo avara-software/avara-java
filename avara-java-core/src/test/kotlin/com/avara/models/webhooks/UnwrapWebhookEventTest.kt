@@ -32,6 +32,9 @@ internal class UnwrapWebhookEventTest {
         assertThat(unwrapWebhookEvent.studyAccessRequested()).contains(studyAccessRequested)
         assertThat(unwrapWebhookEvent.reportDelivered()).isEmpty
         assertThat(unwrapWebhookEvent.secondaryCaptureAccessRequested()).isEmpty
+        assertThat(unwrapWebhookEvent.modalityWorklistRequested()).isEmpty
+        assertThat(unwrapWebhookEvent.patientStudyEnrichmentRequested()).isEmpty
+        assertThat(unwrapWebhookEvent.clinicalContextEnrichmentRequested()).isEmpty
     }
 
     @Test
@@ -84,6 +87,9 @@ internal class UnwrapWebhookEventTest {
         assertThat(unwrapWebhookEvent.studyAccessRequested()).isEmpty
         assertThat(unwrapWebhookEvent.reportDelivered()).contains(reportDelivered)
         assertThat(unwrapWebhookEvent.secondaryCaptureAccessRequested()).isEmpty
+        assertThat(unwrapWebhookEvent.modalityWorklistRequested()).isEmpty
+        assertThat(unwrapWebhookEvent.patientStudyEnrichmentRequested()).isEmpty
+        assertThat(unwrapWebhookEvent.clinicalContextEnrichmentRequested()).isEmpty
     }
 
     @Test
@@ -140,6 +146,9 @@ internal class UnwrapWebhookEventTest {
         assertThat(unwrapWebhookEvent.reportDelivered()).isEmpty
         assertThat(unwrapWebhookEvent.secondaryCaptureAccessRequested())
             .contains(secondaryCaptureAccessRequested)
+        assertThat(unwrapWebhookEvent.modalityWorklistRequested()).isEmpty
+        assertThat(unwrapWebhookEvent.patientStudyEnrichmentRequested()).isEmpty
+        assertThat(unwrapWebhookEvent.clinicalContextEnrichmentRequested()).isEmpty
     }
 
     @Test
@@ -155,6 +164,176 @@ internal class UnwrapWebhookEventTest {
                             .studyInstanceUid("1.2.840.113619.2.55.3.1234567890")
                             .seriesInstanceUid("1.2.840.113619.2.55.3.1234567890.1")
                             .sopInstanceUid("1.2.840.113619.2.55.3.1234567890.1.1")
+                            .build()
+                    )
+                    .build()
+            )
+
+        val roundtrippedUnwrapWebhookEvent =
+            jsonMapper.readValue(
+                jsonMapper.writeValueAsString(unwrapWebhookEvent),
+                jacksonTypeRef<UnwrapWebhookEvent>(),
+            )
+
+        assertThat(roundtrippedUnwrapWebhookEvent).isEqualTo(unwrapWebhookEvent)
+    }
+
+    @Test
+    fun ofModalityWorklistRequested() {
+        val modalityWorklistRequested =
+            ModalityWorklistRequestedEvent.builder()
+                .id("whe_1234567890abcdef1234567890abcdef")
+                .data(
+                    ModalityWorklistRequestedEventData.builder()
+                        .callingAe("CT_SCANNER_01")
+                        .clinicId("123e4567-e89b-12d3-a456-426614174000")
+                        .dateEnd("2026-08-13")
+                        .dateStart("2026-08-13")
+                        .sourceIp("10.0.0.25")
+                        .modality("CT")
+                        .build()
+                )
+                .build()
+
+        val unwrapWebhookEvent =
+            UnwrapWebhookEvent.ofModalityWorklistRequested(modalityWorklistRequested)
+
+        assertThat(unwrapWebhookEvent.studyAccessRequested()).isEmpty
+        assertThat(unwrapWebhookEvent.reportDelivered()).isEmpty
+        assertThat(unwrapWebhookEvent.secondaryCaptureAccessRequested()).isEmpty
+        assertThat(unwrapWebhookEvent.modalityWorklistRequested())
+            .contains(modalityWorklistRequested)
+        assertThat(unwrapWebhookEvent.patientStudyEnrichmentRequested()).isEmpty
+        assertThat(unwrapWebhookEvent.clinicalContextEnrichmentRequested()).isEmpty
+    }
+
+    @Test
+    fun ofModalityWorklistRequestedRoundtrip() {
+        val jsonMapper = jsonMapper()
+        val unwrapWebhookEvent =
+            UnwrapWebhookEvent.ofModalityWorklistRequested(
+                ModalityWorklistRequestedEvent.builder()
+                    .id("whe_1234567890abcdef1234567890abcdef")
+                    .data(
+                        ModalityWorklistRequestedEventData.builder()
+                            .callingAe("CT_SCANNER_01")
+                            .clinicId("123e4567-e89b-12d3-a456-426614174000")
+                            .dateEnd("2026-08-13")
+                            .dateStart("2026-08-13")
+                            .sourceIp("10.0.0.25")
+                            .modality("CT")
+                            .build()
+                    )
+                    .build()
+            )
+
+        val roundtrippedUnwrapWebhookEvent =
+            jsonMapper.readValue(
+                jsonMapper.writeValueAsString(unwrapWebhookEvent),
+                jacksonTypeRef<UnwrapWebhookEvent>(),
+            )
+
+        assertThat(roundtrippedUnwrapWebhookEvent).isEqualTo(unwrapWebhookEvent)
+    }
+
+    @Test
+    fun ofPatientStudyEnrichmentRequested() {
+        val patientStudyEnrichmentRequested =
+            PatientStudyEnrichmentRequestedEvent.builder()
+                .id("whe_1234567890abcdef1234567890abcdef")
+                .data(
+                    PatientStudyEnrichmentRequestedEventData.builder()
+                        .clinicId("123e4567-e89b-12d3-a456-426614174000")
+                        .studyInstanceUid("1.2.840.113619.2.55.3.1234567890")
+                        .accessionNumber("ACC-98765")
+                        .patientId("MRN-12345")
+                        .build()
+                )
+                .build()
+
+        val unwrapWebhookEvent =
+            UnwrapWebhookEvent.ofPatientStudyEnrichmentRequested(patientStudyEnrichmentRequested)
+
+        assertThat(unwrapWebhookEvent.studyAccessRequested()).isEmpty
+        assertThat(unwrapWebhookEvent.reportDelivered()).isEmpty
+        assertThat(unwrapWebhookEvent.secondaryCaptureAccessRequested()).isEmpty
+        assertThat(unwrapWebhookEvent.modalityWorklistRequested()).isEmpty
+        assertThat(unwrapWebhookEvent.patientStudyEnrichmentRequested())
+            .contains(patientStudyEnrichmentRequested)
+        assertThat(unwrapWebhookEvent.clinicalContextEnrichmentRequested()).isEmpty
+    }
+
+    @Test
+    fun ofPatientStudyEnrichmentRequestedRoundtrip() {
+        val jsonMapper = jsonMapper()
+        val unwrapWebhookEvent =
+            UnwrapWebhookEvent.ofPatientStudyEnrichmentRequested(
+                PatientStudyEnrichmentRequestedEvent.builder()
+                    .id("whe_1234567890abcdef1234567890abcdef")
+                    .data(
+                        PatientStudyEnrichmentRequestedEventData.builder()
+                            .clinicId("123e4567-e89b-12d3-a456-426614174000")
+                            .studyInstanceUid("1.2.840.113619.2.55.3.1234567890")
+                            .accessionNumber("ACC-98765")
+                            .patientId("MRN-12345")
+                            .build()
+                    )
+                    .build()
+            )
+
+        val roundtrippedUnwrapWebhookEvent =
+            jsonMapper.readValue(
+                jsonMapper.writeValueAsString(unwrapWebhookEvent),
+                jacksonTypeRef<UnwrapWebhookEvent>(),
+            )
+
+        assertThat(roundtrippedUnwrapWebhookEvent).isEqualTo(unwrapWebhookEvent)
+    }
+
+    @Test
+    fun ofClinicalContextEnrichmentRequested() {
+        val clinicalContextEnrichmentRequested =
+            ClinicalContextEnrichmentRequestedEvent.builder()
+                .id("whe_1234567890abcdef1234567890abcdef")
+                .data(
+                    ClinicalContextEnrichmentRequestedEventData.builder()
+                        .clinicId("123e4567-e89b-12d3-a456-426614174000")
+                        .studyId("123e4567-e89b-12d3-a456-426614174111")
+                        .studyInstanceUid("1.2.840.113619.2.55.3.1234567890")
+                        .externalPatientId("EHR-999")
+                        .mrn("MRN-12345")
+                        .build()
+                )
+                .build()
+
+        val unwrapWebhookEvent =
+            UnwrapWebhookEvent.ofClinicalContextEnrichmentRequested(
+                clinicalContextEnrichmentRequested
+            )
+
+        assertThat(unwrapWebhookEvent.studyAccessRequested()).isEmpty
+        assertThat(unwrapWebhookEvent.reportDelivered()).isEmpty
+        assertThat(unwrapWebhookEvent.secondaryCaptureAccessRequested()).isEmpty
+        assertThat(unwrapWebhookEvent.modalityWorklistRequested()).isEmpty
+        assertThat(unwrapWebhookEvent.patientStudyEnrichmentRequested()).isEmpty
+        assertThat(unwrapWebhookEvent.clinicalContextEnrichmentRequested())
+            .contains(clinicalContextEnrichmentRequested)
+    }
+
+    @Test
+    fun ofClinicalContextEnrichmentRequestedRoundtrip() {
+        val jsonMapper = jsonMapper()
+        val unwrapWebhookEvent =
+            UnwrapWebhookEvent.ofClinicalContextEnrichmentRequested(
+                ClinicalContextEnrichmentRequestedEvent.builder()
+                    .id("whe_1234567890abcdef1234567890abcdef")
+                    .data(
+                        ClinicalContextEnrichmentRequestedEventData.builder()
+                            .clinicId("123e4567-e89b-12d3-a456-426614174000")
+                            .studyId("123e4567-e89b-12d3-a456-426614174111")
+                            .studyInstanceUid("1.2.840.113619.2.55.3.1234567890")
+                            .externalPatientId("EHR-999")
+                            .mrn("MRN-12345")
                             .build()
                     )
                     .build()
