@@ -15,11 +15,13 @@ internal class ApiKeyReferenceTest {
             ApiKeyReference.builder()
                 .apiKeyId("550e8400-e29b-41d4-a716-446655440000")
                 .description("Production API Key")
+                .isClinicalContextEnrichmentEnabled(true)
                 .isViewerEnabled(true)
                 .build()
 
         assertThat(apiKeyReference.apiKeyId()).isEqualTo("550e8400-e29b-41d4-a716-446655440000")
         assertThat(apiKeyReference.description()).isEqualTo("Production API Key")
+        assertThat(apiKeyReference.isClinicalContextEnrichmentEnabled()).contains(true)
         assertThat(apiKeyReference.isViewerEnabled()).contains(true)
     }
 
@@ -30,6 +32,7 @@ internal class ApiKeyReferenceTest {
             ApiKeyReference.builder()
                 .apiKeyId("550e8400-e29b-41d4-a716-446655440000")
                 .description("Production API Key")
+                .isClinicalContextEnrichmentEnabled(true)
                 .isViewerEnabled(true)
                 .build()
 
