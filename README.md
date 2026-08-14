@@ -1,7 +1,7 @@
 # Avara Java API Library
 
 [![Maven Central](https://img.shields.io/maven-central/v/com.avara/avara-java)](https://central.sonatype.com/artifact/com.avara/avara-java/0.0.1)
-[![javadoc](https://javadoc.io/badge2/com.avara/avara-java/0.0.1/javadoc.svg)](https://javadoc.io/doc/com.avara/avara-java/0.0.1)
+[![javadoc](https://javadoc.io/badge2/com.avara/avara-java/javadoc.svg)](https://javadoc.io/doc/com.avara/avara-java/0.0.1)
 
 The Avara Java SDK provides convenient access to the [Avara REST API](https://docs.avarasoftware.com) from applications written in Java.
 
