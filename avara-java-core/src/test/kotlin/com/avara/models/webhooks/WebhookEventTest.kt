@@ -30,6 +30,7 @@ internal class WebhookEventTest {
         val webhookEvent = WebhookEvent.ofStudyAccessRequested(studyAccessRequested)
 
         assertThat(webhookEvent.studyAccessRequested()).contains(studyAccessRequested)
+        assertThat(webhookEvent.ephemeralAccessRequested()).isEmpty
         assertThat(webhookEvent.reportDelivered()).isEmpty
         assertThat(webhookEvent.secondaryCaptureAccessRequested()).isEmpty
         assertThat(webhookEvent.modalityWorklistRequested()).isEmpty
@@ -48,6 +49,66 @@ internal class WebhookEventTest {
                         StudyAccessRequestedEventData.builder()
                             .studyId("stu_1234567890abcdef1234567890abcdef")
                             .studyInstanceUid("1.2.840.113619.2.55.3.1234567890")
+                            .build()
+                    )
+                    .build()
+            )
+
+        val roundtrippedWebhookEvent =
+            jsonMapper.readValue(
+                jsonMapper.writeValueAsString(webhookEvent),
+                jacksonTypeRef<WebhookEvent>(),
+            )
+
+        assertThat(roundtrippedWebhookEvent).isEqualTo(webhookEvent)
+    }
+
+    @Test
+    fun ofEphemeralAccessRequested() {
+        val ephemeralAccessRequested =
+            EphemeralAccessRequestedEvent.builder()
+                .id("whe_1234567890abcdef1234567890abcdef")
+                .data(
+                    EphemeralAccessRequestedEventData.builder()
+                        .retrievalId("order-12345")
+                        .options(
+                            EphemeralAccessRequestedEventData.Options.builder()
+                                .putAdditionalProperty("studyInstanceUids", JsonValue.from("bar"))
+                                .build()
+                        )
+                        .build()
+                )
+                .build()
+
+        val webhookEvent = WebhookEvent.ofEphemeralAccessRequested(ephemeralAccessRequested)
+
+        assertThat(webhookEvent.studyAccessRequested()).isEmpty
+        assertThat(webhookEvent.ephemeralAccessRequested()).contains(ephemeralAccessRequested)
+        assertThat(webhookEvent.reportDelivered()).isEmpty
+        assertThat(webhookEvent.secondaryCaptureAccessRequested()).isEmpty
+        assertThat(webhookEvent.modalityWorklistRequested()).isEmpty
+        assertThat(webhookEvent.patientStudyEnrichmentRequested()).isEmpty
+        assertThat(webhookEvent.clinicalContextEnrichmentRequested()).isEmpty
+    }
+
+    @Test
+    fun ofEphemeralAccessRequestedRoundtrip() {
+        val jsonMapper = jsonMapper()
+        val webhookEvent =
+            WebhookEvent.ofEphemeralAccessRequested(
+                EphemeralAccessRequestedEvent.builder()
+                    .id("whe_1234567890abcdef1234567890abcdef")
+                    .data(
+                        EphemeralAccessRequestedEventData.builder()
+                            .retrievalId("order-12345")
+                            .options(
+                                EphemeralAccessRequestedEventData.Options.builder()
+                                    .putAdditionalProperty(
+                                        "studyInstanceUids",
+                                        JsonValue.from("bar"),
+                                    )
+                                    .build()
+                            )
                             .build()
                     )
                     .build()
@@ -85,6 +146,7 @@ internal class WebhookEventTest {
         val webhookEvent = WebhookEvent.ofReportDelivered(reportDelivered)
 
         assertThat(webhookEvent.studyAccessRequested()).isEmpty
+        assertThat(webhookEvent.ephemeralAccessRequested()).isEmpty
         assertThat(webhookEvent.reportDelivered()).contains(reportDelivered)
         assertThat(webhookEvent.secondaryCaptureAccessRequested()).isEmpty
         assertThat(webhookEvent.modalityWorklistRequested()).isEmpty
@@ -143,6 +205,7 @@ internal class WebhookEventTest {
             WebhookEvent.ofSecondaryCaptureAccessRequested(secondaryCaptureAccessRequested)
 
         assertThat(webhookEvent.studyAccessRequested()).isEmpty
+        assertThat(webhookEvent.ephemeralAccessRequested()).isEmpty
         assertThat(webhookEvent.reportDelivered()).isEmpty
         assertThat(webhookEvent.secondaryCaptureAccessRequested())
             .contains(secondaryCaptureAccessRequested)
@@ -198,6 +261,7 @@ internal class WebhookEventTest {
         val webhookEvent = WebhookEvent.ofModalityWorklistRequested(modalityWorklistRequested)
 
         assertThat(webhookEvent.studyAccessRequested()).isEmpty
+        assertThat(webhookEvent.ephemeralAccessRequested()).isEmpty
         assertThat(webhookEvent.reportDelivered()).isEmpty
         assertThat(webhookEvent.secondaryCaptureAccessRequested()).isEmpty
         assertThat(webhookEvent.modalityWorklistRequested()).contains(modalityWorklistRequested)
@@ -253,6 +317,7 @@ internal class WebhookEventTest {
             WebhookEvent.ofPatientStudyEnrichmentRequested(patientStudyEnrichmentRequested)
 
         assertThat(webhookEvent.studyAccessRequested()).isEmpty
+        assertThat(webhookEvent.ephemeralAccessRequested()).isEmpty
         assertThat(webhookEvent.reportDelivered()).isEmpty
         assertThat(webhookEvent.secondaryCaptureAccessRequested()).isEmpty
         assertThat(webhookEvent.modalityWorklistRequested()).isEmpty
@@ -308,6 +373,7 @@ internal class WebhookEventTest {
             WebhookEvent.ofClinicalContextEnrichmentRequested(clinicalContextEnrichmentRequested)
 
         assertThat(webhookEvent.studyAccessRequested()).isEmpty
+        assertThat(webhookEvent.ephemeralAccessRequested()).isEmpty
         assertThat(webhookEvent.reportDelivered()).isEmpty
         assertThat(webhookEvent.secondaryCaptureAccessRequested()).isEmpty
         assertThat(webhookEvent.modalityWorklistRequested()).isEmpty

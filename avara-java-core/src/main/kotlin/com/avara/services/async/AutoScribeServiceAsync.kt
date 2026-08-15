@@ -4,6 +4,7 @@ package com.avara.services.async
 
 import com.avara.core.ClientOptions
 import com.avara.services.async.autoscribe.ClinicalReferenceServiceAsync
+import com.avara.services.async.autoscribe.EphemeralSessionServiceAsync
 import com.avara.services.async.autoscribe.ReportServiceAsync
 import com.avara.services.async.autoscribe.StudyServiceAsync
 import com.avara.services.async.autoscribe.UserServiceAsync
@@ -24,6 +25,8 @@ interface AutoScribeServiceAsync {
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): AutoScribeServiceAsync
 
     fun clinicalReferences(): ClinicalReferenceServiceAsync
+
+    fun ephemeralSessions(): EphemeralSessionServiceAsync
 
     fun studies(): StudyServiceAsync
 
@@ -47,6 +50,8 @@ interface AutoScribeServiceAsync {
         ): AutoScribeServiceAsync.WithRawResponse
 
         fun clinicalReferences(): ClinicalReferenceServiceAsync.WithRawResponse
+
+        fun ephemeralSessions(): EphemeralSessionServiceAsync.WithRawResponse
 
         fun studies(): StudyServiceAsync.WithRawResponse
 

@@ -17,9 +17,10 @@ import java.util.Objects
 import java.util.Optional
 
 /**
- * One SOP in the optional study manifest. Identity is required. Image geometry (rows, columns,
- * bitsAllocated, photometricInterpretation, samplesPerPixel) is required to preallocate a volume;
- * rescale and float flags are optional.
+ * One SOP in the optional study manifest. Identity (sopInstanceUID, sopClassUID) is always
+ * required. For image SOPs, also include rows, columns, bitsAllocated, photometricInterpretation,
+ * and samplesPerPixel or that SOP is dropped. SR / PR / KO do not need geometry. Wrong types or
+ * missing required fields drop that SOP only; sibling SOPs and URLs still load.
  */
 class StudyAccessRequestedManifestSop
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
@@ -108,7 +109,10 @@ private constructor(
     )
 
     /**
-     * DICOM SOP Class UID (e.g. Legacy CT Image Storage)
+     * DICOM SOP Class UID. Progressive load uses legacy single-frame image classes. Common: CT
+     * 1.2.840.10008.5.1.4.1.1.2, MR 1.2.840.10008.5.1.4.1.1.4, plus CR / DX / US / XA / PT.
+     * Enhanced multi-frame classes already load progressively from the single SOP — the sidecar is
+     * not used for them. SR / PR / KO do not need geometry.
      *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is unexpectedly
      *   missing or null (e.g. if the server responded with an unexpected value).
@@ -116,7 +120,7 @@ private constructor(
     fun sopClassUid(): String = sopClassUid.getRequired("sopClassUID")
 
     /**
-     * DICOM SOP Instance UID
+     * DICOM SOP Instance UID. Non-empty string.
      *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is unexpectedly
      *   missing or null (e.g. if the server responded with an unexpected value).
@@ -124,36 +128,48 @@ private constructor(
     fun sopInstanceUid(): String = sopInstanceUid.getRequired("sopInstanceUID")
 
     /**
+     * Required on image SOPs. Planner uses 8, 16, or 32 (or the float flags). Typical CT/MR: 16.
+     *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
     fun bitsAllocated(): Optional<Double> = bitsAllocated.getOptional("bitsAllocated")
 
     /**
+     * Optional. Typical CT/MR: 12 or 16.
+     *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
     fun bitsStored(): Optional<Double> = bitsStored.getOptional("bitsStored")
 
     /**
+     * Image columns. Required on image SOPs. Positive integer. Common: 256, 512, 1024.
+     *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
     fun columns(): Optional<Double> = columns.getOptional("columns")
 
     /**
+     * Optional. Typical 16-bit: 15.
+     *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
     fun highBit(): Optional<Double> = highBit.getOptional("highBit")
 
     /**
+     * Slice order (DICOM Instance Number). Omit or 0 if unknown; UID is the tie-break.
+     *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
     fun instanceNumber(): Optional<Double> = instanceNumber.getOptional("instanceNumber")
 
     /**
+     * Set true only if pixel data is 64-bit float.
+     *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
@@ -161,18 +177,27 @@ private constructor(
         isDoubleFloatPixelData.getOptional("isDoubleFloatPixelData")
 
     /**
+     * Set true only if pixel data is 32-bit float.
+     *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
     fun isFloatPixelData(): Optional<Boolean> = isFloatPixelData.getOptional("isFloatPixelData")
 
     /**
+     * 1 for single-frame files. Greater than 1 only if this SOP is multi-frame.
+     *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
     fun numberOfFrames(): Optional<Double> = numberOfFrames.getOptional("numberOfFrames")
 
     /**
+     * Required non-empty string on image SOPs. Common: MONOCHROME2 (CT/MR), MONOCHROME1 (often MG,
+     * inverted), RGB, PALETTE COLOR, YBR_FULL, YBR_FULL_422. Unknown strings are kept and treated
+     * as mono unless samplesPerPixel is 3. Wrong type (number/null) drops that SOP from optimized
+     * path.
+     *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
@@ -180,6 +205,8 @@ private constructor(
         photometricInterpretation.getOptional("photometricInterpretation")
 
     /**
+     * 0 unsigned, 1 signed. Typical CT: 0.
+     *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
@@ -187,24 +214,33 @@ private constructor(
         pixelRepresentation.getOptional("pixelRepresentation")
 
     /**
+     * Optional. Typical CT: -1024. Safe to omit.
+     *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
     fun rescaleIntercept(): Optional<Double> = rescaleIntercept.getOptional("rescaleIntercept")
 
     /**
+     * Optional. Typical CT: 1. Safe to omit.
+     *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
     fun rescaleSlope(): Optional<Double> = rescaleSlope.getOptional("rescaleSlope")
 
     /**
+     * Image rows. Required on image SOPs. Positive integer. Common: 256, 512, 1024.
+     *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
     fun rows(): Optional<Double> = rows.getOptional("rows")
 
     /**
+     * Required on image SOPs. 1 grayscale, 3 color. 3 is treated as color even if photometric is
+     * unusual.
+     *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
@@ -421,7 +457,12 @@ private constructor(
                     studyAccessRequestedManifestSop.additionalProperties.toMutableMap()
             }
 
-        /** DICOM SOP Class UID (e.g. Legacy CT Image Storage) */
+        /**
+         * DICOM SOP Class UID. Progressive load uses legacy single-frame image classes. Common: CT
+         * 1.2.840.10008.5.1.4.1.1.2, MR 1.2.840.10008.5.1.4.1.1.4, plus CR / DX / US / XA / PT.
+         * Enhanced multi-frame classes already load progressively from the single SOP — the sidecar
+         * is not used for them. SR / PR / KO do not need geometry.
+         */
         fun sopClassUid(sopClassUid: String) = sopClassUid(JsonField.of(sopClassUid))
 
         /**
@@ -433,7 +474,7 @@ private constructor(
          */
         fun sopClassUid(sopClassUid: JsonField<String>) = apply { this.sopClassUid = sopClassUid }
 
-        /** DICOM SOP Instance UID */
+        /** DICOM SOP Instance UID. Non-empty string. */
         fun sopInstanceUid(sopInstanceUid: String) = sopInstanceUid(JsonField.of(sopInstanceUid))
 
         /**
@@ -447,6 +488,10 @@ private constructor(
             this.sopInstanceUid = sopInstanceUid
         }
 
+        /**
+         * Required on image SOPs. Planner uses 8, 16, or 32 (or the float flags). Typical
+         * CT/MR: 16.
+         */
         fun bitsAllocated(bitsAllocated: Double) = bitsAllocated(JsonField.of(bitsAllocated))
 
         /**
@@ -460,6 +505,7 @@ private constructor(
             this.bitsAllocated = bitsAllocated
         }
 
+        /** Optional. Typical CT/MR: 12 or 16. */
         fun bitsStored(bitsStored: Double) = bitsStored(JsonField.of(bitsStored))
 
         /**
@@ -471,6 +517,7 @@ private constructor(
          */
         fun bitsStored(bitsStored: JsonField<Double>) = apply { this.bitsStored = bitsStored }
 
+        /** Image columns. Required on image SOPs. Positive integer. Common: 256, 512, 1024. */
         fun columns(columns: Double) = columns(JsonField.of(columns))
 
         /**
@@ -481,6 +528,7 @@ private constructor(
          */
         fun columns(columns: JsonField<Double>) = apply { this.columns = columns }
 
+        /** Optional. Typical 16-bit: 15. */
         fun highBit(highBit: Double) = highBit(JsonField.of(highBit))
 
         /**
@@ -491,6 +539,7 @@ private constructor(
          */
         fun highBit(highBit: JsonField<Double>) = apply { this.highBit = highBit }
 
+        /** Slice order (DICOM Instance Number). Omit or 0 if unknown; UID is the tie-break. */
         fun instanceNumber(instanceNumber: Double) = instanceNumber(JsonField.of(instanceNumber))
 
         /**
@@ -504,6 +553,7 @@ private constructor(
             this.instanceNumber = instanceNumber
         }
 
+        /** Set true only if pixel data is 64-bit float. */
         fun isDoubleFloatPixelData(isDoubleFloatPixelData: Boolean) =
             isDoubleFloatPixelData(JsonField.of(isDoubleFloatPixelData))
 
@@ -518,6 +568,7 @@ private constructor(
             this.isDoubleFloatPixelData = isDoubleFloatPixelData
         }
 
+        /** Set true only if pixel data is 32-bit float. */
         fun isFloatPixelData(isFloatPixelData: Boolean) =
             isFloatPixelData(JsonField.of(isFloatPixelData))
 
@@ -532,6 +583,7 @@ private constructor(
             this.isFloatPixelData = isFloatPixelData
         }
 
+        /** 1 for single-frame files. Greater than 1 only if this SOP is multi-frame. */
         fun numberOfFrames(numberOfFrames: Double) = numberOfFrames(JsonField.of(numberOfFrames))
 
         /**
@@ -545,6 +597,12 @@ private constructor(
             this.numberOfFrames = numberOfFrames
         }
 
+        /**
+         * Required non-empty string on image SOPs. Common: MONOCHROME2 (CT/MR), MONOCHROME1 (often
+         * MG, inverted), RGB, PALETTE COLOR, YBR_FULL, YBR_FULL_422. Unknown strings are kept and
+         * treated as mono unless samplesPerPixel is 3. Wrong type (number/null) drops that SOP from
+         * optimized path.
+         */
         fun photometricInterpretation(photometricInterpretation: String) =
             photometricInterpretation(JsonField.of(photometricInterpretation))
 
@@ -559,6 +617,7 @@ private constructor(
             this.photometricInterpretation = photometricInterpretation
         }
 
+        /** 0 unsigned, 1 signed. Typical CT: 0. */
         fun pixelRepresentation(pixelRepresentation: Double) =
             pixelRepresentation(JsonField.of(pixelRepresentation))
 
@@ -573,6 +632,7 @@ private constructor(
             this.pixelRepresentation = pixelRepresentation
         }
 
+        /** Optional. Typical CT: -1024. Safe to omit. */
         fun rescaleIntercept(rescaleIntercept: Double) =
             rescaleIntercept(JsonField.of(rescaleIntercept))
 
@@ -587,6 +647,7 @@ private constructor(
             this.rescaleIntercept = rescaleIntercept
         }
 
+        /** Optional. Typical CT: 1. Safe to omit. */
         fun rescaleSlope(rescaleSlope: Double) = rescaleSlope(JsonField.of(rescaleSlope))
 
         /**
@@ -600,6 +661,7 @@ private constructor(
             this.rescaleSlope = rescaleSlope
         }
 
+        /** Image rows. Required on image SOPs. Positive integer. Common: 256, 512, 1024. */
         fun rows(rows: Double) = rows(JsonField.of(rows))
 
         /**
@@ -610,6 +672,10 @@ private constructor(
          */
         fun rows(rows: JsonField<Double>) = apply { this.rows = rows }
 
+        /**
+         * Required on image SOPs. 1 grayscale, 3 color. 3 is treated as color even if photometric
+         * is unusual.
+         */
         fun samplesPerPixel(samplesPerPixel: Double) =
             samplesPerPixel(JsonField.of(samplesPerPixel))
 

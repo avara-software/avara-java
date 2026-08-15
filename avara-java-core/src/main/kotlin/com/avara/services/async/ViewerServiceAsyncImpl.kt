@@ -3,6 +3,8 @@
 package com.avara.services.async
 
 import com.avara.core.ClientOptions
+import com.avara.services.async.viewer.EphemeralSessionServiceAsync
+import com.avara.services.async.viewer.EphemeralSessionServiceAsyncImpl
 import com.avara.services.async.viewer.StudyServiceAsync
 import com.avara.services.async.viewer.StudyServiceAsyncImpl
 import com.avara.services.async.viewer.UserServiceAsync
@@ -16,6 +18,10 @@ class ViewerServiceAsyncImpl internal constructor(private val clientOptions: Cli
         WithRawResponseImpl(clientOptions)
     }
 
+    private val ephemeralSessions: EphemeralSessionServiceAsync by lazy {
+        EphemeralSessionServiceAsyncImpl(clientOptions)
+    }
+
     private val studies: StudyServiceAsync by lazy { StudyServiceAsyncImpl(clientOptions) }
 
     private val users: UserServiceAsync by lazy { UserServiceAsyncImpl(clientOptions) }
@@ -25,12 +31,18 @@ class ViewerServiceAsyncImpl internal constructor(private val clientOptions: Cli
     override fun withOptions(modifier: Consumer<ClientOptions.Builder>): ViewerServiceAsync =
         ViewerServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
+    override fun ephemeralSessions(): EphemeralSessionServiceAsync = ephemeralSessions
+
     override fun studies(): StudyServiceAsync = studies
 
     override fun users(): UserServiceAsync = users
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         ViewerServiceAsync.WithRawResponse {
+
+        private val ephemeralSessions: EphemeralSessionServiceAsync.WithRawResponse by lazy {
+            EphemeralSessionServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
 
         private val studies: StudyServiceAsync.WithRawResponse by lazy {
             StudyServiceAsyncImpl.WithRawResponseImpl(clientOptions)
@@ -46,6 +58,9 @@ class ViewerServiceAsyncImpl internal constructor(private val clientOptions: Cli
             ViewerServiceAsyncImpl.WithRawResponseImpl(
                 clientOptions.toBuilder().apply(modifier::accept).build()
             )
+
+        override fun ephemeralSessions(): EphemeralSessionServiceAsync.WithRawResponse =
+            ephemeralSessions
 
         override fun studies(): StudyServiceAsync.WithRawResponse = studies
 

@@ -3,6 +3,7 @@
 package com.avara.services.blocking
 
 import com.avara.core.ClientOptions
+import com.avara.services.blocking.viewer.EphemeralSessionService
 import com.avara.services.blocking.viewer.StudyService
 import com.avara.services.blocking.viewer.UserService
 import java.util.function.Consumer
@@ -21,6 +22,8 @@ interface ViewerService {
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): ViewerService
 
+    fun ephemeralSessions(): EphemeralSessionService
+
     fun studies(): StudyService
 
     fun users(): UserService
@@ -34,6 +37,8 @@ interface ViewerService {
          * The original service is not modified.
          */
         fun withOptions(modifier: Consumer<ClientOptions.Builder>): ViewerService.WithRawResponse
+
+        fun ephemeralSessions(): EphemeralSessionService.WithRawResponse
 
         fun studies(): StudyService.WithRawResponse
 

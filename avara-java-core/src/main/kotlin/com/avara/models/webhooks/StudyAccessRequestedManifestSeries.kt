@@ -30,7 +30,11 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/** One series in the optional study manifest. Secondary capture should be omitted. */
+/**
+ * One series in the optional study manifest. Series you cannot describe can be left out. Secondary
+ * capture is not necessary. Enhanced multi-frame series already load progressively without this
+ * sidecar. A series with no surviving SOPs is dropped.
+ */
 class StudyAccessRequestedManifestSeries
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
@@ -60,7 +64,8 @@ private constructor(
     ) : this(modality, seriesDescription, seriesInstanceUid, seriesNumber, sops, mutableMapOf())
 
     /**
-     * DICOM modality (e.g. CT, MR)
+     * Non-empty DICOM modality. Common: CT, MR, CR, DX, US, XA, PT, NM, MG. Secondary capture (SC)
+     * is not necessary.
      *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is unexpectedly
      *   missing or null (e.g. if the server responded with an unexpected value).
@@ -68,7 +73,7 @@ private constructor(
     fun modality(): String = modality.getRequired("modality")
 
     /**
-     * Series description shown in the viewer sidebar
+     * Non-empty display string shown in the viewer sidebar.
      *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is unexpectedly
      *   missing or null (e.g. if the server responded with an unexpected value).
@@ -76,7 +81,7 @@ private constructor(
     fun seriesDescription(): String = seriesDescription.getRequired("seriesDescription")
 
     /**
-     * DICOM Series Instance UID
+     * DICOM Series Instance UID. Non-empty string.
      *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is unexpectedly
      *   missing or null (e.g. if the server responded with an unexpected value).
@@ -84,7 +89,7 @@ private constructor(
     fun seriesInstanceUid(): String = seriesInstanceUid.getRequired("seriesInstanceUID")
 
     /**
-     * Series number (string or number)
+     * Series number. String or number (1 or "1").
      *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is unexpectedly
      *   missing or null (e.g. if the server responded with an unexpected value).
@@ -92,6 +97,8 @@ private constructor(
     fun seriesNumber(): SeriesNumber = seriesNumber.getRequired("seriesNumber")
 
     /**
+     * SOPs in this series. At least one must survive validation.
+     *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is unexpectedly
      *   missing or null (e.g. if the server responded with an unexpected value).
      */
@@ -194,7 +201,10 @@ private constructor(
                     studyAccessRequestedManifestSeries.additionalProperties.toMutableMap()
             }
 
-        /** DICOM modality (e.g. CT, MR) */
+        /**
+         * Non-empty DICOM modality. Common: CT, MR, CR, DX, US, XA, PT, NM, MG. Secondary capture
+         * (SC) is not necessary.
+         */
         fun modality(modality: String) = modality(JsonField.of(modality))
 
         /**
@@ -205,7 +215,7 @@ private constructor(
          */
         fun modality(modality: JsonField<String>) = apply { this.modality = modality }
 
-        /** Series description shown in the viewer sidebar */
+        /** Non-empty display string shown in the viewer sidebar. */
         fun seriesDescription(seriesDescription: String) =
             seriesDescription(JsonField.of(seriesDescription))
 
@@ -220,7 +230,7 @@ private constructor(
             this.seriesDescription = seriesDescription
         }
 
-        /** DICOM Series Instance UID */
+        /** DICOM Series Instance UID. Non-empty string. */
         fun seriesInstanceUid(seriesInstanceUid: String) =
             seriesInstanceUid(JsonField.of(seriesInstanceUid))
 
@@ -235,7 +245,7 @@ private constructor(
             this.seriesInstanceUid = seriesInstanceUid
         }
 
-        /** Series number (string or number) */
+        /** Series number. String or number (1 or "1"). */
         fun seriesNumber(seriesNumber: SeriesNumber) = seriesNumber(JsonField.of(seriesNumber))
 
         /**
@@ -255,6 +265,7 @@ private constructor(
         /** Alias for calling [seriesNumber] with `SeriesNumber.ofNumber(number)`. */
         fun seriesNumber(number: Double) = seriesNumber(SeriesNumber.ofNumber(number))
 
+        /** SOPs in this series. At least one must survive validation. */
         fun sops(sops: List<StudyAccessRequestedManifestSop>) = sops(JsonField.of(sops))
 
         /**
@@ -367,7 +378,7 @@ private constructor(
             (seriesNumber.asKnown().getOrNull()?.validity() ?: 0) +
             (sops.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
 
-    /** Series number (string or number) */
+    /** Series number. String or number (1 or "1"). */
     @JsonDeserialize(using = SeriesNumber.Deserializer::class)
     @JsonSerialize(using = SeriesNumber.Serializer::class)
     class SeriesNumber

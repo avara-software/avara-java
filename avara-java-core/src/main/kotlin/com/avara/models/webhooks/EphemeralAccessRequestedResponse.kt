@@ -20,17 +20,17 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /**
- * Response expected by Avara for study access webhook. Provide presigned URLs for DICOM images and
- * optionally non-DICOM media. Optionally include a study manifest to improve progressive loading of
- * legacy DICOM; it is not required.
+ * Synchronous response with presigned DICOM URLs and optionally non-DICOM media. Optionally include
+ * a manifests array (one study per item) to improve progressive loading of legacy DICOM; it is not
+ * required.
  */
-class StudyAccessRequestedResponse
+class EphemeralAccessRequestedResponse
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val authorized: JsonField<Boolean>,
     private val urls: JsonField<List<String>>,
     private val error: JsonField<String>,
-    private val manifest: JsonField<StudyAccessRequestedManifest>,
+    private val manifests: JsonField<List<StudyAccessRequestedManifest>>,
     private val mediaUrls: JsonField<List<StudyAccessRequestedMediaUrl>>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
@@ -42,16 +42,16 @@ private constructor(
         authorized: JsonField<Boolean> = JsonMissing.of(),
         @JsonProperty("urls") @ExcludeMissing urls: JsonField<List<String>> = JsonMissing.of(),
         @JsonProperty("error") @ExcludeMissing error: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("manifest")
+        @JsonProperty("manifests")
         @ExcludeMissing
-        manifest: JsonField<StudyAccessRequestedManifest> = JsonMissing.of(),
+        manifests: JsonField<List<StudyAccessRequestedManifest>> = JsonMissing.of(),
         @JsonProperty("mediaUrls")
         @ExcludeMissing
         mediaUrls: JsonField<List<StudyAccessRequestedMediaUrl>> = JsonMissing.of(),
-    ) : this(authorized, urls, error, manifest, mediaUrls, mutableMapOf())
+    ) : this(authorized, urls, error, manifests, mediaUrls, mutableMapOf())
 
     /**
-     * Whether access is authorized for this study
+     * Whether access is authorized for this ephemeral session
      *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is unexpectedly
      *   missing or null (e.g. if the server responded with an unexpected value).
@@ -59,7 +59,7 @@ private constructor(
     fun authorized(): Boolean = authorized.getRequired("authorized")
 
     /**
-     * Flat list of presigned URLs for DICOM images. Include all image URLs for the study.
+     * Flat list of presigned URLs for DICOM images across the session.
      *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is unexpectedly
      *   missing or null (e.g. if the server responded with an unexpected value).
@@ -75,18 +75,19 @@ private constructor(
     fun error(): Optional<String> = error.getOptional("error")
 
     /**
-     * Optional sidecar for this one study (one object, not an array). Not required — omit if you do
-     * not have it. Recommended when you can provide it, especially for very large studies. Enables
-     * progressive loading of legacy multi-SOP DICOM so readers can scroll before every file is
-     * parsed. Invalid or incomplete values are ignored; URLs still load.
+     * Optional sidecars, one study per item (an array, not a single object). Not required — omit if
+     * you do not have them. Recommended when you can provide them, especially for very large or
+     * multi-study legacy DICOM. Enables progressive loading so readers can scroll before every file
+     * is parsed. Invalid or incomplete values are ignored; URLs still load.
      *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun manifest(): Optional<StudyAccessRequestedManifest> = manifest.getOptional("manifest")
+    fun manifests(): Optional<List<StudyAccessRequestedManifest>> =
+        manifests.getOptional("manifests")
 
     /**
-     * Optional presigned URLs for non-DICOM media (images, PDFs, videos) associated with the study.
+     * Optional presigned URLs for non-DICOM media (images, PDFs, videos).
      *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
@@ -116,13 +117,13 @@ private constructor(
     @JsonProperty("error") @ExcludeMissing fun _error(): JsonField<String> = error
 
     /**
-     * Returns the raw JSON value of [manifest].
+     * Returns the raw JSON value of [manifests].
      *
-     * Unlike [manifest], this method doesn't throw if the JSON field has an unexpected type.
+     * Unlike [manifests], this method doesn't throw if the JSON field has an unexpected type.
      */
-    @JsonProperty("manifest")
+    @JsonProperty("manifests")
     @ExcludeMissing
-    fun _manifest(): JsonField<StudyAccessRequestedManifest> = manifest
+    fun _manifests(): JsonField<List<StudyAccessRequestedManifest>> = manifests
 
     /**
      * Returns the raw JSON value of [mediaUrls].
@@ -148,7 +149,8 @@ private constructor(
     companion object {
 
         /**
-         * Returns a mutable builder for constructing an instance of [StudyAccessRequestedResponse].
+         * Returns a mutable builder for constructing an instance of
+         * [EphemeralAccessRequestedResponse].
          *
          * The following fields are required:
          * ```java
@@ -159,27 +161,29 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
-    /** A builder for [StudyAccessRequestedResponse]. */
+    /** A builder for [EphemeralAccessRequestedResponse]. */
     class Builder internal constructor() {
 
         private var authorized: JsonField<Boolean>? = null
         private var urls: JsonField<MutableList<String>>? = null
         private var error: JsonField<String> = JsonMissing.of()
-        private var manifest: JsonField<StudyAccessRequestedManifest> = JsonMissing.of()
+        private var manifests: JsonField<MutableList<StudyAccessRequestedManifest>>? = null
         private var mediaUrls: JsonField<MutableList<StudyAccessRequestedMediaUrl>>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(studyAccessRequestedResponse: StudyAccessRequestedResponse) = apply {
-            authorized = studyAccessRequestedResponse.authorized
-            urls = studyAccessRequestedResponse.urls.map { it.toMutableList() }
-            error = studyAccessRequestedResponse.error
-            manifest = studyAccessRequestedResponse.manifest
-            mediaUrls = studyAccessRequestedResponse.mediaUrls.map { it.toMutableList() }
-            additionalProperties = studyAccessRequestedResponse.additionalProperties.toMutableMap()
-        }
+        internal fun from(ephemeralAccessRequestedResponse: EphemeralAccessRequestedResponse) =
+            apply {
+                authorized = ephemeralAccessRequestedResponse.authorized
+                urls = ephemeralAccessRequestedResponse.urls.map { it.toMutableList() }
+                error = ephemeralAccessRequestedResponse.error
+                manifests = ephemeralAccessRequestedResponse.manifests.map { it.toMutableList() }
+                mediaUrls = ephemeralAccessRequestedResponse.mediaUrls.map { it.toMutableList() }
+                additionalProperties =
+                    ephemeralAccessRequestedResponse.additionalProperties.toMutableMap()
+            }
 
-        /** Whether access is authorized for this study */
+        /** Whether access is authorized for this ephemeral session */
         fun authorized(authorized: Boolean) = authorized(JsonField.of(authorized))
 
         /**
@@ -191,7 +195,7 @@ private constructor(
          */
         fun authorized(authorized: JsonField<Boolean>) = apply { this.authorized = authorized }
 
-        /** Flat list of presigned URLs for DICOM images. Include all image URLs for the study. */
+        /** Flat list of presigned URLs for DICOM images across the session. */
         fun urls(urls: List<String>) = urls(JsonField.of(urls))
 
         /**
@@ -226,28 +230,38 @@ private constructor(
         fun error(error: JsonField<String>) = apply { this.error = error }
 
         /**
-         * Optional sidecar for this one study (one object, not an array). Not required — omit if
-         * you do not have it. Recommended when you can provide it, especially for very large
-         * studies. Enables progressive loading of legacy multi-SOP DICOM so readers can scroll
+         * Optional sidecars, one study per item (an array, not a single object). Not required —
+         * omit if you do not have them. Recommended when you can provide them, especially for very
+         * large or multi-study legacy DICOM. Enables progressive loading so readers can scroll
          * before every file is parsed. Invalid or incomplete values are ignored; URLs still load.
          */
-        fun manifest(manifest: StudyAccessRequestedManifest) = manifest(JsonField.of(manifest))
+        fun manifests(manifests: List<StudyAccessRequestedManifest>) =
+            manifests(JsonField.of(manifests))
 
         /**
-         * Sets [Builder.manifest] to an arbitrary JSON value.
+         * Sets [Builder.manifests] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.manifest] with a well-typed
-         * [StudyAccessRequestedManifest] value instead. This method is primarily for setting the
-         * field to an undocumented or not yet supported value.
+         * You should usually call [Builder.manifests] with a well-typed
+         * `List<StudyAccessRequestedManifest>` value instead. This method is primarily for setting
+         * the field to an undocumented or not yet supported value.
          */
-        fun manifest(manifest: JsonField<StudyAccessRequestedManifest>) = apply {
-            this.manifest = manifest
+        fun manifests(manifests: JsonField<List<StudyAccessRequestedManifest>>) = apply {
+            this.manifests = manifests.map { it.toMutableList() }
         }
 
         /**
-         * Optional presigned URLs for non-DICOM media (images, PDFs, videos) associated with the
-         * study.
+         * Adds a single [StudyAccessRequestedManifest] to [manifests].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
          */
+        fun addManifest(manifest: StudyAccessRequestedManifest) = apply {
+            manifests =
+                (manifests ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("manifests", it).add(manifest)
+                }
+        }
+
+        /** Optional presigned URLs for non-DICOM media (images, PDFs, videos). */
         fun mediaUrls(mediaUrls: List<StudyAccessRequestedMediaUrl>) =
             mediaUrls(JsonField.of(mediaUrls))
 
@@ -294,7 +308,7 @@ private constructor(
         }
 
         /**
-         * Returns an immutable instance of [StudyAccessRequestedResponse].
+         * Returns an immutable instance of [EphemeralAccessRequestedResponse].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
          *
@@ -306,12 +320,12 @@ private constructor(
          *
          * @throws IllegalStateException if any required field is unset.
          */
-        fun build(): StudyAccessRequestedResponse =
-            StudyAccessRequestedResponse(
+        fun build(): EphemeralAccessRequestedResponse =
+            EphemeralAccessRequestedResponse(
                 checkRequired("authorized", authorized),
                 checkRequired("urls", urls).map { it.toImmutable() },
                 error,
-                manifest,
+                (manifests ?: JsonMissing.of()).map { it.toImmutable() },
                 (mediaUrls ?: JsonMissing.of()).map { it.toImmutable() },
                 additionalProperties.toMutableMap(),
             )
@@ -327,7 +341,7 @@ private constructor(
      * @throws AvaraInvalidDataException if any value type in this object doesn't match its expected
      *   type.
      */
-    fun validate(): StudyAccessRequestedResponse = apply {
+    fun validate(): EphemeralAccessRequestedResponse = apply {
         if (validated) {
             return@apply
         }
@@ -335,7 +349,7 @@ private constructor(
         authorized()
         urls()
         error()
-        manifest().ifPresent { it.validate() }
+        manifests().ifPresent { it.forEach { it.validate() } }
         mediaUrls().ifPresent { it.forEach { it.validate() } }
         validated = true
     }
@@ -358,7 +372,7 @@ private constructor(
         (if (authorized.asKnown().isPresent) 1 else 0) +
             (urls.asKnown().getOrNull()?.size ?: 0) +
             (if (error.asKnown().isPresent) 1 else 0) +
-            (manifest.asKnown().getOrNull()?.validity() ?: 0) +
+            (manifests.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
             (mediaUrls.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
 
     override fun equals(other: Any?): Boolean {
@@ -366,21 +380,21 @@ private constructor(
             return true
         }
 
-        return other is StudyAccessRequestedResponse &&
+        return other is EphemeralAccessRequestedResponse &&
             authorized == other.authorized &&
             urls == other.urls &&
             error == other.error &&
-            manifest == other.manifest &&
+            manifests == other.manifests &&
             mediaUrls == other.mediaUrls &&
             additionalProperties == other.additionalProperties
     }
 
     private val hashCode: Int by lazy {
-        Objects.hash(authorized, urls, error, manifest, mediaUrls, additionalProperties)
+        Objects.hash(authorized, urls, error, manifests, mediaUrls, additionalProperties)
     }
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "StudyAccessRequestedResponse{authorized=$authorized, urls=$urls, error=$error, manifest=$manifest, mediaUrls=$mediaUrls, additionalProperties=$additionalProperties}"
+        "EphemeralAccessRequestedResponse{authorized=$authorized, urls=$urls, error=$error, manifests=$manifests, mediaUrls=$mediaUrls, additionalProperties=$additionalProperties}"
 }
