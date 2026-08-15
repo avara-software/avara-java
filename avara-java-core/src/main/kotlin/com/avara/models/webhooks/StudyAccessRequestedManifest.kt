@@ -19,9 +19,10 @@ import java.util.Objects
 import kotlin.jvm.optionals.getOrNull
 
 /**
- * Optional sidecar for this one study. Not required — omit if you do not have it. Recommended when
- * you can provide it, especially for very large studies. Enables progressive loading of legacy
- * multi-SOP DICOM so readers can scroll before every file is parsed. Invalid or incomplete values
+ * Optional sidecar for this one study (one object, not an array). Not required — omit if you do not
+ * have it. Recommended when you can provide it, especially for very large studies. Enables
+ * progressive loading of legacy multi-SOP DICOM so readers can scroll before every file is parsed.
+ * Include only this study. Series you cannot describe can be left out. Invalid or incomplete values
  * are ignored; URLs still load.
  */
 class StudyAccessRequestedManifest
@@ -43,13 +44,16 @@ private constructor(
     ) : this(series, studyInstanceUid, mutableMapOf())
 
     /**
+     * Planable series in this study. At least one must survive validation.
+     *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is unexpectedly
      *   missing or null (e.g. if the server responded with an unexpected value).
      */
     fun series(): List<StudyAccessRequestedManifestSeries> = series.getRequired("series")
 
     /**
-     * DICOM Study Instance UID for this study
+     * DICOM Study Instance UID for this study. Non-empty string. Must match the study being
+     * requested.
      *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is unexpectedly
      *   missing or null (e.g. if the server responded with an unexpected value).
@@ -115,6 +119,7 @@ private constructor(
             additionalProperties = studyAccessRequestedManifest.additionalProperties.toMutableMap()
         }
 
+        /** Planable series in this study. At least one must survive validation. */
         fun series(series: List<StudyAccessRequestedManifestSeries>) = series(JsonField.of(series))
 
         /**
@@ -140,7 +145,10 @@ private constructor(
                 }
         }
 
-        /** DICOM Study Instance UID for this study */
+        /**
+         * DICOM Study Instance UID for this study. Non-empty string. Must match the study being
+         * requested.
+         */
         fun studyInstanceUid(studyInstanceUid: String) =
             studyInstanceUid(JsonField.of(studyInstanceUid))
 

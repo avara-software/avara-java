@@ -3,6 +3,7 @@
 package com.avara.services.async
 
 import com.avara.core.ClientOptions
+import com.avara.services.async.viewer.EphemeralSessionServiceAsync
 import com.avara.services.async.viewer.StudyServiceAsync
 import com.avara.services.async.viewer.UserServiceAsync
 import java.util.function.Consumer
@@ -21,6 +22,8 @@ interface ViewerServiceAsync {
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): ViewerServiceAsync
 
+    fun ephemeralSessions(): EphemeralSessionServiceAsync
+
     fun studies(): StudyServiceAsync
 
     fun users(): UserServiceAsync
@@ -38,6 +41,8 @@ interface ViewerServiceAsync {
         fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
         ): ViewerServiceAsync.WithRawResponse
+
+        fun ephemeralSessions(): EphemeralSessionServiceAsync.WithRawResponse
 
         fun studies(): StudyServiceAsync.WithRawResponse
 

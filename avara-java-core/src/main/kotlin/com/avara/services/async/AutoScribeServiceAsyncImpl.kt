@@ -5,6 +5,8 @@ package com.avara.services.async
 import com.avara.core.ClientOptions
 import com.avara.services.async.autoscribe.ClinicalReferenceServiceAsync
 import com.avara.services.async.autoscribe.ClinicalReferenceServiceAsyncImpl
+import com.avara.services.async.autoscribe.EphemeralSessionServiceAsync
+import com.avara.services.async.autoscribe.EphemeralSessionServiceAsyncImpl
 import com.avara.services.async.autoscribe.ReportServiceAsync
 import com.avara.services.async.autoscribe.ReportServiceAsyncImpl
 import com.avara.services.async.autoscribe.StudyServiceAsync
@@ -24,6 +26,10 @@ class AutoScribeServiceAsyncImpl internal constructor(private val clientOptions:
         ClinicalReferenceServiceAsyncImpl(clientOptions)
     }
 
+    private val ephemeralSessions: EphemeralSessionServiceAsync by lazy {
+        EphemeralSessionServiceAsyncImpl(clientOptions)
+    }
+
     private val studies: StudyServiceAsync by lazy { StudyServiceAsyncImpl(clientOptions) }
 
     private val users: UserServiceAsync by lazy { UserServiceAsyncImpl(clientOptions) }
@@ -37,6 +43,8 @@ class AutoScribeServiceAsyncImpl internal constructor(private val clientOptions:
 
     override fun clinicalReferences(): ClinicalReferenceServiceAsync = clinicalReferences
 
+    override fun ephemeralSessions(): EphemeralSessionServiceAsync = ephemeralSessions
+
     override fun studies(): StudyServiceAsync = studies
 
     override fun users(): UserServiceAsync = users
@@ -48,6 +56,10 @@ class AutoScribeServiceAsyncImpl internal constructor(private val clientOptions:
 
         private val clinicalReferences: ClinicalReferenceServiceAsync.WithRawResponse by lazy {
             ClinicalReferenceServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val ephemeralSessions: EphemeralSessionServiceAsync.WithRawResponse by lazy {
+            EphemeralSessionServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
 
         private val studies: StudyServiceAsync.WithRawResponse by lazy {
@@ -71,6 +83,9 @@ class AutoScribeServiceAsyncImpl internal constructor(private val clientOptions:
 
         override fun clinicalReferences(): ClinicalReferenceServiceAsync.WithRawResponse =
             clinicalReferences
+
+        override fun ephemeralSessions(): EphemeralSessionServiceAsync.WithRawResponse =
+            ephemeralSessions
 
         override fun studies(): StudyServiceAsync.WithRawResponse = studies
 

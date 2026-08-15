@@ -20,16 +20,17 @@ import kotlin.jvm.optionals.getOrNull
 
 /**
  * Union of all Avara webhook event types. Use the 'type' field to discriminate between event types.
- * Events: study.access_requested (synchronous), report.delivered (asynchronous),
- * secondary_capture.access_requested (synchronous), modality_worklist.requested (synchronous),
- * patient_study.enrichment_requested (synchronous soft), clinical_context.enrichment_requested
- * (synchronous soft).
+ * Events: study.access_requested (synchronous), ephemeral.access_requested (synchronous),
+ * report.delivered (asynchronous), secondary_capture.access_requested (synchronous),
+ * modality_worklist.requested (synchronous), patient_study.enrichment_requested (synchronous soft),
+ * clinical_context.enrichment_requested (synchronous soft).
  */
 @JsonDeserialize(using = WebhookEvent.Deserializer::class)
 @JsonSerialize(using = WebhookEvent.Serializer::class)
 class WebhookEvent
 private constructor(
     private val studyAccessRequested: StudyAccessRequestedEvent? = null,
+    private val ephemeralAccessRequested: EphemeralAccessRequestedEvent? = null,
     private val reportDelivered: ReportDeliveredEvent? = null,
     private val secondaryCaptureAccessRequested: SecondaryCaptureAccessRequestedEvent? = null,
     private val modalityWorklistRequested: ModalityWorklistRequestedEvent? = null,
@@ -44,6 +45,14 @@ private constructor(
      */
     fun studyAccessRequested(): Optional<StudyAccessRequestedEvent> =
         Optional.ofNullable(studyAccessRequested)
+
+    /**
+     * Webhook event sent when Avara needs presigned URLs for an ephemeral viewer session. This is a
+     * synchronous webhook — you must respond with the URLs within the request timeout. There is no
+     * Avara study; use retrievalId (and optional options) to resolve images.
+     */
+    fun ephemeralAccessRequested(): Optional<EphemeralAccessRequestedEvent> =
+        Optional.ofNullable(ephemeralAccessRequested)
 
     /**
      * Webhook event sent when a report is completed. This is an asynchronous notification - respond
@@ -82,6 +91,8 @@ private constructor(
 
     fun isStudyAccessRequested(): Boolean = studyAccessRequested != null
 
+    fun isEphemeralAccessRequested(): Boolean = ephemeralAccessRequested != null
+
     fun isReportDelivered(): Boolean = reportDelivered != null
 
     fun isSecondaryCaptureAccessRequested(): Boolean = secondaryCaptureAccessRequested != null
@@ -98,6 +109,14 @@ private constructor(
      */
     fun asStudyAccessRequested(): StudyAccessRequestedEvent =
         studyAccessRequested.getOrThrow("studyAccessRequested")
+
+    /**
+     * Webhook event sent when Avara needs presigned URLs for an ephemeral viewer session. This is a
+     * synchronous webhook — you must respond with the URLs within the request timeout. There is no
+     * Avara study; use retrievalId (and optional options) to resolve images.
+     */
+    fun asEphemeralAccessRequested(): EphemeralAccessRequestedEvent =
+        ephemeralAccessRequested.getOrThrow("ephemeralAccessRequested")
 
     /**
      * Webhook event sent when a report is completed. This is an asynchronous notification - respond
@@ -168,6 +187,8 @@ private constructor(
     fun <T> accept(visitor: Visitor<T>): T =
         when {
             studyAccessRequested != null -> visitor.visitStudyAccessRequested(studyAccessRequested)
+            ephemeralAccessRequested != null ->
+                visitor.visitEphemeralAccessRequested(ephemeralAccessRequested)
             reportDelivered != null -> visitor.visitReportDelivered(reportDelivered)
             secondaryCaptureAccessRequested != null ->
                 visitor.visitSecondaryCaptureAccessRequested(secondaryCaptureAccessRequested)
@@ -201,6 +222,12 @@ private constructor(
                     studyAccessRequested: StudyAccessRequestedEvent
                 ) {
                     studyAccessRequested.validate()
+                }
+
+                override fun visitEphemeralAccessRequested(
+                    ephemeralAccessRequested: EphemeralAccessRequestedEvent
+                ) {
+                    ephemeralAccessRequested.validate()
                 }
 
                 override fun visitReportDelivered(reportDelivered: ReportDeliveredEvent) {
@@ -256,6 +283,10 @@ private constructor(
                     studyAccessRequested: StudyAccessRequestedEvent
                 ) = studyAccessRequested.validity()
 
+                override fun visitEphemeralAccessRequested(
+                    ephemeralAccessRequested: EphemeralAccessRequestedEvent
+                ) = ephemeralAccessRequested.validity()
+
                 override fun visitReportDelivered(reportDelivered: ReportDeliveredEvent) =
                     reportDelivered.validity()
 
@@ -286,6 +317,7 @@ private constructor(
 
         return other is WebhookEvent &&
             studyAccessRequested == other.studyAccessRequested &&
+            ephemeralAccessRequested == other.ephemeralAccessRequested &&
             reportDelivered == other.reportDelivered &&
             secondaryCaptureAccessRequested == other.secondaryCaptureAccessRequested &&
             modalityWorklistRequested == other.modalityWorklistRequested &&
@@ -296,6 +328,7 @@ private constructor(
     override fun hashCode(): Int =
         Objects.hash(
             studyAccessRequested,
+            ephemeralAccessRequested,
             reportDelivered,
             secondaryCaptureAccessRequested,
             modalityWorklistRequested,
@@ -307,6 +340,8 @@ private constructor(
         when {
             studyAccessRequested != null ->
                 "WebhookEvent{studyAccessRequested=$studyAccessRequested}"
+            ephemeralAccessRequested != null ->
+                "WebhookEvent{ephemeralAccessRequested=$ephemeralAccessRequested}"
             reportDelivered != null -> "WebhookEvent{reportDelivered=$reportDelivered}"
             secondaryCaptureAccessRequested != null ->
                 "WebhookEvent{secondaryCaptureAccessRequested=$secondaryCaptureAccessRequested}"
@@ -329,6 +364,15 @@ private constructor(
         @JvmStatic
         fun ofStudyAccessRequested(studyAccessRequested: StudyAccessRequestedEvent) =
             WebhookEvent(studyAccessRequested = studyAccessRequested)
+
+        /**
+         * Webhook event sent when Avara needs presigned URLs for an ephemeral viewer session. This
+         * is a synchronous webhook — you must respond with the URLs within the request timeout.
+         * There is no Avara study; use retrievalId (and optional options) to resolve images.
+         */
+        @JvmStatic
+        fun ofEphemeralAccessRequested(ephemeralAccessRequested: EphemeralAccessRequestedEvent) =
+            WebhookEvent(ephemeralAccessRequested = ephemeralAccessRequested)
 
         /**
          * Webhook event sent when a report is completed. This is an asynchronous notification -
@@ -386,6 +430,15 @@ private constructor(
          * synchronous webhook - you must respond with the URLs within the request timeout.
          */
         fun visitStudyAccessRequested(studyAccessRequested: StudyAccessRequestedEvent): T
+
+        /**
+         * Webhook event sent when Avara needs presigned URLs for an ephemeral viewer session. This
+         * is a synchronous webhook — you must respond with the URLs within the request timeout.
+         * There is no Avara study; use retrievalId (and optional options) to resolve images.
+         */
+        fun visitEphemeralAccessRequested(
+            ephemeralAccessRequested: EphemeralAccessRequestedEvent
+        ): T
 
         /**
          * Webhook event sent when a report is completed. This is an asynchronous notification -
@@ -453,6 +506,11 @@ private constructor(
                         WebhookEvent(studyAccessRequested = it, _json = json)
                     } ?: WebhookEvent(_json = json)
                 }
+                "ephemeral.access_requested" -> {
+                    return tryDeserialize(node, jacksonTypeRef<EphemeralAccessRequestedEvent>())
+                        ?.let { WebhookEvent(ephemeralAccessRequested = it, _json = json) }
+                        ?: WebhookEvent(_json = json)
+                }
                 "report.delivered" -> {
                     return tryDeserialize(node, jacksonTypeRef<ReportDeliveredEvent>())?.let {
                         WebhookEvent(reportDelivered = it, _json = json)
@@ -504,6 +562,8 @@ private constructor(
             when {
                 value.studyAccessRequested != null ->
                     generator.writeObject(value.studyAccessRequested)
+                value.ephemeralAccessRequested != null ->
+                    generator.writeObject(value.ephemeralAccessRequested)
                 value.reportDelivered != null -> generator.writeObject(value.reportDelivered)
                 value.secondaryCaptureAccessRequested != null ->
                     generator.writeObject(value.secondaryCaptureAccessRequested)

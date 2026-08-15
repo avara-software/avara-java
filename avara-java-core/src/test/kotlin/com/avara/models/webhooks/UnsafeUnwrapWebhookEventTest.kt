@@ -15,6 +15,68 @@ import org.junit.jupiter.params.provider.EnumSource
 internal class UnsafeUnwrapWebhookEventTest {
 
     @Test
+    fun ofEphemeralAccessRequested() {
+        val ephemeralAccessRequested =
+            EphemeralAccessRequestedEvent.builder()
+                .id("whe_1234567890abcdef1234567890abcdef")
+                .data(
+                    EphemeralAccessRequestedEventData.builder()
+                        .retrievalId("order-12345")
+                        .options(
+                            EphemeralAccessRequestedEventData.Options.builder()
+                                .putAdditionalProperty("studyInstanceUids", JsonValue.from("bar"))
+                                .build()
+                        )
+                        .build()
+                )
+                .build()
+
+        val unsafeUnwrapWebhookEvent =
+            UnsafeUnwrapWebhookEvent.ofEphemeralAccessRequested(ephemeralAccessRequested)
+
+        assertThat(unsafeUnwrapWebhookEvent.ephemeralAccessRequested())
+            .contains(ephemeralAccessRequested)
+        assertThat(unsafeUnwrapWebhookEvent.studyAccessRequested()).isEmpty
+        assertThat(unsafeUnwrapWebhookEvent.reportDelivered()).isEmpty
+        assertThat(unsafeUnwrapWebhookEvent.secondaryCaptureAccessRequested()).isEmpty
+        assertThat(unsafeUnwrapWebhookEvent.modalityWorklistRequested()).isEmpty
+        assertThat(unsafeUnwrapWebhookEvent.patientStudyEnrichmentRequested()).isEmpty
+        assertThat(unsafeUnwrapWebhookEvent.clinicalContextEnrichmentRequested()).isEmpty
+    }
+
+    @Test
+    fun ofEphemeralAccessRequestedRoundtrip() {
+        val jsonMapper = jsonMapper()
+        val unsafeUnwrapWebhookEvent =
+            UnsafeUnwrapWebhookEvent.ofEphemeralAccessRequested(
+                EphemeralAccessRequestedEvent.builder()
+                    .id("whe_1234567890abcdef1234567890abcdef")
+                    .data(
+                        EphemeralAccessRequestedEventData.builder()
+                            .retrievalId("order-12345")
+                            .options(
+                                EphemeralAccessRequestedEventData.Options.builder()
+                                    .putAdditionalProperty(
+                                        "studyInstanceUids",
+                                        JsonValue.from("bar"),
+                                    )
+                                    .build()
+                            )
+                            .build()
+                    )
+                    .build()
+            )
+
+        val roundtrippedUnsafeUnwrapWebhookEvent =
+            jsonMapper.readValue(
+                jsonMapper.writeValueAsString(unsafeUnwrapWebhookEvent),
+                jacksonTypeRef<UnsafeUnwrapWebhookEvent>(),
+            )
+
+        assertThat(roundtrippedUnsafeUnwrapWebhookEvent).isEqualTo(unsafeUnwrapWebhookEvent)
+    }
+
+    @Test
     fun ofStudyAccessRequested() {
         val studyAccessRequested =
             StudyAccessRequestedEvent.builder()
@@ -30,6 +92,7 @@ internal class UnsafeUnwrapWebhookEventTest {
         val unsafeUnwrapWebhookEvent =
             UnsafeUnwrapWebhookEvent.ofStudyAccessRequested(studyAccessRequested)
 
+        assertThat(unsafeUnwrapWebhookEvent.ephemeralAccessRequested()).isEmpty
         assertThat(unsafeUnwrapWebhookEvent.studyAccessRequested()).contains(studyAccessRequested)
         assertThat(unsafeUnwrapWebhookEvent.reportDelivered()).isEmpty
         assertThat(unsafeUnwrapWebhookEvent.secondaryCaptureAccessRequested()).isEmpty
@@ -85,6 +148,7 @@ internal class UnsafeUnwrapWebhookEventTest {
 
         val unsafeUnwrapWebhookEvent = UnsafeUnwrapWebhookEvent.ofReportDelivered(reportDelivered)
 
+        assertThat(unsafeUnwrapWebhookEvent.ephemeralAccessRequested()).isEmpty
         assertThat(unsafeUnwrapWebhookEvent.studyAccessRequested()).isEmpty
         assertThat(unsafeUnwrapWebhookEvent.reportDelivered()).contains(reportDelivered)
         assertThat(unsafeUnwrapWebhookEvent.secondaryCaptureAccessRequested()).isEmpty
@@ -145,6 +209,7 @@ internal class UnsafeUnwrapWebhookEventTest {
                 secondaryCaptureAccessRequested
             )
 
+        assertThat(unsafeUnwrapWebhookEvent.ephemeralAccessRequested()).isEmpty
         assertThat(unsafeUnwrapWebhookEvent.studyAccessRequested()).isEmpty
         assertThat(unsafeUnwrapWebhookEvent.reportDelivered()).isEmpty
         assertThat(unsafeUnwrapWebhookEvent.secondaryCaptureAccessRequested())
@@ -201,6 +266,7 @@ internal class UnsafeUnwrapWebhookEventTest {
         val unsafeUnwrapWebhookEvent =
             UnsafeUnwrapWebhookEvent.ofModalityWorklistRequested(modalityWorklistRequested)
 
+        assertThat(unsafeUnwrapWebhookEvent.ephemeralAccessRequested()).isEmpty
         assertThat(unsafeUnwrapWebhookEvent.studyAccessRequested()).isEmpty
         assertThat(unsafeUnwrapWebhookEvent.reportDelivered()).isEmpty
         assertThat(unsafeUnwrapWebhookEvent.secondaryCaptureAccessRequested()).isEmpty
@@ -259,6 +325,7 @@ internal class UnsafeUnwrapWebhookEventTest {
                 patientStudyEnrichmentRequested
             )
 
+        assertThat(unsafeUnwrapWebhookEvent.ephemeralAccessRequested()).isEmpty
         assertThat(unsafeUnwrapWebhookEvent.studyAccessRequested()).isEmpty
         assertThat(unsafeUnwrapWebhookEvent.reportDelivered()).isEmpty
         assertThat(unsafeUnwrapWebhookEvent.secondaryCaptureAccessRequested()).isEmpty
@@ -316,6 +383,7 @@ internal class UnsafeUnwrapWebhookEventTest {
                 clinicalContextEnrichmentRequested
             )
 
+        assertThat(unsafeUnwrapWebhookEvent.ephemeralAccessRequested()).isEmpty
         assertThat(unsafeUnwrapWebhookEvent.studyAccessRequested()).isEmpty
         assertThat(unsafeUnwrapWebhookEvent.reportDelivered()).isEmpty
         assertThat(unsafeUnwrapWebhookEvent.secondaryCaptureAccessRequested()).isEmpty

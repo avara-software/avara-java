@@ -3,6 +3,8 @@
 package com.avara.services.blocking
 
 import com.avara.core.ClientOptions
+import com.avara.services.blocking.viewer.EphemeralSessionService
+import com.avara.services.blocking.viewer.EphemeralSessionServiceImpl
 import com.avara.services.blocking.viewer.StudyService
 import com.avara.services.blocking.viewer.StudyServiceImpl
 import com.avara.services.blocking.viewer.UserService
@@ -16,6 +18,10 @@ class ViewerServiceImpl internal constructor(private val clientOptions: ClientOp
         WithRawResponseImpl(clientOptions)
     }
 
+    private val ephemeralSessions: EphemeralSessionService by lazy {
+        EphemeralSessionServiceImpl(clientOptions)
+    }
+
     private val studies: StudyService by lazy { StudyServiceImpl(clientOptions) }
 
     private val users: UserService by lazy { UserServiceImpl(clientOptions) }
@@ -25,12 +31,18 @@ class ViewerServiceImpl internal constructor(private val clientOptions: ClientOp
     override fun withOptions(modifier: Consumer<ClientOptions.Builder>): ViewerService =
         ViewerServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
+    override fun ephemeralSessions(): EphemeralSessionService = ephemeralSessions
+
     override fun studies(): StudyService = studies
 
     override fun users(): UserService = users
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         ViewerService.WithRawResponse {
+
+        private val ephemeralSessions: EphemeralSessionService.WithRawResponse by lazy {
+            EphemeralSessionServiceImpl.WithRawResponseImpl(clientOptions)
+        }
 
         private val studies: StudyService.WithRawResponse by lazy {
             StudyServiceImpl.WithRawResponseImpl(clientOptions)
@@ -46,6 +58,9 @@ class ViewerServiceImpl internal constructor(private val clientOptions: ClientOp
             ViewerServiceImpl.WithRawResponseImpl(
                 clientOptions.toBuilder().apply(modifier::accept).build()
             )
+
+        override fun ephemeralSessions(): EphemeralSessionService.WithRawResponse =
+            ephemeralSessions
 
         override fun studies(): StudyService.WithRawResponse = studies
 

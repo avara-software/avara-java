@@ -4,6 +4,7 @@ package com.avara.services.blocking
 
 import com.avara.core.ClientOptions
 import com.avara.services.blocking.autoscribe.ClinicalReferenceService
+import com.avara.services.blocking.autoscribe.EphemeralSessionService
 import com.avara.services.blocking.autoscribe.ReportService
 import com.avara.services.blocking.autoscribe.StudyService
 import com.avara.services.blocking.autoscribe.UserService
@@ -25,6 +26,8 @@ interface AutoScribeService {
 
     fun clinicalReferences(): ClinicalReferenceService
 
+    fun ephemeralSessions(): EphemeralSessionService
+
     fun studies(): StudyService
 
     fun users(): UserService
@@ -44,6 +47,8 @@ interface AutoScribeService {
         ): AutoScribeService.WithRawResponse
 
         fun clinicalReferences(): ClinicalReferenceService.WithRawResponse
+
+        fun ephemeralSessions(): EphemeralSessionService.WithRawResponse
 
         fun studies(): StudyService.WithRawResponse
 

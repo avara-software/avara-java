@@ -5,6 +5,8 @@ package com.avara.services.blocking
 import com.avara.core.ClientOptions
 import com.avara.services.blocking.autoscribe.ClinicalReferenceService
 import com.avara.services.blocking.autoscribe.ClinicalReferenceServiceImpl
+import com.avara.services.blocking.autoscribe.EphemeralSessionService
+import com.avara.services.blocking.autoscribe.EphemeralSessionServiceImpl
 import com.avara.services.blocking.autoscribe.ReportService
 import com.avara.services.blocking.autoscribe.ReportServiceImpl
 import com.avara.services.blocking.autoscribe.StudyService
@@ -24,6 +26,10 @@ class AutoScribeServiceImpl internal constructor(private val clientOptions: Clie
         ClinicalReferenceServiceImpl(clientOptions)
     }
 
+    private val ephemeralSessions: EphemeralSessionService by lazy {
+        EphemeralSessionServiceImpl(clientOptions)
+    }
+
     private val studies: StudyService by lazy { StudyServiceImpl(clientOptions) }
 
     private val users: UserService by lazy { UserServiceImpl(clientOptions) }
@@ -37,6 +43,8 @@ class AutoScribeServiceImpl internal constructor(private val clientOptions: Clie
 
     override fun clinicalReferences(): ClinicalReferenceService = clinicalReferences
 
+    override fun ephemeralSessions(): EphemeralSessionService = ephemeralSessions
+
     override fun studies(): StudyService = studies
 
     override fun users(): UserService = users
@@ -48,6 +56,10 @@ class AutoScribeServiceImpl internal constructor(private val clientOptions: Clie
 
         private val clinicalReferences: ClinicalReferenceService.WithRawResponse by lazy {
             ClinicalReferenceServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val ephemeralSessions: EphemeralSessionService.WithRawResponse by lazy {
+            EphemeralSessionServiceImpl.WithRawResponseImpl(clientOptions)
         }
 
         private val studies: StudyService.WithRawResponse by lazy {
@@ -71,6 +83,9 @@ class AutoScribeServiceImpl internal constructor(private val clientOptions: Clie
 
         override fun clinicalReferences(): ClinicalReferenceService.WithRawResponse =
             clinicalReferences
+
+        override fun ephemeralSessions(): EphemeralSessionService.WithRawResponse =
+            ephemeralSessions
 
         override fun studies(): StudyService.WithRawResponse = studies
 

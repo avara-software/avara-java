@@ -8,17 +8,17 @@ import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-internal class StudyAccessRequestedResponseTest {
+internal class EphemeralAccessRequestedResponseTest {
 
     @Test
     fun create() {
-        val studyAccessRequestedResponse =
-            StudyAccessRequestedResponse.builder()
+        val ephemeralAccessRequestedResponse =
+            EphemeralAccessRequestedResponse.builder()
                 .authorized(true)
                 .addUrl("https://storage.example.com/dicom/image1.dcm?token=abc123")
                 .addUrl("https://storage.example.com/dicom/image2.dcm?token=def456")
-                .error("Study not found in PACS")
-                .manifest(
+                .error("Retrieval handle not found")
+                .addManifest(
                     StudyAccessRequestedManifest.builder()
                         .addSeries(
                             StudyAccessRequestedManifestSeries.builder()
@@ -54,21 +54,21 @@ internal class StudyAccessRequestedResponseTest {
                 .addMediaUrl(
                     StudyAccessRequestedMediaUrl.builder()
                         .mimeType("application/pdf")
-                        .url("https://storage.example.com/media/report.pdf?token=ghi789")
+                        .url("https://storage.example.com/media/report.pdf?token=abc123")
                         .fileName("clinical-report.pdf")
                         .build()
                 )
                 .build()
 
-        assertThat(studyAccessRequestedResponse.authorized()).isEqualTo(true)
-        assertThat(studyAccessRequestedResponse.urls())
+        assertThat(ephemeralAccessRequestedResponse.authorized()).isEqualTo(true)
+        assertThat(ephemeralAccessRequestedResponse.urls())
             .containsExactly(
                 "https://storage.example.com/dicom/image1.dcm?token=abc123",
                 "https://storage.example.com/dicom/image2.dcm?token=def456",
             )
-        assertThat(studyAccessRequestedResponse.error()).contains("Study not found in PACS")
-        assertThat(studyAccessRequestedResponse.manifest())
-            .contains(
+        assertThat(ephemeralAccessRequestedResponse.error()).contains("Retrieval handle not found")
+        assertThat(ephemeralAccessRequestedResponse.manifests().getOrNull())
+            .containsExactly(
                 StudyAccessRequestedManifest.builder()
                     .addSeries(
                         StudyAccessRequestedManifestSeries.builder()
@@ -101,11 +101,11 @@ internal class StudyAccessRequestedResponseTest {
                     .studyInstanceUid("1.2.840.113619.2.55.3.1234567890")
                     .build()
             )
-        assertThat(studyAccessRequestedResponse.mediaUrls().getOrNull())
+        assertThat(ephemeralAccessRequestedResponse.mediaUrls().getOrNull())
             .containsExactly(
                 StudyAccessRequestedMediaUrl.builder()
                     .mimeType("application/pdf")
-                    .url("https://storage.example.com/media/report.pdf?token=ghi789")
+                    .url("https://storage.example.com/media/report.pdf?token=abc123")
                     .fileName("clinical-report.pdf")
                     .build()
             )
@@ -114,13 +114,13 @@ internal class StudyAccessRequestedResponseTest {
     @Test
     fun roundtrip() {
         val jsonMapper = jsonMapper()
-        val studyAccessRequestedResponse =
-            StudyAccessRequestedResponse.builder()
+        val ephemeralAccessRequestedResponse =
+            EphemeralAccessRequestedResponse.builder()
                 .authorized(true)
                 .addUrl("https://storage.example.com/dicom/image1.dcm?token=abc123")
                 .addUrl("https://storage.example.com/dicom/image2.dcm?token=def456")
-                .error("Study not found in PACS")
-                .manifest(
+                .error("Retrieval handle not found")
+                .addManifest(
                     StudyAccessRequestedManifest.builder()
                         .addSeries(
                             StudyAccessRequestedManifestSeries.builder()
@@ -156,18 +156,19 @@ internal class StudyAccessRequestedResponseTest {
                 .addMediaUrl(
                     StudyAccessRequestedMediaUrl.builder()
                         .mimeType("application/pdf")
-                        .url("https://storage.example.com/media/report.pdf?token=ghi789")
+                        .url("https://storage.example.com/media/report.pdf?token=abc123")
                         .fileName("clinical-report.pdf")
                         .build()
                 )
                 .build()
 
-        val roundtrippedStudyAccessRequestedResponse =
+        val roundtrippedEphemeralAccessRequestedResponse =
             jsonMapper.readValue(
-                jsonMapper.writeValueAsString(studyAccessRequestedResponse),
-                jacksonTypeRef<StudyAccessRequestedResponse>(),
+                jsonMapper.writeValueAsString(ephemeralAccessRequestedResponse),
+                jacksonTypeRef<EphemeralAccessRequestedResponse>(),
             )
 
-        assertThat(roundtrippedStudyAccessRequestedResponse).isEqualTo(studyAccessRequestedResponse)
+        assertThat(roundtrippedEphemeralAccessRequestedResponse)
+            .isEqualTo(ephemeralAccessRequestedResponse)
     }
 }
