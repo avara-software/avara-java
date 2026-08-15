@@ -162,9 +162,6 @@ private constructor(
         requestedProcedureDescription.getRequired("RequestedProcedureDescription")
 
     /**
-     * Scheduled procedure steps for this worklist item. Most appointments/studies have a single
-     * step; include additional steps only when the RIS schedules multiple.
-     *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is unexpectedly
      *   missing or null (e.g. if the server responded with an unexpected value).
      */
@@ -499,10 +496,6 @@ private constructor(
                 this.requestedProcedureDescription = requestedProcedureDescription
             }
 
-        /**
-         * Scheduled procedure steps for this worklist item. Most appointments/studies have a single
-         * step; include additional steps only when the RIS schedules multiple.
-         */
         fun scheduledProcedureStepSequence(
             scheduledProcedureStepSequence: List<ModalityWorklistScheduledStep>
         ) = scheduledProcedureStepSequence(JsonField.of(scheduledProcedureStepSequence))
