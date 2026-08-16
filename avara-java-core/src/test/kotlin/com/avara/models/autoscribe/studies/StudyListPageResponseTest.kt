@@ -13,6 +13,7 @@ import com.avara.models.autoscribe.ReportStatus
 import com.avara.models.autoscribe.Sex
 import com.avara.models.autoscribe.StudyReportMetadata
 import com.avara.models.autoscribe.StudyReportStatus
+import com.avara.models.autoscribe.StudyType
 import com.avara.models.autoscribe.WeightUnit
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import java.time.OffsetDateTime
@@ -102,6 +103,7 @@ internal class StudyListPageResponseTest {
                                 .build()
                         )
                         .externalPatientId("externalPatientId")
+                        .externalReportId("ext_1234567890abcdef1234567890abcdef")
                         .isCritical(true)
                         .metadata(
                             StudyListResponse.Metadata.builder()
@@ -126,6 +128,7 @@ internal class StudyListPageResponseTest {
                                 .status(ReportStatus.IN_PROGRESS)
                                 .build()
                         )
+                        .studyType(StudyType.STANDARD)
                         .addTechnologistNote("x")
                         .technologistTechnique("technologistTechnique")
                         .build()
@@ -211,6 +214,7 @@ internal class StudyListPageResponseTest {
                             .build()
                     )
                     .externalPatientId("externalPatientId")
+                    .externalReportId("ext_1234567890abcdef1234567890abcdef")
                     .isCritical(true)
                     .metadata(
                         StudyListResponse.Metadata.builder()
@@ -235,6 +239,7 @@ internal class StudyListPageResponseTest {
                             .status(ReportStatus.IN_PROGRESS)
                             .build()
                     )
+                    .studyType(StudyType.STANDARD)
                     .addTechnologistNote("x")
                     .technologistTechnique("technologistTechnique")
                     .build()
@@ -324,6 +329,7 @@ internal class StudyListPageResponseTest {
                                 .build()
                         )
                         .externalPatientId("externalPatientId")
+                        .externalReportId("ext_1234567890abcdef1234567890abcdef")
                         .isCritical(true)
                         .metadata(
                             StudyListResponse.Metadata.builder()
@@ -348,6 +354,7 @@ internal class StudyListPageResponseTest {
                                 .status(ReportStatus.IN_PROGRESS)
                                 .build()
                         )
+                        .studyType(StudyType.STANDARD)
                         .addTechnologistNote("x")
                         .technologistTechnique("technologistTechnique")
                         .build()

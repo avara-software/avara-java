@@ -8,6 +8,7 @@ import com.avara.core.http.QueryParams
 import com.avara.core.toImmutable
 import com.avara.models.Severity
 import com.avara.models.autoscribe.StudyReportStatus
+import com.avara.models.autoscribe.StudyType
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
@@ -26,6 +27,7 @@ private constructor(
     private val severity: Severity?,
     private val studyDescription: String?,
     private val studyReportStatus: List<StudyReportStatus>?,
+    private val studyType: StudyType?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
@@ -57,6 +59,9 @@ private constructor(
     fun studyReportStatus(): Optional<List<StudyReportStatus>> =
         Optional.ofNullable(studyReportStatus)
 
+    /** Filter by study kind. Omit to return both 'standard' and 'external' studies. */
+    fun studyType(): Optional<StudyType> = Optional.ofNullable(studyType)
+
     /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
@@ -84,6 +89,7 @@ private constructor(
         private var severity: Severity? = null
         private var studyDescription: String? = null
         private var studyReportStatus: MutableList<StudyReportStatus>? = null
+        private var studyType: StudyType? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
@@ -97,6 +103,7 @@ private constructor(
             severity = studyListParams.severity
             studyDescription = studyListParams.studyDescription
             studyReportStatus = studyListParams.studyReportStatus?.toMutableList()
+            studyType = studyListParams.studyType
             additionalHeaders = studyListParams.additionalHeaders.toBuilder()
             additionalQueryParams = studyListParams.additionalQueryParams.toBuilder()
         }
@@ -184,6 +191,12 @@ private constructor(
             this.studyReportStatus =
                 (this.studyReportStatus ?: mutableListOf()).apply { add(studyReportStatus) }
         }
+
+        /** Filter by study kind. Omit to return both 'standard' and 'external' studies. */
+        fun studyType(studyType: StudyType?) = apply { this.studyType = studyType }
+
+        /** Alias for calling [Builder.studyType] with `studyType.orElse(null)`. */
+        fun studyType(studyType: Optional<StudyType>) = studyType(studyType.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -298,6 +311,7 @@ private constructor(
                 severity,
                 studyDescription,
                 studyReportStatus?.toImmutable(),
+                studyType,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )
@@ -318,6 +332,7 @@ private constructor(
                 studyReportStatus?.let {
                     put("studyReportStatus", it.joinToString(",") { it.toString() })
                 }
+                studyType?.let { put("studyType", it.toString()) }
                 putAll(additionalQueryParams)
             }
             .build()
@@ -336,6 +351,7 @@ private constructor(
             severity == other.severity &&
             studyDescription == other.studyDescription &&
             studyReportStatus == other.studyReportStatus &&
+            studyType == other.studyType &&
             additionalHeaders == other.additionalHeaders &&
             additionalQueryParams == other.additionalQueryParams
     }
@@ -350,10 +366,11 @@ private constructor(
             severity,
             studyDescription,
             studyReportStatus,
+            studyType,
             additionalHeaders,
             additionalQueryParams,
         )
 
     override fun toString() =
-        "StudyListParams{assignedTo=$assignedTo, cursor=$cursor, expressCustomerId=$expressCustomerId, isCancelled=$isCancelled, limit=$limit, severity=$severity, studyDescription=$studyDescription, studyReportStatus=$studyReportStatus, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "StudyListParams{assignedTo=$assignedTo, cursor=$cursor, expressCustomerId=$expressCustomerId, isCancelled=$isCancelled, limit=$limit, severity=$severity, studyDescription=$studyDescription, studyReportStatus=$studyReportStatus, studyType=$studyType, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

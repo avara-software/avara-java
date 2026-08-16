@@ -24,7 +24,7 @@ internal class EphemeralSessionServiceAsyncTest {
                     .retrievalId("order-12345")
                     .hangingProtocol(
                         EphemeralHangingProtocol.builder()
-                            .layout(ViewerLayout._2X2)
+                            .layout(ViewerLayout.TWO_BY_TWO)
                             .viewportAssignments(
                                 listOf("Axial T1", "Axial T2", null, "Sagittal T2")
                             )

@@ -23,6 +23,7 @@ import com.avara.models.autoscribe.studies.StudyUpdateParams
 import com.avara.models.autoscribe.studies.StudyUpdateResponse
 import com.avara.models.autoscribe.studies.StudyViewerOnlyRerouteUrlParams
 import com.avara.models.autoscribe.studies.StudyViewerOnlyRerouteUrlResponse
+import com.avara.services.blocking.autoscribe.studies.ExternalService
 import com.google.errorprone.annotations.MustBeClosed
 import java.util.function.Consumer
 
@@ -39,6 +40,8 @@ interface StudyService {
      * The original service is not modified.
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): StudyService
+
+    fun external(): ExternalService
 
     /**
      * Creates a new study in the AutoScribe system with DICOM metadata and report generation
@@ -267,6 +270,8 @@ interface StudyService {
          * The original service is not modified.
          */
         fun withOptions(modifier: Consumer<ClientOptions.Builder>): StudyService.WithRawResponse
+
+        fun external(): ExternalService.WithRawResponse
 
         /**
          * Returns a raw HTTP response for `post /v1/autoScribe/studies`, but is otherwise the same
