@@ -12,6 +12,7 @@ import com.avara.core.http.Headers
 import com.avara.core.http.QueryParams
 import com.avara.core.toImmutable
 import com.avara.errors.AvaraInvalidDataException
+import com.avara.models.EphemeralHangingProtocol
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
@@ -24,8 +25,8 @@ import kotlin.jvm.optionals.getOrNull
 /**
  * Mints a 30-second tokenized landing URL for a userless, studyless AutoScribe viewer session. The
  * token names a customer retrievalId (not an Avara study). Optional options are echoed verbatim on
- * ephemeral.access_requested (max 3072 bytes JSON). Requires a customer study webhook on the API
- * key.
+ * ephemeral.access_requested (max 3072 bytes JSON). Optional hangingProtocol applies a
+ * single-monitor layout when the viewer loads. Requires a customer study webhook on the API key.
  */
 class EphemeralSessionCreateParams
 private constructor(
@@ -44,6 +45,15 @@ private constructor(
     fun retrievalId(): String = body.retrievalId()
 
     /**
+     * Optional single-monitor hanging protocol applied when the ephemeral viewer loads. Omitted =
+     * no protocol. Invalid shape is rejected.
+     *
+     * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun hangingProtocol(): Optional<EphemeralHangingProtocol> = body.hangingProtocol()
+
+    /**
      * Optional JSON object echoed verbatim on ephemeral.access_requested. Avara does not read or
      * edit it. Hard cap 3072 bytes on JSON.stringify. Examples: studyInstanceUids or internal ids
      * for multi-study reads. Not for URLs or manifests.
@@ -59,6 +69,13 @@ private constructor(
      * Unlike [retrievalId], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _retrievalId(): JsonField<String> = body._retrievalId()
+
+    /**
+     * Returns the raw JSON value of [hangingProtocol].
+     *
+     * Unlike [hangingProtocol], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _hangingProtocol(): JsonField<EphemeralHangingProtocol> = body._hangingProtocol()
 
     /**
      * Returns the raw JSON value of [options].
@@ -110,6 +127,7 @@ private constructor(
          * This is generally only useful if you are already constructing the body separately.
          * Otherwise, it's more convenient to use the top-level setters instead:
          * - [retrievalId]
+         * - [hangingProtocol]
          * - [options]
          */
         fun body(body: Body) = apply { this.body = body.toBuilder() }
@@ -128,6 +146,25 @@ private constructor(
          * value.
          */
         fun retrievalId(retrievalId: JsonField<String>) = apply { body.retrievalId(retrievalId) }
+
+        /**
+         * Optional single-monitor hanging protocol applied when the ephemeral viewer loads. Omitted
+         * = no protocol. Invalid shape is rejected.
+         */
+        fun hangingProtocol(hangingProtocol: EphemeralHangingProtocol) = apply {
+            body.hangingProtocol(hangingProtocol)
+        }
+
+        /**
+         * Sets [Builder.hangingProtocol] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.hangingProtocol] with a well-typed
+         * [EphemeralHangingProtocol] value instead. This method is primarily for setting the field
+         * to an undocumented or not yet supported value.
+         */
+        fun hangingProtocol(hangingProtocol: JsonField<EphemeralHangingProtocol>) = apply {
+            body.hangingProtocol(hangingProtocol)
+        }
 
         /**
          * Optional JSON object echoed verbatim on ephemeral.access_requested. Avara does not read
@@ -295,6 +332,7 @@ private constructor(
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val retrievalId: JsonField<String>,
+        private val hangingProtocol: JsonField<EphemeralHangingProtocol>,
         private val options: JsonField<Options>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
@@ -304,8 +342,11 @@ private constructor(
             @JsonProperty("retrievalId")
             @ExcludeMissing
             retrievalId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("hangingProtocol")
+            @ExcludeMissing
+            hangingProtocol: JsonField<EphemeralHangingProtocol> = JsonMissing.of(),
             @JsonProperty("options") @ExcludeMissing options: JsonField<Options> = JsonMissing.of(),
-        ) : this(retrievalId, options, mutableMapOf())
+        ) : this(retrievalId, hangingProtocol, options, mutableMapOf())
 
         /**
          * Opaque customer handle for this view session. Avara stores and echoes it; it is not an
@@ -315,6 +356,16 @@ private constructor(
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
         fun retrievalId(): String = retrievalId.getRequired("retrievalId")
+
+        /**
+         * Optional single-monitor hanging protocol applied when the ephemeral viewer loads. Omitted
+         * = no protocol. Invalid shape is rejected.
+         *
+         * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun hangingProtocol(): Optional<EphemeralHangingProtocol> =
+            hangingProtocol.getOptional("hangingProtocol")
 
         /**
          * Optional JSON object echoed verbatim on ephemeral.access_requested. Avara does not read
@@ -334,6 +385,16 @@ private constructor(
         @JsonProperty("retrievalId")
         @ExcludeMissing
         fun _retrievalId(): JsonField<String> = retrievalId
+
+        /**
+         * Returns the raw JSON value of [hangingProtocol].
+         *
+         * Unlike [hangingProtocol], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("hangingProtocol")
+        @ExcludeMissing
+        fun _hangingProtocol(): JsonField<EphemeralHangingProtocol> = hangingProtocol
 
         /**
          * Returns the raw JSON value of [options].
@@ -371,12 +432,14 @@ private constructor(
         class Builder internal constructor() {
 
             private var retrievalId: JsonField<String>? = null
+            private var hangingProtocol: JsonField<EphemeralHangingProtocol> = JsonMissing.of()
             private var options: JsonField<Options> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(body: Body) = apply {
                 retrievalId = body.retrievalId
+                hangingProtocol = body.hangingProtocol
                 options = body.options
                 additionalProperties = body.additionalProperties.toMutableMap()
             }
@@ -396,6 +459,24 @@ private constructor(
              */
             fun retrievalId(retrievalId: JsonField<String>) = apply {
                 this.retrievalId = retrievalId
+            }
+
+            /**
+             * Optional single-monitor hanging protocol applied when the ephemeral viewer loads.
+             * Omitted = no protocol. Invalid shape is rejected.
+             */
+            fun hangingProtocol(hangingProtocol: EphemeralHangingProtocol) =
+                hangingProtocol(JsonField.of(hangingProtocol))
+
+            /**
+             * Sets [Builder.hangingProtocol] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.hangingProtocol] with a well-typed
+             * [EphemeralHangingProtocol] value instead. This method is primarily for setting the
+             * field to an undocumented or not yet supported value.
+             */
+            fun hangingProtocol(hangingProtocol: JsonField<EphemeralHangingProtocol>) = apply {
+                this.hangingProtocol = hangingProtocol
             }
 
             /**
@@ -448,6 +529,7 @@ private constructor(
             fun build(): Body =
                 Body(
                     checkRequired("retrievalId", retrievalId),
+                    hangingProtocol,
                     options,
                     additionalProperties.toMutableMap(),
                 )
@@ -470,6 +552,7 @@ private constructor(
             }
 
             retrievalId()
+            hangingProtocol().ifPresent { it.validate() }
             options().ifPresent { it.validate() }
             validated = true
         }
@@ -491,6 +574,7 @@ private constructor(
         @JvmSynthetic
         internal fun validity(): Int =
             (if (retrievalId.asKnown().isPresent) 1 else 0) +
+                (hangingProtocol.asKnown().getOrNull()?.validity() ?: 0) +
                 (options.asKnown().getOrNull()?.validity() ?: 0)
 
         override fun equals(other: Any?): Boolean {
@@ -500,18 +584,19 @@ private constructor(
 
             return other is Body &&
                 retrievalId == other.retrievalId &&
+                hangingProtocol == other.hangingProtocol &&
                 options == other.options &&
                 additionalProperties == other.additionalProperties
         }
 
         private val hashCode: Int by lazy {
-            Objects.hash(retrievalId, options, additionalProperties)
+            Objects.hash(retrievalId, hangingProtocol, options, additionalProperties)
         }
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{retrievalId=$retrievalId, options=$options, additionalProperties=$additionalProperties}"
+            "Body{retrievalId=$retrievalId, hangingProtocol=$hangingProtocol, options=$options, additionalProperties=$additionalProperties}"
     }
 
     /**

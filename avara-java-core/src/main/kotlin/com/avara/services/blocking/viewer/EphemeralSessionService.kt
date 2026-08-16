@@ -27,8 +27,9 @@ interface EphemeralSessionService {
     /**
      * Mints a 30-second tokenized landing URL for a userless, studyless Viewer session. The token
      * names a customer retrievalId (not an Avara study). Optional options are echoed verbatim on
-     * ephemeral.access_requested (max 3072 bytes JSON). Requires a customer study webhook on the
-     * API key.
+     * ephemeral.access_requested (max 3072 bytes JSON). Optional hangingProtocol applies a
+     * single-monitor layout when the viewer loads. Requires a customer study webhook on the API
+     * key.
      */
     fun create(params: EphemeralSessionCreateParams): EphemeralSessionCreateResponse =
         create(params, RequestOptions.none())
