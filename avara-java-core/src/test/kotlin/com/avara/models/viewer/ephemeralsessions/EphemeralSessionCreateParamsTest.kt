@@ -3,6 +3,8 @@
 package com.avara.models.viewer.ephemeralsessions
 
 import com.avara.core.JsonValue
+import com.avara.models.EphemeralHangingProtocol
+import com.avara.models.ViewerLayout
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -12,6 +14,12 @@ internal class EphemeralSessionCreateParamsTest {
     fun create() {
         EphemeralSessionCreateParams.builder()
             .retrievalId("order-12345")
+            .hangingProtocol(
+                EphemeralHangingProtocol.builder()
+                    .layout(ViewerLayout._2X2)
+                    .viewportAssignments(listOf("Axial T1", "Axial T2", null, "Sagittal T2"))
+                    .build()
+            )
             .options(
                 EphemeralSessionCreateParams.Options.builder()
                     .putAdditionalProperty("studyInstanceUids", JsonValue.from("bar"))
@@ -25,6 +33,12 @@ internal class EphemeralSessionCreateParamsTest {
         val params =
             EphemeralSessionCreateParams.builder()
                 .retrievalId("order-12345")
+                .hangingProtocol(
+                    EphemeralHangingProtocol.builder()
+                        .layout(ViewerLayout._2X2)
+                        .viewportAssignments(listOf("Axial T1", "Axial T2", null, "Sagittal T2"))
+                        .build()
+                )
                 .options(
                     EphemeralSessionCreateParams.Options.builder()
                         .putAdditionalProperty("studyInstanceUids", JsonValue.from("bar"))
@@ -35,6 +49,13 @@ internal class EphemeralSessionCreateParamsTest {
         val body = params._body()
 
         assertThat(body.retrievalId()).isEqualTo("order-12345")
+        assertThat(body.hangingProtocol())
+            .contains(
+                EphemeralHangingProtocol.builder()
+                    .layout(ViewerLayout._2X2)
+                    .viewportAssignments(listOf("Axial T1", "Axial T2", null, "Sagittal T2"))
+                    .build()
+            )
         assertThat(body.options())
             .contains(
                 EphemeralSessionCreateParams.Options.builder()

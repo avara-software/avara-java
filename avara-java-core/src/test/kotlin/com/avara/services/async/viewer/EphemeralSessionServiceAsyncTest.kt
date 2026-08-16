@@ -4,6 +4,8 @@ package com.avara.services.async.viewer
 
 import com.avara.client.okhttp.AvaraOkHttpClientAsync
 import com.avara.core.JsonValue
+import com.avara.models.EphemeralHangingProtocol
+import com.avara.models.ViewerLayout
 import com.avara.models.viewer.ephemeralsessions.EphemeralSessionCreateParams
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -20,6 +22,14 @@ internal class EphemeralSessionServiceAsyncTest {
             ephemeralSessionServiceAsync.create(
                 EphemeralSessionCreateParams.builder()
                     .retrievalId("order-12345")
+                    .hangingProtocol(
+                        EphemeralHangingProtocol.builder()
+                            .layout(ViewerLayout._2X2)
+                            .viewportAssignments(
+                                listOf("Axial T1", "Axial T2", null, "Sagittal T2")
+                            )
+                            .build()
+                    )
                     .options(
                         EphemeralSessionCreateParams.Options.builder()
                             .putAdditionalProperty("studyInstanceUids", JsonValue.from("bar"))

@@ -575,11 +575,11 @@ To set undocumented parameters on _nested_ headers, query params, or body classe
 
 ```java
 import com.avara.core.JsonValue;
-import com.avara.models.autoscribe.StudyReportMetadata;
-import com.avara.models.autoscribe.studies.StudyCreateParams;
+import com.avara.models.EphemeralHangingProtocol;
+import com.avara.models.autoscribe.ephemeralsessions.EphemeralSessionCreateParams;
 
-StudyCreateParams params = StudyCreateParams.builder()
-    .reportMetadata(StudyReportMetadata.builder()
+EphemeralSessionCreateParams params = EphemeralSessionCreateParams.builder()
+    .hangingProtocol(EphemeralHangingProtocol.builder()
         .putAdditionalProperty("secretProperty", JsonValue.from("42"))
         .build())
     .build();
