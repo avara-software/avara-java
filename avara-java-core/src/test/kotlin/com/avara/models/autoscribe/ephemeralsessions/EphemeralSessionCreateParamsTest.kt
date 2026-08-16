@@ -16,7 +16,7 @@ internal class EphemeralSessionCreateParamsTest {
             .retrievalId("order-12345")
             .hangingProtocol(
                 EphemeralHangingProtocol.builder()
-                    .layout(ViewerLayout._2X2)
+                    .layout(ViewerLayout.TWO_BY_TWO)
                     .viewportAssignments(listOf("Axial T1", "Axial T2", null, "Sagittal T2"))
                     .build()
             )
@@ -35,7 +35,7 @@ internal class EphemeralSessionCreateParamsTest {
                 .retrievalId("order-12345")
                 .hangingProtocol(
                     EphemeralHangingProtocol.builder()
-                        .layout(ViewerLayout._2X2)
+                        .layout(ViewerLayout.TWO_BY_TWO)
                         .viewportAssignments(listOf("Axial T1", "Axial T2", null, "Sagittal T2"))
                         .build()
                 )
@@ -52,7 +52,7 @@ internal class EphemeralSessionCreateParamsTest {
         assertThat(body.hangingProtocol())
             .contains(
                 EphemeralHangingProtocol.builder()
-                    .layout(ViewerLayout._2X2)
+                    .layout(ViewerLayout.TWO_BY_TWO)
                     .viewportAssignments(listOf("Axial T1", "Axial T2", null, "Sagittal T2"))
                     .build()
             )

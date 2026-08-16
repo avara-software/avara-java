@@ -35,6 +35,8 @@ import com.avara.models.autoscribe.studies.StudyUpdateParams
 import com.avara.models.autoscribe.studies.StudyUpdateResponse
 import com.avara.models.autoscribe.studies.StudyViewerOnlyRerouteUrlParams
 import com.avara.models.autoscribe.studies.StudyViewerOnlyRerouteUrlResponse
+import com.avara.services.blocking.autoscribe.studies.ExternalService
+import com.avara.services.blocking.autoscribe.studies.ExternalServiceImpl
 import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
@@ -45,10 +47,14 @@ class StudyServiceImpl internal constructor(private val clientOptions: ClientOpt
         WithRawResponseImpl(clientOptions)
     }
 
+    private val external: ExternalService by lazy { ExternalServiceImpl(clientOptions) }
+
     override fun withRawResponse(): StudyService.WithRawResponse = withRawResponse
 
     override fun withOptions(modifier: Consumer<ClientOptions.Builder>): StudyService =
         StudyServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
+
+    override fun external(): ExternalService = external
 
     override fun create(
         params: StudyCreateParams,
@@ -116,12 +122,18 @@ class StudyServiceImpl internal constructor(private val clientOptions: ClientOpt
         private val errorHandler: Handler<HttpResponse> =
             errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
+        private val external: ExternalService.WithRawResponse by lazy {
+            ExternalServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
         override fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
         ): StudyService.WithRawResponse =
             StudyServiceImpl.WithRawResponseImpl(
                 clientOptions.toBuilder().apply(modifier::accept).build()
             )
+
+        override fun external(): ExternalService.WithRawResponse = external
 
         private val createHandler: Handler<StudyCreateResponse> =
             jsonHandler<StudyCreateResponse>(clientOptions.jsonMapper)

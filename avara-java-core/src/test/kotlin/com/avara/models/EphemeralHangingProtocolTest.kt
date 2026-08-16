@@ -13,11 +13,11 @@ internal class EphemeralHangingProtocolTest {
     fun create() {
         val ephemeralHangingProtocol =
             EphemeralHangingProtocol.builder()
-                .layout(ViewerLayout._2X2)
+                .layout(ViewerLayout.TWO_BY_TWO)
                 .viewportAssignments(listOf("Axial T1", "Axial T2", null, "Sagittal T2"))
                 .build()
 
-        assertThat(ephemeralHangingProtocol.layout()).isEqualTo(ViewerLayout._2X2)
+        assertThat(ephemeralHangingProtocol.layout()).isEqualTo(ViewerLayout.TWO_BY_TWO)
         assertThat(ephemeralHangingProtocol.viewportAssignments())
             .containsExactly("Axial T1", "Axial T2", null, "Sagittal T2")
     }
@@ -27,7 +27,7 @@ internal class EphemeralHangingProtocolTest {
         val jsonMapper = jsonMapper()
         val ephemeralHangingProtocol =
             EphemeralHangingProtocol.builder()
-                .layout(ViewerLayout._2X2)
+                .layout(ViewerLayout.TWO_BY_TWO)
                 .viewportAssignments(listOf("Axial T1", "Axial T2", null, "Sagittal T2"))
                 .build()
 

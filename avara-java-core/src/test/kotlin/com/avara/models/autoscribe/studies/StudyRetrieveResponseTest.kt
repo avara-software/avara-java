@@ -13,6 +13,7 @@ import com.avara.models.autoscribe.ReportStatus
 import com.avara.models.autoscribe.Sex
 import com.avara.models.autoscribe.StudyReportMetadata
 import com.avara.models.autoscribe.StudyReportStatus
+import com.avara.models.autoscribe.StudyType
 import com.avara.models.autoscribe.WeightUnit
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import java.time.OffsetDateTime
@@ -100,6 +101,7 @@ internal class StudyRetrieveResponseTest {
                         .build()
                 )
                 .externalPatientId("externalPatientId")
+                .externalReportId("ext_1234567890abcdef1234567890abcdef")
                 .isCritical(true)
                 .metadata(
                     StudyRetrieveResponse.Metadata.builder()
@@ -124,6 +126,7 @@ internal class StudyRetrieveResponseTest {
                         .status(ReportStatus.IN_PROGRESS)
                         .build()
                 )
+                .studyType(StudyType.STANDARD)
                 .addTechnologistNote("x")
                 .technologistTechnique("technologistTechnique")
                 .build()
@@ -209,6 +212,8 @@ internal class StudyRetrieveResponseTest {
                     .build()
             )
         assertThat(studyRetrieveResponse.externalPatientId()).contains("externalPatientId")
+        assertThat(studyRetrieveResponse.externalReportId())
+            .contains("ext_1234567890abcdef1234567890abcdef")
         assertThat(studyRetrieveResponse.isCritical()).contains(true)
         assertThat(studyRetrieveResponse.metadata())
             .contains(
@@ -236,6 +241,7 @@ internal class StudyRetrieveResponseTest {
                     .status(ReportStatus.IN_PROGRESS)
                     .build()
             )
+        assertThat(studyRetrieveResponse.studyType()).contains(StudyType.STANDARD)
         assertThat(studyRetrieveResponse.technologistNotes().getOrNull()).containsExactly("x")
         assertThat(studyRetrieveResponse.technologistTechnique()).contains("technologistTechnique")
     }
@@ -319,6 +325,7 @@ internal class StudyRetrieveResponseTest {
                         .build()
                 )
                 .externalPatientId("externalPatientId")
+                .externalReportId("ext_1234567890abcdef1234567890abcdef")
                 .isCritical(true)
                 .metadata(
                     StudyRetrieveResponse.Metadata.builder()
@@ -343,6 +350,7 @@ internal class StudyRetrieveResponseTest {
                         .status(ReportStatus.IN_PROGRESS)
                         .build()
                 )
+                .studyType(StudyType.STANDARD)
                 .addTechnologistNote("x")
                 .technologistTechnique("technologistTechnique")
                 .build()

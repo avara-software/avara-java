@@ -1,0 +1,171 @@
+// File generated from our OpenAPI spec by Stainless.
+
+package com.avara.services.blocking.autoscribe.studies.external
+
+import com.avara.core.ClientOptions
+import com.avara.core.RequestOptions
+import com.avara.core.checkRequired
+import com.avara.core.handlers.errorBodyHandler
+import com.avara.core.handlers.errorHandler
+import com.avara.core.handlers.jsonHandler
+import com.avara.core.http.HttpMethod
+import com.avara.core.http.HttpRequest
+import com.avara.core.http.HttpResponse
+import com.avara.core.http.HttpResponse.Handler
+import com.avara.core.http.HttpResponseFor
+import com.avara.core.http.json
+import com.avara.core.http.parseable
+import com.avara.core.prepare
+import com.avara.models.autoscribe.studies.external.reports.ReportCreateParams
+import com.avara.models.autoscribe.studies.external.reports.ReportCreateResponse
+import com.avara.models.autoscribe.studies.external.reports.ReportListPage
+import com.avara.models.autoscribe.studies.external.reports.ReportListPageResponse
+import com.avara.models.autoscribe.studies.external.reports.ReportListParams
+import com.avara.models.autoscribe.studies.external.reports.ReportRetrieveParams
+import com.avara.models.autoscribe.studies.external.reports.ReportRetrieveResponse
+import java.util.function.Consumer
+import kotlin.jvm.optionals.getOrNull
+
+class ReportServiceImpl internal constructor(private val clientOptions: ClientOptions) :
+    ReportService {
+
+    private val withRawResponse: ReportService.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
+
+    override fun withRawResponse(): ReportService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): ReportService =
+        ReportServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
+
+    override fun create(
+        params: ReportCreateParams,
+        requestOptions: RequestOptions,
+    ): ReportCreateResponse =
+        // post /v1/autoScribe/studies/external/reports
+        withRawResponse().create(params, requestOptions).parse()
+
+    override fun retrieve(
+        params: ReportRetrieveParams,
+        requestOptions: RequestOptions,
+    ): ReportRetrieveResponse =
+        // get /v1/autoScribe/studies/external/reports/{externalReportId}
+        withRawResponse().retrieve(params, requestOptions).parse()
+
+    override fun list(params: ReportListParams, requestOptions: RequestOptions): ReportListPage =
+        // get /v1/autoScribe/studies/external/reports
+        withRawResponse().list(params, requestOptions).parse()
+
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        ReportService.WithRawResponse {
+
+        private val errorHandler: Handler<HttpResponse> =
+            errorHandler(errorBodyHandler(clientOptions.jsonMapper))
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): ReportService.WithRawResponse =
+            ReportServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
+
+        private val createHandler: Handler<ReportCreateResponse> =
+            jsonHandler<ReportCreateResponse>(clientOptions.jsonMapper)
+
+        override fun create(
+            params: ReportCreateParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<ReportCreateResponse> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("v1", "autoScribe", "studies", "external", "reports")
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepare(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.execute(request, requestOptions)
+            return errorHandler.handle(response).parseable {
+                response
+                    .use { createHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
+            }
+        }
+
+        private val retrieveHandler: Handler<ReportRetrieveResponse> =
+            jsonHandler<ReportRetrieveResponse>(clientOptions.jsonMapper)
+
+        override fun retrieve(
+            params: ReportRetrieveParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<ReportRetrieveResponse> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("externalReportId", params.externalReportId().getOrNull())
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments(
+                        "v1",
+                        "autoScribe",
+                        "studies",
+                        "external",
+                        "reports",
+                        params._pathParam(0),
+                    )
+                    .build()
+                    .prepare(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.execute(request, requestOptions)
+            return errorHandler.handle(response).parseable {
+                response
+                    .use { retrieveHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
+            }
+        }
+
+        private val listHandler: Handler<ReportListPageResponse> =
+            jsonHandler<ReportListPageResponse>(clientOptions.jsonMapper)
+
+        override fun list(
+            params: ReportListParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<ReportListPage> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("v1", "autoScribe", "studies", "external", "reports")
+                    .build()
+                    .prepare(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.execute(request, requestOptions)
+            return errorHandler.handle(response).parseable {
+                response
+                    .use { listHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
+                    .let {
+                        ReportListPage.builder()
+                            .service(ReportServiceImpl(clientOptions))
+                            .params(params)
+                            .response(it)
+                            .build()
+                    }
+            }
+        }
+    }
+}

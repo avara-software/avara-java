@@ -16,6 +16,7 @@ import com.avara.models.Severity
 import com.avara.models.UserReference
 import com.avara.models.autoscribe.StudyReportMetadata
 import com.avara.models.autoscribe.StudyReportStatus
+import com.avara.models.autoscribe.StudyType
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
@@ -47,11 +48,13 @@ private constructor(
     private val createdByUser: JsonField<UserReference>,
     private val expressCustomer: JsonField<ExpressCustomerReference>,
     private val externalPatientId: JsonField<String>,
+    private val externalReportId: JsonField<String>,
     private val isCritical: JsonField<Boolean>,
     private val metadata: JsonField<Metadata>,
     private val modality: JsonField<String>,
     private val priorReports: JsonField<List<PriorReport>>,
     private val reportIds: JsonField<List<ReportIdWithStatus>>,
+    private val studyType: JsonField<StudyType>,
     private val technologistNotes: JsonField<List<String>>,
     private val technologistTechnique: JsonField<String>,
     private val additionalProperties: MutableMap<String, JsonValue>,
@@ -106,6 +109,9 @@ private constructor(
         @JsonProperty("externalPatientId")
         @ExcludeMissing
         externalPatientId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("externalReportId")
+        @ExcludeMissing
+        externalReportId: JsonField<String> = JsonMissing.of(),
         @JsonProperty("isCritical")
         @ExcludeMissing
         isCritical: JsonField<Boolean> = JsonMissing.of(),
@@ -117,6 +123,9 @@ private constructor(
         @JsonProperty("reportIds")
         @ExcludeMissing
         reportIds: JsonField<List<ReportIdWithStatus>> = JsonMissing.of(),
+        @JsonProperty("studyType")
+        @ExcludeMissing
+        studyType: JsonField<StudyType> = JsonMissing.of(),
         @JsonProperty("technologistNotes")
         @ExcludeMissing
         technologistNotes: JsonField<List<String>> = JsonMissing.of(),
@@ -141,11 +150,13 @@ private constructor(
         createdByUser,
         expressCustomer,
         externalPatientId,
+        externalReportId,
         isCritical,
         metadata,
         modality,
         priorReports,
         reportIds,
+        studyType,
         technologistNotes,
         technologistTechnique,
         mutableMapOf(),
@@ -295,6 +306,15 @@ private constructor(
     fun externalPatientId(): Optional<String> = externalPatientId.getOptional("externalPatientId")
 
     /**
+     * External report identifier when this study has an attached archive report. Format:
+     * ext_{32-hex-chars}
+     *
+     * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun externalReportId(): Optional<String> = externalReportId.getOptional("externalReportId")
+
+    /**
      * Whether the primary report was marked as critical at sign-off
      *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -334,6 +354,15 @@ private constructor(
      *   server responded with an unexpected value).
      */
     fun reportIds(): Optional<List<ReportIdWithStatus>> = reportIds.getOptional("reportIds")
+
+    /**
+     * Kind of study. 'standard' is a live AutoScribe reading-workflow study. 'external' is an
+     * imported archive study.
+     *
+     * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun studyType(): Optional<StudyType> = studyType.getOptional("studyType")
 
     /**
      * Technologist notes for the study
@@ -508,6 +537,16 @@ private constructor(
     fun _externalPatientId(): JsonField<String> = externalPatientId
 
     /**
+     * Returns the raw JSON value of [externalReportId].
+     *
+     * Unlike [externalReportId], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
+    @JsonProperty("externalReportId")
+    @ExcludeMissing
+    fun _externalReportId(): JsonField<String> = externalReportId
+
+    /**
      * Returns the raw JSON value of [isCritical].
      *
      * Unlike [isCritical], this method doesn't throw if the JSON field has an unexpected type.
@@ -545,6 +584,13 @@ private constructor(
     @JsonProperty("reportIds")
     @ExcludeMissing
     fun _reportIds(): JsonField<List<ReportIdWithStatus>> = reportIds
+
+    /**
+     * Returns the raw JSON value of [studyType].
+     *
+     * Unlike [studyType], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("studyType") @ExcludeMissing fun _studyType(): JsonField<StudyType> = studyType
 
     /**
      * Returns the raw JSON value of [technologistNotes].
@@ -620,11 +666,13 @@ private constructor(
         private var createdByUser: JsonField<UserReference> = JsonMissing.of()
         private var expressCustomer: JsonField<ExpressCustomerReference> = JsonMissing.of()
         private var externalPatientId: JsonField<String> = JsonMissing.of()
+        private var externalReportId: JsonField<String> = JsonMissing.of()
         private var isCritical: JsonField<Boolean> = JsonMissing.of()
         private var metadata: JsonField<Metadata> = JsonMissing.of()
         private var modality: JsonField<String> = JsonMissing.of()
         private var priorReports: JsonField<MutableList<PriorReport>>? = null
         private var reportIds: JsonField<MutableList<ReportIdWithStatus>>? = null
+        private var studyType: JsonField<StudyType> = JsonMissing.of()
         private var technologistNotes: JsonField<MutableList<String>>? = null
         private var technologistTechnique: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -648,11 +696,13 @@ private constructor(
             createdByUser = studyCreateResponse.createdByUser
             expressCustomer = studyCreateResponse.expressCustomer
             externalPatientId = studyCreateResponse.externalPatientId
+            externalReportId = studyCreateResponse.externalReportId
             isCritical = studyCreateResponse.isCritical
             metadata = studyCreateResponse.metadata
             modality = studyCreateResponse.modality
             priorReports = studyCreateResponse.priorReports.map { it.toMutableList() }
             reportIds = studyCreateResponse.reportIds.map { it.toMutableList() }
+            studyType = studyCreateResponse.studyType
             technologistNotes = studyCreateResponse.technologistNotes.map { it.toMutableList() }
             technologistTechnique = studyCreateResponse.technologistTechnique
             additionalProperties = studyCreateResponse.additionalProperties.toMutableMap()
@@ -945,6 +995,24 @@ private constructor(
             this.externalPatientId = externalPatientId
         }
 
+        /**
+         * External report identifier when this study has an attached archive report. Format:
+         * ext_{32-hex-chars}
+         */
+        fun externalReportId(externalReportId: String) =
+            externalReportId(JsonField.of(externalReportId))
+
+        /**
+         * Sets [Builder.externalReportId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.externalReportId] with a well-typed [String] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun externalReportId(externalReportId: JsonField<String>) = apply {
+            this.externalReportId = externalReportId
+        }
+
         /** Whether the primary report was marked as critical at sign-off */
         fun isCritical(isCritical: Boolean) = isCritical(JsonField.of(isCritical))
 
@@ -1037,6 +1105,21 @@ private constructor(
                     checkKnown("reportIds", it).add(reportId)
                 }
         }
+
+        /**
+         * Kind of study. 'standard' is a live AutoScribe reading-workflow study. 'external' is an
+         * imported archive study.
+         */
+        fun studyType(studyType: StudyType) = studyType(JsonField.of(studyType))
+
+        /**
+         * Sets [Builder.studyType] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.studyType] with a well-typed [StudyType] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun studyType(studyType: JsonField<StudyType>) = apply { this.studyType = studyType }
 
         /** Technologist notes for the study */
         fun technologistNotes(technologistNotes: List<String>) =
@@ -1146,11 +1229,13 @@ private constructor(
                 createdByUser,
                 expressCustomer,
                 externalPatientId,
+                externalReportId,
                 isCritical,
                 metadata,
                 modality,
                 (priorReports ?: JsonMissing.of()).map { it.toImmutable() },
                 (reportIds ?: JsonMissing.of()).map { it.toImmutable() },
+                studyType,
                 (technologistNotes ?: JsonMissing.of()).map { it.toImmutable() },
                 technologistTechnique,
                 additionalProperties.toMutableMap(),
@@ -1189,11 +1274,13 @@ private constructor(
         createdByUser().ifPresent { it.validate() }
         expressCustomer().ifPresent { it.validate() }
         externalPatientId()
+        externalReportId()
         isCritical()
         metadata().ifPresent { it.validate() }
         modality()
         priorReports().ifPresent { it.forEach { it.validate() } }
         reportIds().ifPresent { it.forEach { it.validate() } }
+        studyType().ifPresent { it.validate() }
         technologistNotes()
         technologistTechnique()
         validated = true
@@ -1231,11 +1318,13 @@ private constructor(
             (createdByUser.asKnown().getOrNull()?.validity() ?: 0) +
             (expressCustomer.asKnown().getOrNull()?.validity() ?: 0) +
             (if (externalPatientId.asKnown().isPresent) 1 else 0) +
+            (if (externalReportId.asKnown().isPresent) 1 else 0) +
             (if (isCritical.asKnown().isPresent) 1 else 0) +
             (metadata.asKnown().getOrNull()?.validity() ?: 0) +
             (if (modality.asKnown().isPresent) 1 else 0) +
             (priorReports.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
             (reportIds.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
+            (studyType.asKnown().getOrNull()?.validity() ?: 0) +
             (technologistNotes.asKnown().getOrNull()?.size ?: 0) +
             (if (technologistTechnique.asKnown().isPresent) 1 else 0)
 
@@ -1374,11 +1463,13 @@ private constructor(
             createdByUser == other.createdByUser &&
             expressCustomer == other.expressCustomer &&
             externalPatientId == other.externalPatientId &&
+            externalReportId == other.externalReportId &&
             isCritical == other.isCritical &&
             metadata == other.metadata &&
             modality == other.modality &&
             priorReports == other.priorReports &&
             reportIds == other.reportIds &&
+            studyType == other.studyType &&
             technologistNotes == other.technologistNotes &&
             technologistTechnique == other.technologistTechnique &&
             additionalProperties == other.additionalProperties
@@ -1403,11 +1494,13 @@ private constructor(
             createdByUser,
             expressCustomer,
             externalPatientId,
+            externalReportId,
             isCritical,
             metadata,
             modality,
             priorReports,
             reportIds,
+            studyType,
             technologistNotes,
             technologistTechnique,
             additionalProperties,
@@ -1417,5 +1510,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "StudyCreateResponse{cancelledAt=$cancelledAt, createdAt=$createdAt, isCancelled=$isCancelled, reportMetadata=$reportMetadata, severity=$severity, studyDescription=$studyDescription, studyId=$studyId, studyInstanceUid=$studyInstanceUid, studyReportStatus=$studyReportStatus, updatedAt=$updatedAt, assignedTo=$assignedTo, clinicalHistory=$clinicalHistory, clinicalIndication=$clinicalIndication, createdByApiKey=$createdByApiKey, createdByUser=$createdByUser, expressCustomer=$expressCustomer, externalPatientId=$externalPatientId, isCritical=$isCritical, metadata=$metadata, modality=$modality, priorReports=$priorReports, reportIds=$reportIds, technologistNotes=$technologistNotes, technologistTechnique=$technologistTechnique, additionalProperties=$additionalProperties}"
+        "StudyCreateResponse{cancelledAt=$cancelledAt, createdAt=$createdAt, isCancelled=$isCancelled, reportMetadata=$reportMetadata, severity=$severity, studyDescription=$studyDescription, studyId=$studyId, studyInstanceUid=$studyInstanceUid, studyReportStatus=$studyReportStatus, updatedAt=$updatedAt, assignedTo=$assignedTo, clinicalHistory=$clinicalHistory, clinicalIndication=$clinicalIndication, createdByApiKey=$createdByApiKey, createdByUser=$createdByUser, expressCustomer=$expressCustomer, externalPatientId=$externalPatientId, externalReportId=$externalReportId, isCritical=$isCritical, metadata=$metadata, modality=$modality, priorReports=$priorReports, reportIds=$reportIds, studyType=$studyType, technologistNotes=$technologistNotes, technologistTechnique=$technologistTechnique, additionalProperties=$additionalProperties}"
 }

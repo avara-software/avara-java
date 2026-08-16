@@ -24,59 +24,59 @@ class ViewerLayout @JsonCreator private constructor(private val value: JsonField
 
     companion object {
 
-        @JvmField val _1X1 = of("1x1")
+        @JvmField val ONE_BY_ONE = of("1x1")
 
-        @JvmField val _1X2 = of("1x2")
+        @JvmField val ONE_BY_TWO = of("1x2")
 
-        @JvmField val _1X3 = of("1x3")
+        @JvmField val ONE_BY_THREE = of("1x3")
 
-        @JvmField val _1X4 = of("1x4")
+        @JvmField val ONE_BY_FOUR = of("1x4")
 
-        @JvmField val _2X1 = of("2x1")
+        @JvmField val TWO_BY_ONE = of("2x1")
 
-        @JvmField val _2X2 = of("2x2")
+        @JvmField val TWO_BY_TWO = of("2x2")
 
-        @JvmField val _2X3 = of("2x3")
+        @JvmField val TWO_BY_THREE = of("2x3")
 
-        @JvmField val _2X4 = of("2x4")
+        @JvmField val TWO_BY_FOUR = of("2x4")
 
-        @JvmField val _3X1 = of("3x1")
+        @JvmField val THREE_BY_ONE = of("3x1")
 
-        @JvmField val _3X2 = of("3x2")
+        @JvmField val THREE_BY_TWO = of("3x2")
 
-        @JvmField val _3X3 = of("3x3")
+        @JvmField val THREE_BY_THREE = of("3x3")
 
-        @JvmField val _3X4 = of("3x4")
+        @JvmField val THREE_BY_FOUR = of("3x4")
 
-        @JvmField val _4X1 = of("4x1")
+        @JvmField val FOUR_BY_ONE = of("4x1")
 
-        @JvmField val _4X2 = of("4x2")
+        @JvmField val FOUR_BY_TWO = of("4x2")
 
-        @JvmField val _4X3 = of("4x3")
+        @JvmField val FOUR_BY_THREE = of("4x3")
 
-        @JvmField val _4X4 = of("4x4")
+        @JvmField val FOUR_BY_FOUR = of("4x4")
 
         @JvmStatic fun of(value: String) = ViewerLayout(JsonField.of(value))
     }
 
     /** An enum containing [ViewerLayout]'s known values. */
     enum class Known {
-        _1X1,
-        _1X2,
-        _1X3,
-        _1X4,
-        _2X1,
-        _2X2,
-        _2X3,
-        _2X4,
-        _3X1,
-        _3X2,
-        _3X3,
-        _3X4,
-        _4X1,
-        _4X2,
-        _4X3,
-        _4X4,
+        ONE_BY_ONE,
+        ONE_BY_TWO,
+        ONE_BY_THREE,
+        ONE_BY_FOUR,
+        TWO_BY_ONE,
+        TWO_BY_TWO,
+        TWO_BY_THREE,
+        TWO_BY_FOUR,
+        THREE_BY_ONE,
+        THREE_BY_TWO,
+        THREE_BY_THREE,
+        THREE_BY_FOUR,
+        FOUR_BY_ONE,
+        FOUR_BY_TWO,
+        FOUR_BY_THREE,
+        FOUR_BY_FOUR,
     }
 
     /**
@@ -89,22 +89,22 @@ class ViewerLayout @JsonCreator private constructor(private val value: JsonField
      * - It was constructed with an arbitrary value using the [of] method.
      */
     enum class Value {
-        _1X1,
-        _1X2,
-        _1X3,
-        _1X4,
-        _2X1,
-        _2X2,
-        _2X3,
-        _2X4,
-        _3X1,
-        _3X2,
-        _3X3,
-        _3X4,
-        _4X1,
-        _4X2,
-        _4X3,
-        _4X4,
+        ONE_BY_ONE,
+        ONE_BY_TWO,
+        ONE_BY_THREE,
+        ONE_BY_FOUR,
+        TWO_BY_ONE,
+        TWO_BY_TWO,
+        TWO_BY_THREE,
+        TWO_BY_FOUR,
+        THREE_BY_ONE,
+        THREE_BY_TWO,
+        THREE_BY_THREE,
+        THREE_BY_FOUR,
+        FOUR_BY_ONE,
+        FOUR_BY_TWO,
+        FOUR_BY_THREE,
+        FOUR_BY_FOUR,
         /** An enum member indicating that [ViewerLayout] was instantiated with an unknown value. */
         _UNKNOWN,
     }
@@ -118,22 +118,22 @@ class ViewerLayout @JsonCreator private constructor(private val value: JsonField
      */
     fun value(): Value =
         when (this) {
-            _1X1 -> Value._1X1
-            _1X2 -> Value._1X2
-            _1X3 -> Value._1X3
-            _1X4 -> Value._1X4
-            _2X1 -> Value._2X1
-            _2X2 -> Value._2X2
-            _2X3 -> Value._2X3
-            _2X4 -> Value._2X4
-            _3X1 -> Value._3X1
-            _3X2 -> Value._3X2
-            _3X3 -> Value._3X3
-            _3X4 -> Value._3X4
-            _4X1 -> Value._4X1
-            _4X2 -> Value._4X2
-            _4X3 -> Value._4X3
-            _4X4 -> Value._4X4
+            ONE_BY_ONE -> Value.ONE_BY_ONE
+            ONE_BY_TWO -> Value.ONE_BY_TWO
+            ONE_BY_THREE -> Value.ONE_BY_THREE
+            ONE_BY_FOUR -> Value.ONE_BY_FOUR
+            TWO_BY_ONE -> Value.TWO_BY_ONE
+            TWO_BY_TWO -> Value.TWO_BY_TWO
+            TWO_BY_THREE -> Value.TWO_BY_THREE
+            TWO_BY_FOUR -> Value.TWO_BY_FOUR
+            THREE_BY_ONE -> Value.THREE_BY_ONE
+            THREE_BY_TWO -> Value.THREE_BY_TWO
+            THREE_BY_THREE -> Value.THREE_BY_THREE
+            THREE_BY_FOUR -> Value.THREE_BY_FOUR
+            FOUR_BY_ONE -> Value.FOUR_BY_ONE
+            FOUR_BY_TWO -> Value.FOUR_BY_TWO
+            FOUR_BY_THREE -> Value.FOUR_BY_THREE
+            FOUR_BY_FOUR -> Value.FOUR_BY_FOUR
             else -> Value._UNKNOWN
         }
 
@@ -147,22 +147,22 @@ class ViewerLayout @JsonCreator private constructor(private val value: JsonField
      */
     fun known(): Known =
         when (this) {
-            _1X1 -> Known._1X1
-            _1X2 -> Known._1X2
-            _1X3 -> Known._1X3
-            _1X4 -> Known._1X4
-            _2X1 -> Known._2X1
-            _2X2 -> Known._2X2
-            _2X3 -> Known._2X3
-            _2X4 -> Known._2X4
-            _3X1 -> Known._3X1
-            _3X2 -> Known._3X2
-            _3X3 -> Known._3X3
-            _3X4 -> Known._3X4
-            _4X1 -> Known._4X1
-            _4X2 -> Known._4X2
-            _4X3 -> Known._4X3
-            _4X4 -> Known._4X4
+            ONE_BY_ONE -> Known.ONE_BY_ONE
+            ONE_BY_TWO -> Known.ONE_BY_TWO
+            ONE_BY_THREE -> Known.ONE_BY_THREE
+            ONE_BY_FOUR -> Known.ONE_BY_FOUR
+            TWO_BY_ONE -> Known.TWO_BY_ONE
+            TWO_BY_TWO -> Known.TWO_BY_TWO
+            TWO_BY_THREE -> Known.TWO_BY_THREE
+            TWO_BY_FOUR -> Known.TWO_BY_FOUR
+            THREE_BY_ONE -> Known.THREE_BY_ONE
+            THREE_BY_TWO -> Known.THREE_BY_TWO
+            THREE_BY_THREE -> Known.THREE_BY_THREE
+            THREE_BY_FOUR -> Known.THREE_BY_FOUR
+            FOUR_BY_ONE -> Known.FOUR_BY_ONE
+            FOUR_BY_TWO -> Known.FOUR_BY_TWO
+            FOUR_BY_THREE -> Known.FOUR_BY_THREE
+            FOUR_BY_FOUR -> Known.FOUR_BY_FOUR
             else -> throw AvaraInvalidDataException("Unknown ViewerLayout: $value")
         }
 

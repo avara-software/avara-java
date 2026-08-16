@@ -5,6 +5,7 @@ package com.avara.models.autoscribe.studies
 import com.avara.core.http.QueryParams
 import com.avara.models.Severity
 import com.avara.models.autoscribe.StudyReportStatus
+import com.avara.models.autoscribe.StudyType
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -21,6 +22,7 @@ internal class StudyListParamsTest {
             .severity(Severity.NORMAL)
             .studyDescription("CT Head")
             .addStudyReportStatus(StudyReportStatus.COMPLETED)
+            .studyType(StudyType.STANDARD)
             .build()
     }
 
@@ -36,6 +38,7 @@ internal class StudyListParamsTest {
                 .severity(Severity.NORMAL)
                 .studyDescription("CT Head")
                 .addStudyReportStatus(StudyReportStatus.COMPLETED)
+                .studyType(StudyType.STANDARD)
                 .build()
 
         val queryParams = params._queryParams()
@@ -51,6 +54,7 @@ internal class StudyListParamsTest {
                     .put("severity", "normal")
                     .put("studyDescription", "CT Head")
                     .put("studyReportStatus", listOf("completed").joinToString(","))
+                    .put("studyType", "standard")
                     .build()
             )
     }

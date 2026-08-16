@@ -35,6 +35,8 @@ import com.avara.models.autoscribe.studies.StudyUpdateParams
 import com.avara.models.autoscribe.studies.StudyUpdateResponse
 import com.avara.models.autoscribe.studies.StudyViewerOnlyRerouteUrlParams
 import com.avara.models.autoscribe.studies.StudyViewerOnlyRerouteUrlResponse
+import com.avara.services.async.autoscribe.studies.ExternalServiceAsync
+import com.avara.services.async.autoscribe.studies.ExternalServiceAsyncImpl
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
@@ -46,10 +48,14 @@ class StudyServiceAsyncImpl internal constructor(private val clientOptions: Clie
         WithRawResponseImpl(clientOptions)
     }
 
+    private val external: ExternalServiceAsync by lazy { ExternalServiceAsyncImpl(clientOptions) }
+
     override fun withRawResponse(): StudyServiceAsync.WithRawResponse = withRawResponse
 
     override fun withOptions(modifier: Consumer<ClientOptions.Builder>): StudyServiceAsync =
         StudyServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
+
+    override fun external(): ExternalServiceAsync = external
 
     override fun create(
         params: StudyCreateParams,
@@ -120,12 +126,18 @@ class StudyServiceAsyncImpl internal constructor(private val clientOptions: Clie
         private val errorHandler: Handler<HttpResponse> =
             errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
+        private val external: ExternalServiceAsync.WithRawResponse by lazy {
+            ExternalServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
         override fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
         ): StudyServiceAsync.WithRawResponse =
             StudyServiceAsyncImpl.WithRawResponseImpl(
                 clientOptions.toBuilder().apply(modifier::accept).build()
             )
+
+        override fun external(): ExternalServiceAsync.WithRawResponse = external
 
         private val createHandler: Handler<StudyCreateResponse> =
             jsonHandler<StudyCreateResponse>(clientOptions.jsonMapper)
