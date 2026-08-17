@@ -20,12 +20,15 @@ import kotlin.jvm.optionals.getOrNull
 
 /**
  * Soft enrichment response. No authorized field — return any subset of fields (including {}). Avara
- * merges per-field with DICOM light metadata then defaults.
+ * merges per-field with DICOM light metadata then defaults. Optional expressCustomerId: if present
+ * and a valid cus_ id for this clinic, Avara sets it on the created study. If present but not
+ * usable, Avara ignores it, applies other fields, and logs a warning.
  */
 class PatientStudyEnrichmentRequestedResponse
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val dateOfBirth: JsonField<String>,
+    private val expressCustomerId: JsonField<String>,
     private val externalPatientId: JsonField<String>,
     private val facilityName: JsonField<String>,
     private val height: JsonField<Height>,
@@ -47,6 +50,9 @@ private constructor(
         @JsonProperty("dateOfBirth")
         @ExcludeMissing
         dateOfBirth: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("expressCustomerId")
+        @ExcludeMissing
+        expressCustomerId: JsonField<String> = JsonMissing.of(),
         @JsonProperty("externalPatientId")
         @ExcludeMissing
         externalPatientId: JsonField<String> = JsonMissing.of(),
@@ -72,6 +78,7 @@ private constructor(
         @JsonProperty("weight") @ExcludeMissing weight: JsonField<Weight> = JsonMissing.of(),
     ) : this(
         dateOfBirth,
+        expressCustomerId,
         externalPatientId,
         facilityName,
         height,
@@ -95,6 +102,17 @@ private constructor(
      *   server responded with an unexpected value).
      */
     fun dateOfBirth(): Optional<String> = dateOfBirth.getOptional("dateOfBirth")
+
+    /**
+     * Optional Express customer to attach to the created study. Format: cus_{32 hex chars}. Must
+     * belong to the clinic in the request. Omit to leave the study unscoped. If present but not
+     * usable, Avara ignores this field, applies any other enrichment fields, and logs a warning on
+     * the webhook event.
+     *
+     * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun expressCustomerId(): Optional<String> = expressCustomerId.getOptional("expressCustomerId")
 
     /**
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -185,6 +203,16 @@ private constructor(
      * Unlike [dateOfBirth], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("dateOfBirth") @ExcludeMissing fun _dateOfBirth(): JsonField<String> = dateOfBirth
+
+    /**
+     * Returns the raw JSON value of [expressCustomerId].
+     *
+     * Unlike [expressCustomerId], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
+    @JsonProperty("expressCustomerId")
+    @ExcludeMissing
+    fun _expressCustomerId(): JsonField<String> = expressCustomerId
 
     /**
      * Returns the raw JSON value of [externalPatientId].
@@ -313,6 +341,7 @@ private constructor(
     class Builder internal constructor() {
 
         private var dateOfBirth: JsonField<String> = JsonMissing.of()
+        private var expressCustomerId: JsonField<String> = JsonMissing.of()
         private var externalPatientId: JsonField<String> = JsonMissing.of()
         private var facilityName: JsonField<String> = JsonMissing.of()
         private var height: JsonField<Height> = JsonMissing.of()
@@ -333,6 +362,7 @@ private constructor(
             patientStudyEnrichmentRequestedResponse: PatientStudyEnrichmentRequestedResponse
         ) = apply {
             dateOfBirth = patientStudyEnrichmentRequestedResponse.dateOfBirth
+            expressCustomerId = patientStudyEnrichmentRequestedResponse.expressCustomerId
             externalPatientId = patientStudyEnrichmentRequestedResponse.externalPatientId
             facilityName = patientStudyEnrichmentRequestedResponse.facilityName
             height = patientStudyEnrichmentRequestedResponse.height
@@ -361,6 +391,26 @@ private constructor(
          * value.
          */
         fun dateOfBirth(dateOfBirth: JsonField<String>) = apply { this.dateOfBirth = dateOfBirth }
+
+        /**
+         * Optional Express customer to attach to the created study. Format: cus_{32 hex chars}.
+         * Must belong to the clinic in the request. Omit to leave the study unscoped. If present
+         * but not usable, Avara ignores this field, applies any other enrichment fields, and logs a
+         * warning on the webhook event.
+         */
+        fun expressCustomerId(expressCustomerId: String) =
+            expressCustomerId(JsonField.of(expressCustomerId))
+
+        /**
+         * Sets [Builder.expressCustomerId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.expressCustomerId] with a well-typed [String] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun expressCustomerId(expressCustomerId: JsonField<String>) = apply {
+            this.expressCustomerId = expressCustomerId
+        }
 
         fun externalPatientId(externalPatientId: String) =
             externalPatientId(JsonField.of(externalPatientId))
@@ -541,6 +591,7 @@ private constructor(
         fun build(): PatientStudyEnrichmentRequestedResponse =
             PatientStudyEnrichmentRequestedResponse(
                 dateOfBirth,
+                expressCustomerId,
                 externalPatientId,
                 facilityName,
                 height,
@@ -574,6 +625,7 @@ private constructor(
         }
 
         dateOfBirth()
+        expressCustomerId()
         externalPatientId()
         facilityName()
         height().ifPresent { it.validate() }
@@ -606,6 +658,7 @@ private constructor(
     @JvmSynthetic
     internal fun validity(): Int =
         (if (dateOfBirth.asKnown().isPresent) 1 else 0) +
+            (if (expressCustomerId.asKnown().isPresent) 1 else 0) +
             (if (externalPatientId.asKnown().isPresent) 1 else 0) +
             (if (facilityName.asKnown().isPresent) 1 else 0) +
             (height.asKnown().getOrNull()?.validity() ?: 0) +
@@ -1581,6 +1634,7 @@ private constructor(
 
         return other is PatientStudyEnrichmentRequestedResponse &&
             dateOfBirth == other.dateOfBirth &&
+            expressCustomerId == other.expressCustomerId &&
             externalPatientId == other.externalPatientId &&
             facilityName == other.facilityName &&
             height == other.height &&
@@ -1600,6 +1654,7 @@ private constructor(
     private val hashCode: Int by lazy {
         Objects.hash(
             dateOfBirth,
+            expressCustomerId,
             externalPatientId,
             facilityName,
             height,
@@ -1620,5 +1675,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "PatientStudyEnrichmentRequestedResponse{dateOfBirth=$dateOfBirth, externalPatientId=$externalPatientId, facilityName=$facilityName, height=$height, mrn=$mrn, patientName=$patientName, procedure=$procedure, referringPhysicianName=$referringPhysicianName, severity=$severity, sex=$sex, studyDate=$studyDate, studyDescription=$studyDescription, studyTime=$studyTime, weight=$weight, additionalProperties=$additionalProperties}"
+        "PatientStudyEnrichmentRequestedResponse{dateOfBirth=$dateOfBirth, expressCustomerId=$expressCustomerId, externalPatientId=$externalPatientId, facilityName=$facilityName, height=$height, mrn=$mrn, patientName=$patientName, procedure=$procedure, referringPhysicianName=$referringPhysicianName, severity=$severity, sex=$sex, studyDate=$studyDate, studyDescription=$studyDescription, studyTime=$studyTime, weight=$weight, additionalProperties=$additionalProperties}"
 }

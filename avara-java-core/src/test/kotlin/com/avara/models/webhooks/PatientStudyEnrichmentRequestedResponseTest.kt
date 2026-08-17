@@ -14,6 +14,7 @@ internal class PatientStudyEnrichmentRequestedResponseTest {
         val patientStudyEnrichmentRequestedResponse =
             PatientStudyEnrichmentRequestedResponse.builder()
                 .dateOfBirth("1985-01-01")
+                .expressCustomerId("cus_1234567890abcdef1234567890abcdef")
                 .externalPatientId("EHR-999")
                 .facilityName("South Tampa Imaging")
                 .height(
@@ -40,6 +41,8 @@ internal class PatientStudyEnrichmentRequestedResponseTest {
                 .build()
 
         assertThat(patientStudyEnrichmentRequestedResponse.dateOfBirth()).contains("1985-01-01")
+        assertThat(patientStudyEnrichmentRequestedResponse.expressCustomerId())
+            .contains("cus_1234567890abcdef1234567890abcdef")
         assertThat(patientStudyEnrichmentRequestedResponse.externalPatientId()).contains("EHR-999")
         assertThat(patientStudyEnrichmentRequestedResponse.facilityName())
             .contains("South Tampa Imaging")
@@ -79,6 +82,7 @@ internal class PatientStudyEnrichmentRequestedResponseTest {
         val patientStudyEnrichmentRequestedResponse =
             PatientStudyEnrichmentRequestedResponse.builder()
                 .dateOfBirth("1985-01-01")
+                .expressCustomerId("cus_1234567890abcdef1234567890abcdef")
                 .externalPatientId("EHR-999")
                 .facilityName("South Tampa Imaging")
                 .height(
