@@ -1,20 +1,30 @@
 # Avara Java API Library
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.avara/avara-java)](https://central.sonatype.com/artifact/com.avara/avara-java/0.0.1)
-[![javadoc](https://javadoc.io/badge2/com.avara/avara-java/javadoc.svg)](https://javadoc.io/doc/com.avara/avara-java/0.0.1)
+<!-- x-release-please-start-version -->
+
+[![Maven Central](https://img.shields.io/maven-central/v/com.avara/avara-java)](https://central.sonatype.com/artifact/com.avara/avara-java/0.1.0)
+[![javadoc](https://javadoc.io/badge2/com.avara/avara-java/javadoc.svg)](https://javadoc.io/doc/com.avara/avara-java/0.1.0)
+
+<!-- x-release-please-end -->
 
 The Avara Java SDK provides convenient access to the [Avara REST API](https://docs.avarasoftware.com) from applications written in Java.
 
 It is generated with [Stainless](https://www.stainless.com/).
 
-The REST API documentation can be found on [docs.avarasoftware.com](https://docs.avarasoftware.com). Javadocs are available on [javadoc.io](https://javadoc.io/doc/com.avara/avara-java/0.0.1).
+<!-- x-release-please-start-version -->
+
+The REST API documentation can be found on [docs.avarasoftware.com](https://docs.avarasoftware.com). Javadocs are available on [javadoc.io](https://javadoc.io/doc/com.avara/avara-java/0.1.0).
+
+<!-- x-release-please-end -->
 
 ## Installation
+
+<!-- x-release-please-start-version -->
 
 ### Gradle
 
 ```kotlin
-implementation("com.avara:avara-java:0.0.1")
+implementation("com.avara:avara-java:0.1.0")
 ```
 
 ### Maven
@@ -23,9 +33,11 @@ implementation("com.avara:avara-java:0.0.1")
 <dependency>
   <groupId>com.avara</groupId>
   <artifactId>avara-java</artifactId>
-  <version>0.0.1</version>
+  <version>0.1.0</version>
 </dependency>
 ```
+
+<!-- x-release-please-end -->
 
 ## Requirements
 
@@ -785,4 +797,4 @@ This package generally follows [SemVer](https://semver.org/spec/v2.0.0.html) con
 
 We take backwards-compatibility seriously and work hard to ensure you can rely on a smooth upgrade experience.
 
-We are keen for your feedback; please open an [issue](https://www.github.com/stainless-sdks/avara-java/issues) with questions, bugs, or suggestions.
+We are keen for your feedback; please open an [issue](https://www.github.com/avara-software/avara-java/issues) with questions, bugs, or suggestions.
