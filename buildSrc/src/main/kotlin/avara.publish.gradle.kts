@@ -27,9 +27,9 @@ configure<PublishingExtension> {
                 }
 
                 scm {
-                    connection.set("scm:git:git://github.com/stainless-sdks/avara-java.git")
-                    developerConnection.set("scm:git:git://github.com/stainless-sdks/avara-java.git")
-                    url.set("https://github.com/stainless-sdks/avara-java")
+                    connection.set("scm:git:git://github.com/avara-software/avara-java.git")
+                    developerConnection.set("scm:git:git://github.com/avara-software/avara-java.git")
+                    url.set("https://github.com/avara-software/avara-java")
                 }
 
                 versionMapping {
