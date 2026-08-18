@@ -69,7 +69,7 @@ private constructor(
         scheduledProcedureStepDescription.getRequired("ScheduledProcedureStepDescription")
 
     /**
-     * Scheduled procedure step identifier
+     * Scheduled procedure step identifier (DICOM SH, max 16)
      *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is unexpectedly
      *   missing or null (e.g. if the server responded with an unexpected value).
@@ -78,7 +78,7 @@ private constructor(
         scheduledProcedureStepId.getRequired("ScheduledProcedureStepID")
 
     /**
-     * Scheduled start date (DICOM DA-compatible string)
+     * Scheduled start date (DICOM DA: YYYYMMDD)
      *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is unexpectedly
      *   missing or null (e.g. if the server responded with an unexpected value).
@@ -87,7 +87,7 @@ private constructor(
         scheduledProcedureStepStartDate.getRequired("ScheduledProcedureStepStartDate")
 
     /**
-     * Scheduled start time (DICOM TM-compatible string)
+     * Scheduled start time (DICOM TM: HHMMSS)
      *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is unexpectedly
      *   missing or null (e.g. if the server responded with an unexpected value).
@@ -221,7 +221,7 @@ private constructor(
             scheduledProcedureStepDescription: JsonField<String>
         ) = apply { this.scheduledProcedureStepDescription = scheduledProcedureStepDescription }
 
-        /** Scheduled procedure step identifier */
+        /** Scheduled procedure step identifier (DICOM SH, max 16) */
         fun scheduledProcedureStepId(scheduledProcedureStepId: String) =
             scheduledProcedureStepId(JsonField.of(scheduledProcedureStepId))
 
@@ -236,7 +236,7 @@ private constructor(
             this.scheduledProcedureStepId = scheduledProcedureStepId
         }
 
-        /** Scheduled start date (DICOM DA-compatible string) */
+        /** Scheduled start date (DICOM DA: YYYYMMDD) */
         fun scheduledProcedureStepStartDate(scheduledProcedureStepStartDate: String) =
             scheduledProcedureStepStartDate(JsonField.of(scheduledProcedureStepStartDate))
 
@@ -252,7 +252,7 @@ private constructor(
                 this.scheduledProcedureStepStartDate = scheduledProcedureStepStartDate
             }
 
-        /** Scheduled start time (DICOM TM-compatible string) */
+        /** Scheduled start time (DICOM TM: HHMMSS) */
         fun scheduledProcedureStepStartTime(scheduledProcedureStepStartTime: String) =
             scheduledProcedureStepStartTime(JsonField.of(scheduledProcedureStepStartTime))
 

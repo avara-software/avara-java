@@ -97,6 +97,8 @@ private constructor(
     )
 
     /**
+     * Accession number (DICOM SH, max 16)
+     *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is unexpectedly
      *   missing or null (e.g. if the server responded with an unexpected value).
      */
@@ -109,6 +111,8 @@ private constructor(
     fun modality(): String = modality.getRequired("Modality")
 
     /**
+     * Patient birth date (DICOM DA: YYYYMMDD)
+     *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is unexpectedly
      *   missing or null (e.g. if the server responded with an unexpected value).
      */
@@ -121,19 +125,23 @@ private constructor(
     fun patientId(): String = patientId.getRequired("PatientID")
 
     /**
+     * DICOM PN / HL7 format: LAST^FIRST[^MIDDLE^PREFIX^SUFFIX]
+     *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is unexpectedly
      *   missing or null (e.g. if the server responded with an unexpected value).
      */
     fun patientName(): String = patientName.getRequired("PatientName")
 
     /**
+     * DICOM PatientSex: M, F, or O
+     *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is unexpectedly
      *   missing or null (e.g. if the server responded with an unexpected value).
      */
     fun patientSex(): String = patientSex.getRequired("PatientSex")
 
     /**
-     * Patient size; empty string allowed
+     * Height in meters. Empty string allowed; if set must be numeric (typical range 0.4–2.5).
      *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is unexpectedly
      *   missing or null (e.g. if the server responded with an unexpected value).
@@ -141,7 +149,7 @@ private constructor(
     fun patientSize(): String = patientSize.getRequired("PatientSize")
 
     /**
-     * Patient weight; empty string allowed
+     * Weight in kilograms. Empty string allowed; if set must be numeric (typical range 1–400).
      *
      * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is unexpectedly
      *   missing or null (e.g. if the server responded with an unexpected value).
@@ -374,6 +382,7 @@ private constructor(
             additionalProperties = modalityWorklistItem.additionalProperties.toMutableMap()
         }
 
+        /** Accession number (DICOM SH, max 16) */
         fun accessionNumber(accessionNumber: String) =
             accessionNumber(JsonField.of(accessionNumber))
 
@@ -398,6 +407,7 @@ private constructor(
          */
         fun modality(modality: JsonField<String>) = apply { this.modality = modality }
 
+        /** Patient birth date (DICOM DA: YYYYMMDD) */
         fun patientBirthDate(patientBirthDate: String) =
             patientBirthDate(JsonField.of(patientBirthDate))
 
@@ -423,6 +433,7 @@ private constructor(
          */
         fun patientId(patientId: JsonField<String>) = apply { this.patientId = patientId }
 
+        /** DICOM PN / HL7 format: LAST^FIRST[^MIDDLE^PREFIX^SUFFIX] */
         fun patientName(patientName: String) = patientName(JsonField.of(patientName))
 
         /**
@@ -434,6 +445,7 @@ private constructor(
          */
         fun patientName(patientName: JsonField<String>) = apply { this.patientName = patientName }
 
+        /** DICOM PatientSex: M, F, or O */
         fun patientSex(patientSex: String) = patientSex(JsonField.of(patientSex))
 
         /**
@@ -445,7 +457,9 @@ private constructor(
          */
         fun patientSex(patientSex: JsonField<String>) = apply { this.patientSex = patientSex }
 
-        /** Patient size; empty string allowed */
+        /**
+         * Height in meters. Empty string allowed; if set must be numeric (typical range 0.4–2.5).
+         */
         fun patientSize(patientSize: String) = patientSize(JsonField.of(patientSize))
 
         /**
@@ -457,7 +471,9 @@ private constructor(
          */
         fun patientSize(patientSize: JsonField<String>) = apply { this.patientSize = patientSize }
 
-        /** Patient weight; empty string allowed */
+        /**
+         * Weight in kilograms. Empty string allowed; if set must be numeric (typical range 1–400).
+         */
         fun patientWeight(patientWeight: String) = patientWeight(JsonField.of(patientWeight))
 
         /**

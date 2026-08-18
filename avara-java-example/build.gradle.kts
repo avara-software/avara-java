@@ -8,7 +8,8 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":avara-java"))
+    implementation(project(":avara-java-core"))
+    implementation(project(":avara-java-client-okhttp"))
 }
 
 tasks.withType<JavaCompile>().configureEach {
@@ -19,7 +20,7 @@ tasks.withType<JavaCompile>().configureEach {
 application {
     // Use `./gradlew :avara-java-example:run` to run `Main`
     // Use `./gradlew :avara-java-example:run -Pexample=Something` to run `SomethingExample`
-    mainClass = "com.avara.api.example.${
+    mainClass = "com.avara.example.${
         if (project.hasProperty("example"))
             "${project.property("example")}Example"
         else
