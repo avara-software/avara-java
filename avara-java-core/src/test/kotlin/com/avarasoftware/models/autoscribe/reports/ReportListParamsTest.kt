@@ -1,0 +1,46 @@
+// File generated from our OpenAPI spec by Stainless.
+
+package com.avarasoftware.models.autoscribe.reports
+
+import com.avarasoftware.core.http.QueryParams
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Test
+
+internal class ReportListParamsTest {
+
+    @Test
+    fun create() {
+        ReportListParams.builder()
+            .studyId("stu_1234567890abcdef1234567890abcdef")
+            .studyInstanceUid("1.2.840.10008.5.1.4.1.1.2")
+            .build()
+    }
+
+    @Test
+    fun queryParams() {
+        val params =
+            ReportListParams.builder()
+                .studyId("stu_1234567890abcdef1234567890abcdef")
+                .studyInstanceUid("1.2.840.10008.5.1.4.1.1.2")
+                .build()
+
+        val queryParams = params._queryParams()
+
+        assertThat(queryParams)
+            .isEqualTo(
+                QueryParams.builder()
+                    .put("studyId", "stu_1234567890abcdef1234567890abcdef")
+                    .put("studyInstanceUid", "1.2.840.10008.5.1.4.1.1.2")
+                    .build()
+            )
+    }
+
+    @Test
+    fun queryParamsWithoutOptionalFields() {
+        val params = ReportListParams.builder().build()
+
+        val queryParams = params._queryParams()
+
+        assertThat(queryParams).isEqualTo(QueryParams.builder().build())
+    }
+}

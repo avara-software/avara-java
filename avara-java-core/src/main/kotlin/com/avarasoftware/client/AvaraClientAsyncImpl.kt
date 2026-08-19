@@ -1,0 +1,101 @@
+// File generated from our OpenAPI spec by Stainless.
+
+package com.avarasoftware.client
+
+import com.avarasoftware.core.ClientOptions
+import com.avarasoftware.core.getPackageVersion
+import com.avarasoftware.services.async.AutoScribeServiceAsync
+import com.avarasoftware.services.async.AutoScribeServiceAsyncImpl
+import com.avarasoftware.services.async.ExpressServiceAsync
+import com.avarasoftware.services.async.ExpressServiceAsyncImpl
+import com.avarasoftware.services.async.ViewerServiceAsync
+import com.avarasoftware.services.async.ViewerServiceAsyncImpl
+import com.avarasoftware.services.async.WebhookServiceAsync
+import com.avarasoftware.services.async.WebhookServiceAsyncImpl
+import java.util.function.Consumer
+
+class AvaraClientAsyncImpl(private val clientOptions: ClientOptions) : AvaraClientAsync {
+
+    private val clientOptionsWithUserAgent =
+        if (clientOptions.headers.names().contains("User-Agent")) clientOptions
+        else
+            clientOptions
+                .toBuilder()
+                .putHeader("User-Agent", "${javaClass.simpleName}/Java ${getPackageVersion()}")
+                .build()
+
+    // Pass the original clientOptions so that this client sets its own User-Agent.
+    private val sync: AvaraClient by lazy { AvaraClientImpl(clientOptions) }
+
+    private val withRawResponse: AvaraClientAsync.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
+
+    private val autoScribe: AutoScribeServiceAsync by lazy {
+        AutoScribeServiceAsyncImpl(clientOptionsWithUserAgent)
+    }
+
+    private val viewer: ViewerServiceAsync by lazy {
+        ViewerServiceAsyncImpl(clientOptionsWithUserAgent)
+    }
+
+    private val express: ExpressServiceAsync by lazy {
+        ExpressServiceAsyncImpl(clientOptionsWithUserAgent)
+    }
+
+    private val webhooks: WebhookServiceAsync by lazy {
+        WebhookServiceAsyncImpl(clientOptionsWithUserAgent)
+    }
+
+    override fun sync(): AvaraClient = sync
+
+    override fun withRawResponse(): AvaraClientAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): AvaraClientAsync =
+        AvaraClientAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
+
+    override fun autoScribe(): AutoScribeServiceAsync = autoScribe
+
+    override fun viewer(): ViewerServiceAsync = viewer
+
+    override fun express(): ExpressServiceAsync = express
+
+    override fun webhooks(): WebhookServiceAsync = webhooks
+
+    override fun close() = clientOptions.close()
+
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        AvaraClientAsync.WithRawResponse {
+
+        private val autoScribe: AutoScribeServiceAsync.WithRawResponse by lazy {
+            AutoScribeServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val viewer: ViewerServiceAsync.WithRawResponse by lazy {
+            ViewerServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val express: ExpressServiceAsync.WithRawResponse by lazy {
+            ExpressServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val webhooks: WebhookServiceAsync.WithRawResponse by lazy {
+            WebhookServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): AvaraClientAsync.WithRawResponse =
+            AvaraClientAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
+
+        override fun autoScribe(): AutoScribeServiceAsync.WithRawResponse = autoScribe
+
+        override fun viewer(): ViewerServiceAsync.WithRawResponse = viewer
+
+        override fun express(): ExpressServiceAsync.WithRawResponse = express
+
+        override fun webhooks(): WebhookServiceAsync.WithRawResponse = webhooks
+    }
+}

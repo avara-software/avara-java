@@ -1,0 +1,1026 @@
+// File generated from our OpenAPI spec by Stainless.
+
+package com.avarasoftware.models.autoscribe
+
+import com.avarasoftware.core.ExcludeMissing
+import com.avarasoftware.core.JsonField
+import com.avarasoftware.core.JsonMissing
+import com.avarasoftware.core.JsonValue
+import com.avarasoftware.core.checkRequired
+import com.avarasoftware.errors.AvaraInvalidDataException
+import com.fasterxml.jackson.annotation.JsonAnyGetter
+import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.annotation.JsonProperty
+import java.util.Collections
+import java.util.Objects
+import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
+
+/** Patient demographics and scan information for report generation */
+class StudyReportMetadata
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
+private constructor(
+    private val age: JsonField<String>,
+    private val dateOfBirth: JsonField<String>,
+    private val facilityName: JsonField<String>,
+    private val height: JsonField<Height>,
+    private val mrn: JsonField<String>,
+    private val patientName: JsonField<String>,
+    private val procedure: JsonField<String>,
+    private val referringPhysicianName: JsonField<String>,
+    private val sex: JsonField<Sex>,
+    private val studyDate: JsonField<String>,
+    private val studyTime: JsonField<String>,
+    private val weight: JsonField<Weight>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
+) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("age") @ExcludeMissing age: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("dateOfBirth")
+        @ExcludeMissing
+        dateOfBirth: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("facilityName")
+        @ExcludeMissing
+        facilityName: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("height") @ExcludeMissing height: JsonField<Height> = JsonMissing.of(),
+        @JsonProperty("mrn") @ExcludeMissing mrn: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("patientName")
+        @ExcludeMissing
+        patientName: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("procedure") @ExcludeMissing procedure: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("referringPhysicianName")
+        @ExcludeMissing
+        referringPhysicianName: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("sex") @ExcludeMissing sex: JsonField<Sex> = JsonMissing.of(),
+        @JsonProperty("studyDate") @ExcludeMissing studyDate: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("studyTime") @ExcludeMissing studyTime: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("weight") @ExcludeMissing weight: JsonField<Weight> = JsonMissing.of(),
+    ) : this(
+        age,
+        dateOfBirth,
+        facilityName,
+        height,
+        mrn,
+        patientName,
+        procedure,
+        referringPhysicianName,
+        sex,
+        studyDate,
+        studyTime,
+        weight,
+        mutableMapOf(),
+    )
+
+    /**
+     * Patient's age at study date (e.g., '34.5 years', '2 months')
+     *
+     * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun age(): Optional<String> = age.getOptional("age")
+
+    /**
+     * Patient's date of birth. Format: YYYY-MM-DD (e.g., '1990-05-20')
+     *
+     * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun dateOfBirth(): Optional<String> = dateOfBirth.getOptional("dateOfBirth")
+
+    /**
+     * Name of the medical facility where the scan was performed
+     *
+     * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun facilityName(): Optional<String> = facilityName.getOptional("facilityName")
+
+    /**
+     * Patient's height with unit (e.g., {value: 70, unit: 'inches'} or {value: 178, unit: 'cm'})
+     *
+     * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun height(): Optional<Height> = height.getOptional("height")
+
+    /**
+     * Medical Record Number - unique patient identifier
+     *
+     * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun mrn(): Optional<String> = mrn.getOptional("mrn")
+
+    /**
+     * Full name of the patient
+     *
+     * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun patientName(): Optional<String> = patientName.getOptional("patientName")
+
+    /**
+     * Procedure or study type (e.g., 'MRI Brain with Contrast'). Maps to database scan_type and
+     * dictation report_header.scan_type.
+     *
+     * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun procedure(): Optional<String> = procedure.getOptional("procedure")
+
+    /**
+     * Name of the physician who referred the patient for this scan
+     *
+     * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun referringPhysicianName(): Optional<String> =
+        referringPhysicianName.getOptional("referringPhysicianName")
+
+    /**
+     * Patient's biological sex. Options: 'male', 'female', 'other'
+     *
+     * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun sex(): Optional<Sex> = sex.getOptional("sex")
+
+    /**
+     * Study date (YYYY-MM-DD). Maps to database scan_date and dictation report_header.scan_date.
+     *
+     * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun studyDate(): Optional<String> = studyDate.getOptional("studyDate")
+
+    /**
+     * Study time (HH:MM). Maps to database scan_time and dictation report_header.scan_time.
+     *
+     * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun studyTime(): Optional<String> = studyTime.getOptional("studyTime")
+
+    /**
+     * Patient's weight with unit (e.g., {value: 150, unit: 'lbs'} or {value: 68, unit: 'kg'})
+     *
+     * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun weight(): Optional<Weight> = weight.getOptional("weight")
+
+    /**
+     * Returns the raw JSON value of [age].
+     *
+     * Unlike [age], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("age") @ExcludeMissing fun _age(): JsonField<String> = age
+
+    /**
+     * Returns the raw JSON value of [dateOfBirth].
+     *
+     * Unlike [dateOfBirth], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("dateOfBirth") @ExcludeMissing fun _dateOfBirth(): JsonField<String> = dateOfBirth
+
+    /**
+     * Returns the raw JSON value of [facilityName].
+     *
+     * Unlike [facilityName], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("facilityName")
+    @ExcludeMissing
+    fun _facilityName(): JsonField<String> = facilityName
+
+    /**
+     * Returns the raw JSON value of [height].
+     *
+     * Unlike [height], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("height") @ExcludeMissing fun _height(): JsonField<Height> = height
+
+    /**
+     * Returns the raw JSON value of [mrn].
+     *
+     * Unlike [mrn], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("mrn") @ExcludeMissing fun _mrn(): JsonField<String> = mrn
+
+    /**
+     * Returns the raw JSON value of [patientName].
+     *
+     * Unlike [patientName], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("patientName") @ExcludeMissing fun _patientName(): JsonField<String> = patientName
+
+    /**
+     * Returns the raw JSON value of [procedure].
+     *
+     * Unlike [procedure], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("procedure") @ExcludeMissing fun _procedure(): JsonField<String> = procedure
+
+    /**
+     * Returns the raw JSON value of [referringPhysicianName].
+     *
+     * Unlike [referringPhysicianName], this method doesn't throw if the JSON field has an
+     * unexpected type.
+     */
+    @JsonProperty("referringPhysicianName")
+    @ExcludeMissing
+    fun _referringPhysicianName(): JsonField<String> = referringPhysicianName
+
+    /**
+     * Returns the raw JSON value of [sex].
+     *
+     * Unlike [sex], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("sex") @ExcludeMissing fun _sex(): JsonField<Sex> = sex
+
+    /**
+     * Returns the raw JSON value of [studyDate].
+     *
+     * Unlike [studyDate], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("studyDate") @ExcludeMissing fun _studyDate(): JsonField<String> = studyDate
+
+    /**
+     * Returns the raw JSON value of [studyTime].
+     *
+     * Unlike [studyTime], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("studyTime") @ExcludeMissing fun _studyTime(): JsonField<String> = studyTime
+
+    /**
+     * Returns the raw JSON value of [weight].
+     *
+     * Unlike [weight], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("weight") @ExcludeMissing fun _weight(): JsonField<Weight> = weight
+
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
+    @JsonAnyGetter
+    @ExcludeMissing
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
+
+    fun toBuilder() = Builder().from(this)
+
+    companion object {
+
+        /** Returns a mutable builder for constructing an instance of [StudyReportMetadata]. */
+        @JvmStatic fun builder() = Builder()
+    }
+
+    /** A builder for [StudyReportMetadata]. */
+    class Builder internal constructor() {
+
+        private var age: JsonField<String> = JsonMissing.of()
+        private var dateOfBirth: JsonField<String> = JsonMissing.of()
+        private var facilityName: JsonField<String> = JsonMissing.of()
+        private var height: JsonField<Height> = JsonMissing.of()
+        private var mrn: JsonField<String> = JsonMissing.of()
+        private var patientName: JsonField<String> = JsonMissing.of()
+        private var procedure: JsonField<String> = JsonMissing.of()
+        private var referringPhysicianName: JsonField<String> = JsonMissing.of()
+        private var sex: JsonField<Sex> = JsonMissing.of()
+        private var studyDate: JsonField<String> = JsonMissing.of()
+        private var studyTime: JsonField<String> = JsonMissing.of()
+        private var weight: JsonField<Weight> = JsonMissing.of()
+        private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+        @JvmSynthetic
+        internal fun from(studyReportMetadata: StudyReportMetadata) = apply {
+            age = studyReportMetadata.age
+            dateOfBirth = studyReportMetadata.dateOfBirth
+            facilityName = studyReportMetadata.facilityName
+            height = studyReportMetadata.height
+            mrn = studyReportMetadata.mrn
+            patientName = studyReportMetadata.patientName
+            procedure = studyReportMetadata.procedure
+            referringPhysicianName = studyReportMetadata.referringPhysicianName
+            sex = studyReportMetadata.sex
+            studyDate = studyReportMetadata.studyDate
+            studyTime = studyReportMetadata.studyTime
+            weight = studyReportMetadata.weight
+            additionalProperties = studyReportMetadata.additionalProperties.toMutableMap()
+        }
+
+        /** Patient's age at study date (e.g., '34.5 years', '2 months') */
+        fun age(age: String) = age(JsonField.of(age))
+
+        /**
+         * Sets [Builder.age] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.age] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun age(age: JsonField<String>) = apply { this.age = age }
+
+        /** Patient's date of birth. Format: YYYY-MM-DD (e.g., '1990-05-20') */
+        fun dateOfBirth(dateOfBirth: String) = dateOfBirth(JsonField.of(dateOfBirth))
+
+        /**
+         * Sets [Builder.dateOfBirth] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.dateOfBirth] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun dateOfBirth(dateOfBirth: JsonField<String>) = apply { this.dateOfBirth = dateOfBirth }
+
+        /** Name of the medical facility where the scan was performed */
+        fun facilityName(facilityName: String) = facilityName(JsonField.of(facilityName))
+
+        /**
+         * Sets [Builder.facilityName] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.facilityName] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun facilityName(facilityName: JsonField<String>) = apply {
+            this.facilityName = facilityName
+        }
+
+        /**
+         * Patient's height with unit (e.g., {value: 70, unit: 'inches'} or {value: 178, unit:
+         * 'cm'})
+         */
+        fun height(height: Height) = height(JsonField.of(height))
+
+        /**
+         * Sets [Builder.height] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.height] with a well-typed [Height] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun height(height: JsonField<Height>) = apply { this.height = height }
+
+        /** Medical Record Number - unique patient identifier */
+        fun mrn(mrn: String) = mrn(JsonField.of(mrn))
+
+        /**
+         * Sets [Builder.mrn] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.mrn] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun mrn(mrn: JsonField<String>) = apply { this.mrn = mrn }
+
+        /** Full name of the patient */
+        fun patientName(patientName: String) = patientName(JsonField.of(patientName))
+
+        /**
+         * Sets [Builder.patientName] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.patientName] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun patientName(patientName: JsonField<String>) = apply { this.patientName = patientName }
+
+        /**
+         * Procedure or study type (e.g., 'MRI Brain with Contrast'). Maps to database scan_type and
+         * dictation report_header.scan_type.
+         */
+        fun procedure(procedure: String) = procedure(JsonField.of(procedure))
+
+        /**
+         * Sets [Builder.procedure] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.procedure] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun procedure(procedure: JsonField<String>) = apply { this.procedure = procedure }
+
+        /** Name of the physician who referred the patient for this scan */
+        fun referringPhysicianName(referringPhysicianName: String) =
+            referringPhysicianName(JsonField.of(referringPhysicianName))
+
+        /**
+         * Sets [Builder.referringPhysicianName] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.referringPhysicianName] with a well-typed [String] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun referringPhysicianName(referringPhysicianName: JsonField<String>) = apply {
+            this.referringPhysicianName = referringPhysicianName
+        }
+
+        /** Patient's biological sex. Options: 'male', 'female', 'other' */
+        fun sex(sex: Sex) = sex(JsonField.of(sex))
+
+        /**
+         * Sets [Builder.sex] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.sex] with a well-typed [Sex] value instead. This method
+         * is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun sex(sex: JsonField<Sex>) = apply { this.sex = sex }
+
+        /**
+         * Study date (YYYY-MM-DD). Maps to database scan_date and dictation
+         * report_header.scan_date.
+         */
+        fun studyDate(studyDate: String) = studyDate(JsonField.of(studyDate))
+
+        /**
+         * Sets [Builder.studyDate] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.studyDate] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun studyDate(studyDate: JsonField<String>) = apply { this.studyDate = studyDate }
+
+        /** Study time (HH:MM). Maps to database scan_time and dictation report_header.scan_time. */
+        fun studyTime(studyTime: String) = studyTime(JsonField.of(studyTime))
+
+        /**
+         * Sets [Builder.studyTime] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.studyTime] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun studyTime(studyTime: JsonField<String>) = apply { this.studyTime = studyTime }
+
+        /**
+         * Patient's weight with unit (e.g., {value: 150, unit: 'lbs'} or {value: 68, unit: 'kg'})
+         */
+        fun weight(weight: Weight) = weight(JsonField.of(weight))
+
+        /**
+         * Sets [Builder.weight] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.weight] with a well-typed [Weight] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun weight(weight: JsonField<Weight>) = apply { this.weight = weight }
+
+        fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+            this.additionalProperties.clear()
+            putAllAdditionalProperties(additionalProperties)
+        }
+
+        fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+            additionalProperties.put(key, value)
+        }
+
+        fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+            this.additionalProperties.putAll(additionalProperties)
+        }
+
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
+        }
+
+        /**
+         * Returns an immutable instance of [StudyReportMetadata].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
+        fun build(): StudyReportMetadata =
+            StudyReportMetadata(
+                age,
+                dateOfBirth,
+                facilityName,
+                height,
+                mrn,
+                patientName,
+                procedure,
+                referringPhysicianName,
+                sex,
+                studyDate,
+                studyTime,
+                weight,
+                additionalProperties.toMutableMap(),
+            )
+    }
+
+    private var validated: Boolean = false
+
+    /**
+     * Validates that the types of all values in this object match their expected types recursively.
+     *
+     * This method is _not_ forwards compatible with new types from the API for existing fields.
+     *
+     * @throws AvaraInvalidDataException if any value type in this object doesn't match its expected
+     *   type.
+     */
+    fun validate(): StudyReportMetadata = apply {
+        if (validated) {
+            return@apply
+        }
+
+        age()
+        dateOfBirth()
+        facilityName()
+        height().ifPresent { it.validate() }
+        mrn()
+        patientName()
+        procedure()
+        referringPhysicianName()
+        sex().ifPresent { it.validate() }
+        studyDate()
+        studyTime()
+        weight().ifPresent { it.validate() }
+        validated = true
+    }
+
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: AvaraInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    @JvmSynthetic
+    internal fun validity(): Int =
+        (if (age.asKnown().isPresent) 1 else 0) +
+            (if (dateOfBirth.asKnown().isPresent) 1 else 0) +
+            (if (facilityName.asKnown().isPresent) 1 else 0) +
+            (height.asKnown().getOrNull()?.validity() ?: 0) +
+            (if (mrn.asKnown().isPresent) 1 else 0) +
+            (if (patientName.asKnown().isPresent) 1 else 0) +
+            (if (procedure.asKnown().isPresent) 1 else 0) +
+            (if (referringPhysicianName.asKnown().isPresent) 1 else 0) +
+            (sex.asKnown().getOrNull()?.validity() ?: 0) +
+            (if (studyDate.asKnown().isPresent) 1 else 0) +
+            (if (studyTime.asKnown().isPresent) 1 else 0) +
+            (weight.asKnown().getOrNull()?.validity() ?: 0)
+
+    /**
+     * Patient's height with unit (e.g., {value: 70, unit: 'inches'} or {value: 178, unit: 'cm'})
+     */
+    class Height
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+    private constructor(
+        private val unit: JsonField<HeightUnit>,
+        private val value: JsonField<Double>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
+    ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("unit") @ExcludeMissing unit: JsonField<HeightUnit> = JsonMissing.of(),
+            @JsonProperty("value") @ExcludeMissing value: JsonField<Double> = JsonMissing.of(),
+        ) : this(unit, value, mutableMapOf())
+
+        /**
+         * Unit of measure for a height value. 'in' = inches, 'cm' = centimeters.
+         *
+         * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun unit(): HeightUnit = unit.getRequired("unit")
+
+        /**
+         * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun value(): Double = value.getRequired("value")
+
+        /**
+         * Returns the raw JSON value of [unit].
+         *
+         * Unlike [unit], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("unit") @ExcludeMissing fun _unit(): JsonField<HeightUnit> = unit
+
+        /**
+         * Returns the raw JSON value of [value].
+         *
+         * Unlike [value], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("value") @ExcludeMissing fun _value(): JsonField<Double> = value
+
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
+
+        fun toBuilder() = Builder().from(this)
+
+        companion object {
+
+            /**
+             * Returns a mutable builder for constructing an instance of [Height].
+             *
+             * The following fields are required:
+             * ```java
+             * .unit()
+             * .value()
+             * ```
+             */
+            @JvmStatic fun builder() = Builder()
+        }
+
+        /** A builder for [Height]. */
+        class Builder internal constructor() {
+
+            private var unit: JsonField<HeightUnit>? = null
+            private var value: JsonField<Double>? = null
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            @JvmSynthetic
+            internal fun from(height: Height) = apply {
+                unit = height.unit
+                value = height.value
+                additionalProperties = height.additionalProperties.toMutableMap()
+            }
+
+            /** Unit of measure for a height value. 'in' = inches, 'cm' = centimeters. */
+            fun unit(unit: HeightUnit) = unit(JsonField.of(unit))
+
+            /**
+             * Sets [Builder.unit] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.unit] with a well-typed [HeightUnit] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun unit(unit: JsonField<HeightUnit>) = apply { this.unit = unit }
+
+            fun value(value: Double) = value(JsonField.of(value))
+
+            /**
+             * Sets [Builder.value] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.value] with a well-typed [Double] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun value(value: JsonField<Double>) = apply { this.value = value }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
+
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
+            /**
+             * Returns an immutable instance of [Height].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```java
+             * .unit()
+             * .value()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
+             */
+            fun build(): Height =
+                Height(
+                    checkRequired("unit", unit),
+                    checkRequired("value", value),
+                    additionalProperties.toMutableMap(),
+                )
+        }
+
+        private var validated: Boolean = false
+
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws AvaraInvalidDataException if any value type in this object doesn't match its
+         *   expected type.
+         */
+        fun validate(): Height = apply {
+            if (validated) {
+                return@apply
+            }
+
+            unit().validate()
+            value()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: AvaraInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (unit.asKnown().getOrNull()?.validity() ?: 0) +
+                (if (value.asKnown().isPresent) 1 else 0)
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is Height &&
+                unit == other.unit &&
+                value == other.value &&
+                additionalProperties == other.additionalProperties
+        }
+
+        private val hashCode: Int by lazy { Objects.hash(unit, value, additionalProperties) }
+
+        override fun hashCode(): Int = hashCode
+
+        override fun toString() =
+            "Height{unit=$unit, value=$value, additionalProperties=$additionalProperties}"
+    }
+
+    /** Patient's weight with unit (e.g., {value: 150, unit: 'lbs'} or {value: 68, unit: 'kg'}) */
+    class Weight
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+    private constructor(
+        private val unit: JsonField<WeightUnit>,
+        private val value: JsonField<Double>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
+    ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("unit") @ExcludeMissing unit: JsonField<WeightUnit> = JsonMissing.of(),
+            @JsonProperty("value") @ExcludeMissing value: JsonField<Double> = JsonMissing.of(),
+        ) : this(unit, value, mutableMapOf())
+
+        /**
+         * Unit of measure for a weight value. 'lbs' = pounds, 'kg' = kilograms.
+         *
+         * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun unit(): WeightUnit = unit.getRequired("unit")
+
+        /**
+         * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun value(): Double = value.getRequired("value")
+
+        /**
+         * Returns the raw JSON value of [unit].
+         *
+         * Unlike [unit], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("unit") @ExcludeMissing fun _unit(): JsonField<WeightUnit> = unit
+
+        /**
+         * Returns the raw JSON value of [value].
+         *
+         * Unlike [value], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("value") @ExcludeMissing fun _value(): JsonField<Double> = value
+
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
+
+        fun toBuilder() = Builder().from(this)
+
+        companion object {
+
+            /**
+             * Returns a mutable builder for constructing an instance of [Weight].
+             *
+             * The following fields are required:
+             * ```java
+             * .unit()
+             * .value()
+             * ```
+             */
+            @JvmStatic fun builder() = Builder()
+        }
+
+        /** A builder for [Weight]. */
+        class Builder internal constructor() {
+
+            private var unit: JsonField<WeightUnit>? = null
+            private var value: JsonField<Double>? = null
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            @JvmSynthetic
+            internal fun from(weight: Weight) = apply {
+                unit = weight.unit
+                value = weight.value
+                additionalProperties = weight.additionalProperties.toMutableMap()
+            }
+
+            /** Unit of measure for a weight value. 'lbs' = pounds, 'kg' = kilograms. */
+            fun unit(unit: WeightUnit) = unit(JsonField.of(unit))
+
+            /**
+             * Sets [Builder.unit] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.unit] with a well-typed [WeightUnit] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun unit(unit: JsonField<WeightUnit>) = apply { this.unit = unit }
+
+            fun value(value: Double) = value(JsonField.of(value))
+
+            /**
+             * Sets [Builder.value] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.value] with a well-typed [Double] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun value(value: JsonField<Double>) = apply { this.value = value }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
+
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
+            /**
+             * Returns an immutable instance of [Weight].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```java
+             * .unit()
+             * .value()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
+             */
+            fun build(): Weight =
+                Weight(
+                    checkRequired("unit", unit),
+                    checkRequired("value", value),
+                    additionalProperties.toMutableMap(),
+                )
+        }
+
+        private var validated: Boolean = false
+
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws AvaraInvalidDataException if any value type in this object doesn't match its
+         *   expected type.
+         */
+        fun validate(): Weight = apply {
+            if (validated) {
+                return@apply
+            }
+
+            unit().validate()
+            value()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: AvaraInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (unit.asKnown().getOrNull()?.validity() ?: 0) +
+                (if (value.asKnown().isPresent) 1 else 0)
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is Weight &&
+                unit == other.unit &&
+                value == other.value &&
+                additionalProperties == other.additionalProperties
+        }
+
+        private val hashCode: Int by lazy { Objects.hash(unit, value, additionalProperties) }
+
+        override fun hashCode(): Int = hashCode
+
+        override fun toString() =
+            "Weight{unit=$unit, value=$value, additionalProperties=$additionalProperties}"
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return other is StudyReportMetadata &&
+            age == other.age &&
+            dateOfBirth == other.dateOfBirth &&
+            facilityName == other.facilityName &&
+            height == other.height &&
+            mrn == other.mrn &&
+            patientName == other.patientName &&
+            procedure == other.procedure &&
+            referringPhysicianName == other.referringPhysicianName &&
+            sex == other.sex &&
+            studyDate == other.studyDate &&
+            studyTime == other.studyTime &&
+            weight == other.weight &&
+            additionalProperties == other.additionalProperties
+    }
+
+    private val hashCode: Int by lazy {
+        Objects.hash(
+            age,
+            dateOfBirth,
+            facilityName,
+            height,
+            mrn,
+            patientName,
+            procedure,
+            referringPhysicianName,
+            sex,
+            studyDate,
+            studyTime,
+            weight,
+            additionalProperties,
+        )
+    }
+
+    override fun hashCode(): Int = hashCode
+
+    override fun toString() =
+        "StudyReportMetadata{age=$age, dateOfBirth=$dateOfBirth, facilityName=$facilityName, height=$height, mrn=$mrn, patientName=$patientName, procedure=$procedure, referringPhysicianName=$referringPhysicianName, sex=$sex, studyDate=$studyDate, studyTime=$studyTime, weight=$weight, additionalProperties=$additionalProperties}"
+}
