@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1](https://github.com/avara-software/avara-java/compare/v0.1.0...v0.1.1) (2026-08-19)
+
+
+### Chores
+
+* trigger stlc overwrite cutover ([859122c](https://github.com/avara-software/avara-java/commit/859122cae404861254b407b0cc08b3389537447b))
+
 ## 0.1.0 (2026-08-18)
 
 Full Changelog: [v0.0.1...v0.1.0](https://github.com/avara-software/avara-java/compare/v0.0.1...v0.1.0)
