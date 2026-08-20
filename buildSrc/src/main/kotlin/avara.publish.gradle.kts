@@ -43,7 +43,7 @@ configure<MavenPublishBaseExtension> {
 
     pom {
         name.set("Avara API")
-        description.set("API for Avara products: AutoScribe & Viewer (Clinical Platform and Billing are\nsoon to come).")
+        description.set("API for Avara AutoScribe and Viewer Integrations")
         url.set("https://docs.avarasoftware.com")
 
         licenses {
