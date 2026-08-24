@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/avara-software/avara-java/compare/v0.1.0...v0.2.0) (2026-08-24)
+
+
+### Features
+
+* add studyInstanceUid and externalPatientId to report.delivered ([2ef6529](https://github.com/avara-software/avara-java/commit/2ef652963c9212ae06e1fed05d0a89376ba79293))
+
 ## 0.1.0 (2026-08-18)
 
 Full Changelog: [v0.0.1...v0.1.0](https://github.com/avara-software/avara-java/compare/v0.0.1...v0.1.0)
