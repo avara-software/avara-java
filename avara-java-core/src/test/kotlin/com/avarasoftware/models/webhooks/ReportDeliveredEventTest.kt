@@ -22,6 +22,8 @@ internal class ReportDeliveredEventTest {
                         )
                         .reportId("rep_1234567890abcdef1234567890abcdef")
                         .studyId("stu_1234567890abcdef1234567890abcdef")
+                        .studyInstanceUid("1.2.840.113619.2.55.3.1234567890")
+                        .externalPatientId("EHR-999")
                         .plainText(
                             "FINDINGS: Normal brain MRI. No acute intracranial abnormality..."
                         )
@@ -39,6 +41,8 @@ internal class ReportDeliveredEventTest {
                     )
                     .reportId("rep_1234567890abcdef1234567890abcdef")
                     .studyId("stu_1234567890abcdef1234567890abcdef")
+                    .studyInstanceUid("1.2.840.113619.2.55.3.1234567890")
+                    .externalPatientId("EHR-999")
                     .plainText("FINDINGS: Normal brain MRI. No acute intracranial abnormality...")
                     .build()
             )
@@ -58,6 +62,8 @@ internal class ReportDeliveredEventTest {
                         )
                         .reportId("rep_1234567890abcdef1234567890abcdef")
                         .studyId("stu_1234567890abcdef1234567890abcdef")
+                        .studyInstanceUid("1.2.840.113619.2.55.3.1234567890")
+                        .externalPatientId("EHR-999")
                         .plainText(
                             "FINDINGS: Normal brain MRI. No acute intracranial abnormality..."
                         )

@@ -17,6 +17,8 @@ internal class ReportDeliveredEventDataTest {
                 .presignedUrl("https://storage.avarasoftware.com/reports/rep_1234.pdf?token=xyz789")
                 .reportId("rep_1234567890abcdef1234567890abcdef")
                 .studyId("stu_1234567890abcdef1234567890abcdef")
+                .studyInstanceUid("1.2.840.113619.2.55.3.1234567890")
+                .externalPatientId("EHR-999")
                 .plainText("FINDINGS: Normal brain MRI. No acute intracranial abnormality...")
                 .build()
 
@@ -27,6 +29,9 @@ internal class ReportDeliveredEventDataTest {
             .isEqualTo("rep_1234567890abcdef1234567890abcdef")
         assertThat(reportDeliveredEventData.studyId())
             .isEqualTo("stu_1234567890abcdef1234567890abcdef")
+        assertThat(reportDeliveredEventData.studyInstanceUid())
+            .isEqualTo("1.2.840.113619.2.55.3.1234567890")
+        assertThat(reportDeliveredEventData.externalPatientId()).contains("EHR-999")
         assertThat(reportDeliveredEventData.plainText())
             .contains("FINDINGS: Normal brain MRI. No acute intracranial abnormality...")
     }
@@ -40,6 +45,8 @@ internal class ReportDeliveredEventDataTest {
                 .presignedUrl("https://storage.avarasoftware.com/reports/rep_1234.pdf?token=xyz789")
                 .reportId("rep_1234567890abcdef1234567890abcdef")
                 .studyId("stu_1234567890abcdef1234567890abcdef")
+                .studyInstanceUid("1.2.840.113619.2.55.3.1234567890")
+                .externalPatientId("EHR-999")
                 .plainText("FINDINGS: Normal brain MRI. No acute intracranial abnormality...")
                 .build()
 

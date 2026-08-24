@@ -24,6 +24,8 @@ private constructor(
     private val presignedUrl: JsonField<String>,
     private val reportId: JsonField<String>,
     private val studyId: JsonField<String>,
+    private val studyInstanceUid: JsonField<String>,
+    private val externalPatientId: JsonField<String>,
     private val plainText: JsonField<String>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
@@ -38,8 +40,23 @@ private constructor(
         presignedUrl: JsonField<String> = JsonMissing.of(),
         @JsonProperty("reportId") @ExcludeMissing reportId: JsonField<String> = JsonMissing.of(),
         @JsonProperty("studyId") @ExcludeMissing studyId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("studyInstanceUid")
+        @ExcludeMissing
+        studyInstanceUid: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("externalPatientId")
+        @ExcludeMissing
+        externalPatientId: JsonField<String> = JsonMissing.of(),
         @JsonProperty("plainText") @ExcludeMissing plainText: JsonField<String> = JsonMissing.of(),
-    ) : this(isCritical, presignedUrl, reportId, studyId, plainText, mutableMapOf())
+    ) : this(
+        isCritical,
+        presignedUrl,
+        reportId,
+        studyId,
+        studyInstanceUid,
+        externalPatientId,
+        plainText,
+        mutableMapOf(),
+    )
 
     /**
      * Whether the report was marked critical at sign-off.
@@ -72,6 +89,22 @@ private constructor(
      *   missing or null (e.g. if the server responded with an unexpected value).
      */
     fun studyId(): String = studyId.getRequired("studyId")
+
+    /**
+     * DICOM Study Instance UID
+     *
+     * @throws AvaraInvalidDataException if the JSON field has an unexpected type or is unexpectedly
+     *   missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun studyInstanceUid(): String = studyInstanceUid.getRequired("studyInstanceUid")
+
+    /**
+     * External patient identifier when available
+     *
+     * @throws AvaraInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun externalPatientId(): Optional<String> = externalPatientId.getOptional("externalPatientId")
 
     /**
      * Report plain text content (optional). Contains the full report text.
@@ -112,6 +145,26 @@ private constructor(
     @JsonProperty("studyId") @ExcludeMissing fun _studyId(): JsonField<String> = studyId
 
     /**
+     * Returns the raw JSON value of [studyInstanceUid].
+     *
+     * Unlike [studyInstanceUid], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
+    @JsonProperty("studyInstanceUid")
+    @ExcludeMissing
+    fun _studyInstanceUid(): JsonField<String> = studyInstanceUid
+
+    /**
+     * Returns the raw JSON value of [externalPatientId].
+     *
+     * Unlike [externalPatientId], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
+    @JsonProperty("externalPatientId")
+    @ExcludeMissing
+    fun _externalPatientId(): JsonField<String> = externalPatientId
+
+    /**
      * Returns the raw JSON value of [plainText].
      *
      * Unlike [plainText], this method doesn't throw if the JSON field has an unexpected type.
@@ -141,6 +194,7 @@ private constructor(
          * .presignedUrl()
          * .reportId()
          * .studyId()
+         * .studyInstanceUid()
          * ```
          */
         @JvmStatic fun builder() = Builder()
@@ -153,6 +207,8 @@ private constructor(
         private var presignedUrl: JsonField<String>? = null
         private var reportId: JsonField<String>? = null
         private var studyId: JsonField<String>? = null
+        private var studyInstanceUid: JsonField<String>? = null
+        private var externalPatientId: JsonField<String> = JsonMissing.of()
         private var plainText: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -162,6 +218,8 @@ private constructor(
             presignedUrl = reportDeliveredEventData.presignedUrl
             reportId = reportDeliveredEventData.reportId
             studyId = reportDeliveredEventData.studyId
+            studyInstanceUid = reportDeliveredEventData.studyInstanceUid
+            externalPatientId = reportDeliveredEventData.externalPatientId
             plainText = reportDeliveredEventData.plainText
             additionalProperties = reportDeliveredEventData.additionalProperties.toMutableMap()
         }
@@ -214,6 +272,36 @@ private constructor(
          */
         fun studyId(studyId: JsonField<String>) = apply { this.studyId = studyId }
 
+        /** DICOM Study Instance UID */
+        fun studyInstanceUid(studyInstanceUid: String) =
+            studyInstanceUid(JsonField.of(studyInstanceUid))
+
+        /**
+         * Sets [Builder.studyInstanceUid] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.studyInstanceUid] with a well-typed [String] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun studyInstanceUid(studyInstanceUid: JsonField<String>) = apply {
+            this.studyInstanceUid = studyInstanceUid
+        }
+
+        /** External patient identifier when available */
+        fun externalPatientId(externalPatientId: String) =
+            externalPatientId(JsonField.of(externalPatientId))
+
+        /**
+         * Sets [Builder.externalPatientId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.externalPatientId] with a well-typed [String] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun externalPatientId(externalPatientId: JsonField<String>) = apply {
+            this.externalPatientId = externalPatientId
+        }
+
         /** Report plain text content (optional). Contains the full report text. */
         fun plainText(plainText: String) = plainText(JsonField.of(plainText))
 
@@ -256,6 +344,7 @@ private constructor(
          * .presignedUrl()
          * .reportId()
          * .studyId()
+         * .studyInstanceUid()
          * ```
          *
          * @throws IllegalStateException if any required field is unset.
@@ -266,6 +355,8 @@ private constructor(
                 checkRequired("presignedUrl", presignedUrl),
                 checkRequired("reportId", reportId),
                 checkRequired("studyId", studyId),
+                checkRequired("studyInstanceUid", studyInstanceUid),
+                externalPatientId,
                 plainText,
                 additionalProperties.toMutableMap(),
             )
@@ -290,6 +381,8 @@ private constructor(
         presignedUrl()
         reportId()
         studyId()
+        studyInstanceUid()
+        externalPatientId()
         plainText()
         validated = true
     }
@@ -313,6 +406,8 @@ private constructor(
             (if (presignedUrl.asKnown().isPresent) 1 else 0) +
             (if (reportId.asKnown().isPresent) 1 else 0) +
             (if (studyId.asKnown().isPresent) 1 else 0) +
+            (if (studyInstanceUid.asKnown().isPresent) 1 else 0) +
+            (if (externalPatientId.asKnown().isPresent) 1 else 0) +
             (if (plainText.asKnown().isPresent) 1 else 0)
 
     override fun equals(other: Any?): Boolean {
@@ -325,16 +420,27 @@ private constructor(
             presignedUrl == other.presignedUrl &&
             reportId == other.reportId &&
             studyId == other.studyId &&
+            studyInstanceUid == other.studyInstanceUid &&
+            externalPatientId == other.externalPatientId &&
             plainText == other.plainText &&
             additionalProperties == other.additionalProperties
     }
 
     private val hashCode: Int by lazy {
-        Objects.hash(isCritical, presignedUrl, reportId, studyId, plainText, additionalProperties)
+        Objects.hash(
+            isCritical,
+            presignedUrl,
+            reportId,
+            studyId,
+            studyInstanceUid,
+            externalPatientId,
+            plainText,
+            additionalProperties,
+        )
     }
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "ReportDeliveredEventData{isCritical=$isCritical, presignedUrl=$presignedUrl, reportId=$reportId, studyId=$studyId, plainText=$plainText, additionalProperties=$additionalProperties}"
+        "ReportDeliveredEventData{isCritical=$isCritical, presignedUrl=$presignedUrl, reportId=$reportId, studyId=$studyId, studyInstanceUid=$studyInstanceUid, externalPatientId=$externalPatientId, plainText=$plainText, additionalProperties=$additionalProperties}"
 }
