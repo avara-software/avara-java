@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/avara-software/avara-java/compare/v0.2.0...v0.2.1) (2026-08-24)
+
+
+### Chores
+
+* finally trying to fix this fucking bullshit stainless CI bullshit always failing ([310ae97](https://github.com/avara-software/avara-java/commit/310ae97ae20242cfed3e206333a88960af7b4c1b))
+
 ## [0.2.0](https://github.com/avara-software/avara-java/compare/v0.1.0...v0.2.0) (2026-08-24)
 
 
