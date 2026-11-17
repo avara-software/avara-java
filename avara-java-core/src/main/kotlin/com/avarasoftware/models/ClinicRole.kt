@@ -83,6 +83,18 @@ class ClinicRole @JsonCreator private constructor(private val value: JsonField<S
 
         @JvmField val IMMUNOLOGIST = of("Immunologist")
 
+        @JvmField val PHYSIATRIST = of("Physiatrist")
+
+        @JvmField val PODIATRIST = of("Podiatrist")
+
+        @JvmField val OPTOMETRIST = of("Optometrist")
+
+        @JvmField val DENTIST = of("Dentist")
+
+        @JvmField val ORTHODONTIST = of("Orthodontist")
+
+        @JvmField val ORAL_AND_MAXILLOFACIAL_SURGEON = of("Oral and Maxillofacial Surgeon")
+
         @JvmField val PHYSICIAN_ASSISTANT = of("Physician Assistant")
 
         @JvmField val NURSE_PRACTITIONER = of("Nurse Practitioner")
@@ -103,6 +115,8 @@ class ClinicRole @JsonCreator private constructor(private val value: JsonField<S
         @JvmField val PATIENT_CARE_COORDINATOR = of("Patient Care Coordinator")
 
         @JvmField val IMAGING_TECHNOLOGIST = of("Imaging Technologist")
+
+        @JvmField val RADIATION_THERAPIST = of("Radiation Therapist")
 
         @JvmField val LABORATORY_TECHNICIAN = of("Laboratory Technician")
 
@@ -128,7 +142,13 @@ class ClinicRole @JsonCreator private constructor(private val value: JsonField<S
 
         @JvmField val FRONT_DESK_OPERATOR = of("Front Desk Operator")
 
+        @JvmField val PRACTICE_MANAGER = of("Practice Manager")
+
         @JvmField val REVENUE_CYCLE_MANAGER = of("Revenue Cycle Manager")
+
+        @JvmField val MEDICAL_BILLER = of("Medical Biller")
+
+        @JvmField val PRIOR_AUTHORIZATION_SPECIALIST = of("Prior Authorization Specialist")
 
         @JvmField val ADMINISTRATIVE_DIRECTOR = of("Administrative Director")
 
@@ -180,6 +200,12 @@ class ClinicRole @JsonCreator private constructor(private val value: JsonField<S
         PAIN_MANAGEMENT_SPECIALIST,
         INFECTIOUS_DISEASE_SPECIALIST,
         IMMUNOLOGIST,
+        PHYSIATRIST,
+        PODIATRIST,
+        OPTOMETRIST,
+        DENTIST,
+        ORTHODONTIST,
+        ORAL_AND_MAXILLOFACIAL_SURGEON,
         PHYSICIAN_ASSISTANT,
         NURSE_PRACTITIONER,
         CERTIFIED_REGISTERED_NURSE_ANESTHETIST,
@@ -190,6 +216,7 @@ class ClinicRole @JsonCreator private constructor(private val value: JsonField<S
         NURSE_MANAGER,
         PATIENT_CARE_COORDINATOR,
         IMAGING_TECHNOLOGIST,
+        RADIATION_THERAPIST,
         LABORATORY_TECHNICIAN,
         MEDICAL_LABORATORY_SCIENTIST,
         PATHOLOGISTS_ASSISTANT,
@@ -202,7 +229,10 @@ class ClinicRole @JsonCreator private constructor(private val value: JsonField<S
         RESPIRATORY_THERAPIST,
         NUTRITIONIST,
         FRONT_DESK_OPERATOR,
+        PRACTICE_MANAGER,
         REVENUE_CYCLE_MANAGER,
+        MEDICAL_BILLER,
+        PRIOR_AUTHORIZATION_SPECIALIST,
         ADMINISTRATIVE_DIRECTOR,
         ADMINISTRATIVE_ASSISTANT,
         LEGAL_ADMINISTRATOR,
@@ -253,6 +283,12 @@ class ClinicRole @JsonCreator private constructor(private val value: JsonField<S
         PAIN_MANAGEMENT_SPECIALIST,
         INFECTIOUS_DISEASE_SPECIALIST,
         IMMUNOLOGIST,
+        PHYSIATRIST,
+        PODIATRIST,
+        OPTOMETRIST,
+        DENTIST,
+        ORTHODONTIST,
+        ORAL_AND_MAXILLOFACIAL_SURGEON,
         PHYSICIAN_ASSISTANT,
         NURSE_PRACTITIONER,
         CERTIFIED_REGISTERED_NURSE_ANESTHETIST,
@@ -263,6 +299,7 @@ class ClinicRole @JsonCreator private constructor(private val value: JsonField<S
         NURSE_MANAGER,
         PATIENT_CARE_COORDINATOR,
         IMAGING_TECHNOLOGIST,
+        RADIATION_THERAPIST,
         LABORATORY_TECHNICIAN,
         MEDICAL_LABORATORY_SCIENTIST,
         PATHOLOGISTS_ASSISTANT,
@@ -275,7 +312,10 @@ class ClinicRole @JsonCreator private constructor(private val value: JsonField<S
         RESPIRATORY_THERAPIST,
         NUTRITIONIST,
         FRONT_DESK_OPERATOR,
+        PRACTICE_MANAGER,
         REVENUE_CYCLE_MANAGER,
+        MEDICAL_BILLER,
+        PRIOR_AUTHORIZATION_SPECIALIST,
         ADMINISTRATIVE_DIRECTOR,
         ADMINISTRATIVE_ASSISTANT,
         LEGAL_ADMINISTRATOR,
@@ -327,6 +367,12 @@ class ClinicRole @JsonCreator private constructor(private val value: JsonField<S
             PAIN_MANAGEMENT_SPECIALIST -> Value.PAIN_MANAGEMENT_SPECIALIST
             INFECTIOUS_DISEASE_SPECIALIST -> Value.INFECTIOUS_DISEASE_SPECIALIST
             IMMUNOLOGIST -> Value.IMMUNOLOGIST
+            PHYSIATRIST -> Value.PHYSIATRIST
+            PODIATRIST -> Value.PODIATRIST
+            OPTOMETRIST -> Value.OPTOMETRIST
+            DENTIST -> Value.DENTIST
+            ORTHODONTIST -> Value.ORTHODONTIST
+            ORAL_AND_MAXILLOFACIAL_SURGEON -> Value.ORAL_AND_MAXILLOFACIAL_SURGEON
             PHYSICIAN_ASSISTANT -> Value.PHYSICIAN_ASSISTANT
             NURSE_PRACTITIONER -> Value.NURSE_PRACTITIONER
             CERTIFIED_REGISTERED_NURSE_ANESTHETIST -> Value.CERTIFIED_REGISTERED_NURSE_ANESTHETIST
@@ -337,6 +383,7 @@ class ClinicRole @JsonCreator private constructor(private val value: JsonField<S
             NURSE_MANAGER -> Value.NURSE_MANAGER
             PATIENT_CARE_COORDINATOR -> Value.PATIENT_CARE_COORDINATOR
             IMAGING_TECHNOLOGIST -> Value.IMAGING_TECHNOLOGIST
+            RADIATION_THERAPIST -> Value.RADIATION_THERAPIST
             LABORATORY_TECHNICIAN -> Value.LABORATORY_TECHNICIAN
             MEDICAL_LABORATORY_SCIENTIST -> Value.MEDICAL_LABORATORY_SCIENTIST
             PATHOLOGISTS_ASSISTANT -> Value.PATHOLOGISTS_ASSISTANT
@@ -349,7 +396,10 @@ class ClinicRole @JsonCreator private constructor(private val value: JsonField<S
             RESPIRATORY_THERAPIST -> Value.RESPIRATORY_THERAPIST
             NUTRITIONIST -> Value.NUTRITIONIST
             FRONT_DESK_OPERATOR -> Value.FRONT_DESK_OPERATOR
+            PRACTICE_MANAGER -> Value.PRACTICE_MANAGER
             REVENUE_CYCLE_MANAGER -> Value.REVENUE_CYCLE_MANAGER
+            MEDICAL_BILLER -> Value.MEDICAL_BILLER
+            PRIOR_AUTHORIZATION_SPECIALIST -> Value.PRIOR_AUTHORIZATION_SPECIALIST
             ADMINISTRATIVE_DIRECTOR -> Value.ADMINISTRATIVE_DIRECTOR
             ADMINISTRATIVE_ASSISTANT -> Value.ADMINISTRATIVE_ASSISTANT
             LEGAL_ADMINISTRATOR -> Value.LEGAL_ADMINISTRATOR
@@ -401,6 +451,12 @@ class ClinicRole @JsonCreator private constructor(private val value: JsonField<S
             PAIN_MANAGEMENT_SPECIALIST -> Known.PAIN_MANAGEMENT_SPECIALIST
             INFECTIOUS_DISEASE_SPECIALIST -> Known.INFECTIOUS_DISEASE_SPECIALIST
             IMMUNOLOGIST -> Known.IMMUNOLOGIST
+            PHYSIATRIST -> Known.PHYSIATRIST
+            PODIATRIST -> Known.PODIATRIST
+            OPTOMETRIST -> Known.OPTOMETRIST
+            DENTIST -> Known.DENTIST
+            ORTHODONTIST -> Known.ORTHODONTIST
+            ORAL_AND_MAXILLOFACIAL_SURGEON -> Known.ORAL_AND_MAXILLOFACIAL_SURGEON
             PHYSICIAN_ASSISTANT -> Known.PHYSICIAN_ASSISTANT
             NURSE_PRACTITIONER -> Known.NURSE_PRACTITIONER
             CERTIFIED_REGISTERED_NURSE_ANESTHETIST -> Known.CERTIFIED_REGISTERED_NURSE_ANESTHETIST
@@ -411,6 +467,7 @@ class ClinicRole @JsonCreator private constructor(private val value: JsonField<S
             NURSE_MANAGER -> Known.NURSE_MANAGER
             PATIENT_CARE_COORDINATOR -> Known.PATIENT_CARE_COORDINATOR
             IMAGING_TECHNOLOGIST -> Known.IMAGING_TECHNOLOGIST
+            RADIATION_THERAPIST -> Known.RADIATION_THERAPIST
             LABORATORY_TECHNICIAN -> Known.LABORATORY_TECHNICIAN
             MEDICAL_LABORATORY_SCIENTIST -> Known.MEDICAL_LABORATORY_SCIENTIST
             PATHOLOGISTS_ASSISTANT -> Known.PATHOLOGISTS_ASSISTANT
@@ -423,7 +480,10 @@ class ClinicRole @JsonCreator private constructor(private val value: JsonField<S
             RESPIRATORY_THERAPIST -> Known.RESPIRATORY_THERAPIST
             NUTRITIONIST -> Known.NUTRITIONIST
             FRONT_DESK_OPERATOR -> Known.FRONT_DESK_OPERATOR
+            PRACTICE_MANAGER -> Known.PRACTICE_MANAGER
             REVENUE_CYCLE_MANAGER -> Known.REVENUE_CYCLE_MANAGER
+            MEDICAL_BILLER -> Known.MEDICAL_BILLER
+            PRIOR_AUTHORIZATION_SPECIALIST -> Known.PRIOR_AUTHORIZATION_SPECIALIST
             ADMINISTRATIVE_DIRECTOR -> Known.ADMINISTRATIVE_DIRECTOR
             ADMINISTRATIVE_ASSISTANT -> Known.ADMINISTRATIVE_ASSISTANT
             LEGAL_ADMINISTRATOR -> Known.LEGAL_ADMINISTRATOR
